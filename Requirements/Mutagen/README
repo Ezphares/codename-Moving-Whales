@@ -1,0 +1,3 @@
+Required for whaleserver management app.
+
+Extract to some directory and run "mutagen-1.20/setup.py install".
