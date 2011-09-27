@@ -6,6 +6,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
 	(r'^management/', include('management.urls')),
+	(r'^users/', include('users.urls')),
     # Examples:
     # url(r'^$', 'whaleserver.views.home', name='home'),
     # url(r'^whaleserver/', include('whaleserver.foo.urls')),
