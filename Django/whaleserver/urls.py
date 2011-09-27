@@ -5,6 +5,7 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+	(r'^management/', include('management.urls')),
     # Examples:
     # url(r'^$', 'whaleserver.views.home', name='home'),
     # url(r'^whaleserver/', include('whaleserver.foo.urls')),
