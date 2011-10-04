@@ -1,0 +1,18 @@
+<h1>{{ profile.username }} </h1>
+
+{% if error_message %}<p><strong>{{ error_message }} </strong></p>{% endif %}
+
+<form action="/users/{{ users.id }} /edit/" method="post">
+{% csrf_token %}
+	<input type="text" name="username" id="username" value="{{ users.username }}" /> <br />
+	<input type="text" name="firstname" id="firstname" value="{{ users.firstname }}" /> <br />
+	<input type="text" name="lastname" id="lastname" value="{{ users.lastname }}" /> <br />
+	<input type="text" name="emailaddress" id="emailaddress" value="{{ users.emailaddress }}" /> <br />
+	<input type="text" name="country" id="country" value="{{ users.country }}" /> <br />
+	<input type="text" name="birthday" id="birthday" value="{{ users.birthday }}" /> <br />
+	<textarea name="biography" id="biography">{{ users.biography }}</textarea><br />
+	<input type="password" name="oldpassword" id="oldpassword" /> <br />
+	<input type="password" name="newpassword" id="newpassword" /> <br />
+	<input type="password" name="confirmpassword" id="confirmpassword" /> <br />
+	<input type="submit" value="Update" />
+</form>
