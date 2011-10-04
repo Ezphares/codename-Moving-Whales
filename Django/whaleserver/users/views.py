@@ -1,6 +1,8 @@
 # Create your views here.
 from django.http import HttpResponse
 from users.models import User, User__User
+from django.template import RequestContext
+from django.shortcuts import get_object_or_404, render_to_response
 import json
 
 def profile(request, user_id):
@@ -25,3 +27,8 @@ def profile(request, user_id):
 		}
 	}
 	return HttpResponse(json.dumps(obj))
+
+def edit(request, user_id):
+	p = get_object_or_404(User, pk=user_id)
+	return render_to_response('users/edit.html', {'users': p},
+								context_instance=RequestContext(request))
