@@ -1,12 +1,13 @@
 # Create your views here.
 from django.http import HttpResponse
-from users.models import User, User__User
+from users.models import Profile, Profile__Profile
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
+from django.contrib.auth import authenticate, login, logout
 import json
 
-def profile(request, user_id):
-	user = User.objects.get(pk=user_id)
+def profile(request, user_id): # TODO: Code should be clarified to distinguish User and Profile
+	user = Profile.objects.get(pk=user_id)
 	obj = {
 		'meta': {
 			'errors': [],
@@ -27,8 +28,33 @@ def profile(request, user_id):
 		}
 	}
 	return HttpResponse(json.dumps(obj))
+	
+def register(request):
+	if request.method != 'POST':
+		return HttpResponse("Error") # TODO: Json
+	# TODO: Server-side validation of input!
+	user = User.objects.create_user(request.POST['username'], request.POST['email'], request.POST['password'])
+	user.save()
+	return HttpResponse("User created!") # TODO: Json
 
+def login_view(request):
+	if request.method != 'POST':
+		return HttpResponse("Error") # TODO: Json
+	user = authenticate(username=request.POST['username'], password=request.POST['password'])
+	if user is not None:
+		if user.is_active:
+			login(request, user)
+			return HttpResponse("Logged in!") # TODO: Json
+		else:
+			return HttpResponse("EBanned!") # TODO: Json
+	else:
+		return HttpResponse("Wrong combination!") # TODO: Json
+		
+def logout_view(request):
+	logout(request)
+	# Todo: Redirect	
+	
 def edit(request, user_id):
-	p = get_object_or_404(User, pk=user_id)
+	p = get_object_or_404(Profile, pk=user_id)
 	return render_to_response('users/edit.html', {'users': p},
 								context_instance=RequestContext(request))

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Track(models.Model):
 	title = models.CharField(max_length=30, default='Unknown Track')
@@ -13,16 +14,16 @@ class Track(models.Model):
 	hashNo = models.CharField(max_length=32)
 	
 class User__Track(models.Model):
-	user = models.ForeignKey('users.User')
+	user = models.ForeignKey(User)
 	track = models.ForeignKey('Track')
 	created = models.DateTimeField(auto_now_add = True)
-	playCount = models.IntegerField()
-	userRating = models.IntegerField()
-	joinable = models.BooleanField()
+	playCount = models.IntegerField(default = 0)
+	userRating = models.IntegerField(default = -1)
+	joinable = models.BooleanField(default = True)
 	note = models.CharField(max_length=200)
 	
 class Playlist(models.Model):
-	user = models.ForeignKey('users.User')
+	user = models.ForeignKey(User)
 	title = models.CharField(max_length=200)
 	created = models.DateTimeField(auto_now_add = True)
 	
