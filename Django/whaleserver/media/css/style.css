@@ -1,0 +1,7 @@
+/*
+    MAIN STYLESHEET
+    the imports need to be compiled and minified in a production environment
+*/
+@import "general.css";
+@import "layout.css";
+@import "icons.css";
