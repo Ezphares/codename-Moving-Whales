@@ -4,7 +4,8 @@ from django.template import RequestContext
 from django.core.files import File
 from django.contrib.auth.models import User
 
-from management.models import Track, User__Track
+from management.models import Track, Profile__Track
+from users.models import Profile
 from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3
@@ -108,3 +109,21 @@ def getMD5Digest(filePath): #TODO: Move to external file
 	for eachLine in lines:
 		data.update(eachLine)
 	return data.hexdigest()
+
+def getLibrary(request):
+	if not request.user.is_authenticated():
+		return HttpResponse("Not logged in.") #TODO: json
+	profile = Profile.objects.filter(userLink = request.user)[0]
+	tracklinks = Profile__Track.objects.filter(user = profile)
+	responseString = ''
+	for eachTrack in tracklinks:
+		track = Track.objects.get(id = eachTrack.track_id)
+		responseString += track.title + ' - '
+		responseString += track.artist + ' - '
+		responseString += track.album + ' - '
+		responseString += track.year + ' - '
+		responseString += track.comment + ' - '
+		responseString += track.genre + ' - '
+		responseString += track.trackNo + ' - '
+		responseString += track.duration + '\n' 
+	return HttpResponse(responseString)
