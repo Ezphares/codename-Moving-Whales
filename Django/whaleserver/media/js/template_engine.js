@@ -10,6 +10,9 @@ var tEngine = {};
 tEngine.debug = true;
 /**
  * Method to apply some data to a template
+ * The data must be a javascript object containing key-value pairs,
+ * where the key matches a template variable name
+ * the data argument can be a single object, og an array of objects (eg. a list of tracks)
  */
 tEngine.apply = function(data,template) {
     if(!is_array(data)) {
@@ -29,15 +32,22 @@ tEngine.apply = function(data,template) {
     return libArray.join("\n");
 };
 
+
+/*
+	Template class - used for parsing templates
+	All templates are created onload and is stored as their id attribute in the "templates" object.
+	a template with the id="template_hello_world" would be found as a template object in templates.template_hello_world
+*/
 var Template = function(html) {
 
     this.html = html;
     this.regex = [];
 
+	/*
+		The init function detects all template variables in the template and creates and compiles a regular expression.
+		This is used when applying the template to a set of data.
+	*/
     this.init = function() {
-
-		console.log(this.html);
-
         var findTemplateVars_re = new RegExp(this.varStart+"(.+?)"+this.varEnd,"g");
         var trimVarChars_re = new RegExp("^"+this.varStart+"|"+this.varEnd+"$","g");
 
