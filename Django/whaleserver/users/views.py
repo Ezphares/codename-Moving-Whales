@@ -55,6 +55,36 @@ def logout_view(request):
 	# Todo: Redirect	
 	
 def edit(request, user_id):
-	p = get_object_or_404(Profile, pk=user_id)
-	return render_to_response('users/edit.html', {'users': p},
-								context_instance=RequestContext(request))
+	user = Profile.objects.get(pk=user_id)
+	#if request.method != 'POST':
+		#return HttpResponse("Error") # TODO: Json
+	if request.user.is_authenticated() and request.user == user.userLink:
+		obj = {
+			'meta': {
+				'errors': [],
+				'type': 'edit'
+			},
+			'data': {
+				'username': user.username,
+				'firstname': user.firstname,
+				'lastname': user.lastname,
+				'emailaddress': user.emailaddress,
+				'created': user.created.strftime("%d/%m-%Y %H:%M"),
+				'modified': user.modified.strftime("%d/%m-%Y %H:%M"),
+				'lastlogin': user.lastlogin.strftime("%d/%m-%Y %H:%M"),
+				'country': user.country,
+				'birthday': user.birthday.strftime("%d/%m-%Y"),
+				'biography': user.biography,
+				'rights': user.rights,
+			}
+		}
+	else:
+		obj = {
+			'meta': {
+				'errors': [], #Some error. you are not authenticated or not the user..
+				'type': 'edit'
+			},
+			'data': {
+			}
+		}
+	return HttpResponse(json.dumps(obj))	
