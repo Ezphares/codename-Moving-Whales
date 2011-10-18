@@ -21,6 +21,12 @@ whales.loading = function(isLoading,message) {
     return true;
 }
 
+whales.modal = function (data,template) {
+	var modalContent = tEngine.apply(data, template);
+	$("#modal > .content").html(modalContent);
+	return $("#modal_wrapper");
+};
+
 
 //navigation shortcuts and functions
 nav = {};
