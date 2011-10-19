@@ -79,9 +79,92 @@ $(function(){
     });
 
 
-
-
-
+	/* FORM EVENTS */
+	$('#form_login_submit').live("click",function(ev){
+		ev.preventDefault();
+		$.ajax({
+			url: '/users/login/',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				'username' : $('#form_login_username').val(),
+				'password' : $('#form_login_password').val()
+			},
+			headers: {
+				'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
+			},
+			success: function(data){
+				if (data.meta.errors.length === 0)
+				{
+					$('#modal_wrapper').hide();
+					// TODO: Post-login procedure
+				}
+				else if (data.meta.type === 'login_error')
+				{
+					var error_string = '';
+					for (var i in data.meta.errors)
+					{
+						error_string += data.meta.errors[i] + '<br/>';
+					}
+					$('#form_login_error').html(error_string);
+				}
+			}
+		});
+	});
+	
+	$('#form_login_register').live("click",function(ev){
+		ev.preventDefault();
+		whales.modal({}, templates.template_form_register).show()
+	});
+	
+	$('#form_login_resetpass').live("click",function(ev){
+		ev.preventDefault();
+		// TODO: Password reset form
+	});
+	
+	
+	$('#form_register_submit').live("click",function(ev){
+		ev.preventDefault();
+		if ($('#form_register_password').val() != $('#form_register_passwordrepeat').val())
+		{
+			$('#form_register_error').html('Passwords do not match.<br/>');
+			return;
+		}
+		$.ajax({
+			url: '/users/register/',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				'username' : $('#form_register_username').val(),
+				'password' : $('#form_register_password').val(),
+				'email' : $('#form_register_email').val()
+			},
+			headers: {
+				'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
+			},
+			success: function(data){
+				if (data.meta.errors.length === 0)
+				{
+					$('#modal_wrapper').hide();
+					// TODO: Post-login procedure
+				}
+				else if (data.meta.type === 'register_error')
+				{
+					var error_string = '';
+					for (var i in data.meta.errors)
+					{
+						error_string += data.meta.errors[i] + '<br/>';
+					}
+					$('#form_register_error').html(error_string);
+				}
+			}
+		});
+	});
+	
+	$('#form_register_back').live("click",function(ev){
+		ev.preventDefault();
+		whales.modal({}, templates.template_form_login).show()
+	});
 
     /* DRAG EVENTS */
     $('.track')
@@ -125,6 +208,7 @@ $(function(){
 
 
     $(window).bind('load',function(e){
+		whales.modal({}, templates.template_form_login).show();
         $("#splash").fadeOut(1000);
     });
 });
