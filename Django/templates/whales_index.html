@@ -7,15 +7,43 @@
         <title>Moving Whales</title>
     </head>
     <body>
+		{%csrf_token%}
         <!-- beginning of templates -->
 
         <script type="text/html" id="template_form_login">
             <div class="form_login">
-                Pølse?!?!?!?!?!?!?!?!?!?!?!?!?!?!<br/>
-				og 3 liter mælk
-				<div>
+				<div class="form_login_main">
+					<label for="form_login_username">Username:<input type="text" id="form_login_username"/></label>
+					<label for="form_login_password">Password:<input type="password" id="form_login_password"/></label>
+					<div class="whales_btn" id="form_login_submit">Login</div>
+				</div>
+				<div class="form_login_messages">
+					<span id="form_login_error"></span>
+				</div>
+				<div class="form_login_nav">
+					<div class="whales_btn" id="form_login_register">Register</div>
+					<div class="whales_btn" id="form_login_resetpass">Forgot your password?</div>
+				</div>
             </div>
         </script>
+		
+		<script type="text/html" id="template_form_register">
+			<div class="form_register">
+				<div class="form_register_fields">
+					<label for="form_register_username">Username:<input type="text" id="form_register_username"/></label>
+					<label for="form_register_email">Email address:<input type="email" id="form_register_email"/></label>
+					<label for="form_register_password">Password:<input type="password" id="form_register_password"/></label>
+					<label for="form_register_passwordrepeat">Repeat password:<input type="password" id="form_register_passwordrepeat"/></label>
+				</div>
+				<div class="form_register_messages">
+					<span id="form_register_error"></span>
+				</div>
+				<div class="form_register_buttons">
+					<div class="whales_btn" id="form_register_submit">Register</div>
+					<div class="whales_btn" id="form_register_back">Back</div>
+				</div>
+			</div>
+		</script>
 
         <script type="text/html" id="template_track">
             <div class="track">
