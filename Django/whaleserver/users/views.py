@@ -8,6 +8,11 @@ from django.contrib.auth.models import User
 import json
 import datetime
 from whales_json import *
+import re
+
+mail_re = None
+if mail_re == None:
+	mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 
 def profile(request, user_id): # TODO: Code should be clarified to distinguish User and Profile
 	user = Profile.objects.get(pk=user_id)
@@ -33,7 +38,6 @@ def profile(request, user_id): # TODO: Code should be clarified to distinguish U
 	return HttpResponse(json.dumps(obj))
 
 def register(request):
-	print "a"
 	response = JSONResponse()
 	if request.method != 'POST':
 		response.add_error('Bad request.')
@@ -50,6 +54,12 @@ def register(request):
 		if len(request.POST['password']) < 6:
 			response.add_error('The entered password is less than 6 characters.', 'register_error')
 			valid = False
+		if len(request.POST['username']) < 3:
+			response.add_error('The requested username is too short.', 'register_error')
+			valid = False
+		if mail_re.match(request.POST['email']) is None:
+			response.add_error('Invalid email address', 'register_error')
+			valid = False
 		if valid == True:
 			user = User.objects.create_user(request.POST['username'], request.POST['email'], request.POST['password'])
 			user.save()
@@ -61,7 +71,6 @@ def register(request):
 			user = authenticate(username=request.POST['username'], password=request.POST['password'])
 			login(request, user)
 			response.force_type('success')
-	print response
 	return HttpResponse(response.generate(), mimetype='application/json')
 
 def login_view(request):
