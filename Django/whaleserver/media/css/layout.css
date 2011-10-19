@@ -1,0 +1,483 @@
+/* global resets */
+
+html {
+    font-size:100%;
+    overflow-y:scroll;
+    height:100%;
+    font-family: arial;
+}
+
+body {
+    height:100%;
+}
+
+html,body,div {
+    padding:0px;
+    margin:0px;
+}
+
+.clear {
+    clear:both;
+}
+
+
+/* rough layout */
+
+#modal_wrapper {
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:999;
+	background:#fafafa;
+	color:#222;
+	border:1px solid #888;
+	border-radius:5px;
+}
+#modal {
+	margin:5px;
+}
+
+#splash {
+    height:100%;
+    width:100%;
+    background:#f3f3f3;
+    position: absolute;
+    z-index: 1000;
+}
+#splash_center {
+    width:200px;
+    border:1px solid #666;
+    border-radius:6px;
+    color:#fff;
+    background: #333;
+    font-family: "Myriad Pro";
+    height:100px;
+    text-align: center;
+    line-height: 100px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top:-50px;
+    margin-left:-100px;
+}
+
+#main {
+    height:100%;
+    width:100%;
+    background:#f3f3f3;
+    position: absolute;
+}
+
+#top_wrapper {
+    width:100%;
+    height:130px;
+    border-bottom:1px solid #aaa;
+    background-color: #dfdfdf;
+    position:fixed;
+    z-index: 100;
+}
+
+#top {
+    position: absolute;
+    left:50%;
+    margin-left:-480px;
+    width:960px;
+    height:130px;
+}
+
+#player_wrapper {
+    width:700px;
+    height:70px;
+    background:#29B2D8;
+    background: -webkit-linear-gradient(top, #2a9ecc 21%,#2b91d1 79%);
+    position: absolute;
+    top:10px;
+    left:0px;
+    line-height: 70px;
+    text-align: center;
+    box-shadow: 0px 2px 2px #777;
+    color:#fff;
+    font-weight: bold;
+}
+
+#navigation_wrapper {
+    width:700px;
+    height:30px;
+    position:absolute;
+    bottom:10px;
+    left:0px;
+    float:left;
+}
+#navigation_wrapper > div:first-child {
+    float:left;
+    margin-right:10px;
+}
+#navigation_player {
+    position: absolute;
+    left:0px;
+}
+#navigation_site {
+    position: absolute;
+    right:0px;
+}
+#navigation_loading {
+    display: none;
+    position: absolute;
+    top:0px;
+    left: 134px;
+    width:196px;
+    color:#fff;
+    background-color:#333;
+    background-image: -webkit-linear-gradient(bottom, #333333 25%, #555555 75%);
+    border-radius:3px;
+    border:1px solid #555;
+    float:left;
+    padding:1px 5px;
+    cursor: pointer;
+    font-size:11px;
+    font-weight: bold;
+    height:24px;
+    line-height: 24px;
+    text-align: left;
+}
+#navigation_loading > span.icon_loading {
+    vertical-align: sub;
+    margin-right:12px;
+    margin-left:3px;
+    margin-top:3px;
+    float:left;
+}
+#navigation_loading_text {
+    float:left;
+}
+#navigation_loading_text > span:first-child {
+    color:#aaa;
+}
+#navigation_loading_text > span:first-child {
+    position: absolute;
+    top:3px;
+    display: none;
+}
+#navigation_loading_text > span:last-child {
+    position: absolute;
+    top:0px;
+}
+
+#header_wrapper {
+    height:110px;
+    width:100%;
+    position: relative;
+}
+
+#middle_wrapper {
+    width:960px;
+    height:300px;
+    position: absolute;
+    top:131px;
+    left:50%;
+    margin-left:-480px;
+    border:1px solid #aaa;
+    box-shadow: 0px 0px 15px #aaa;
+    border-style: none solid;
+}
+
+/* library layout */
+
+#content_wrapper {
+    position: absolute;
+    top:0px;
+    width:719px;
+    height:100%;
+}
+
+#library_wrapper {
+    width:100%;
+    height:100%;
+    position: relative;
+    background:#333;
+}
+
+#library_select {
+    width:100%;
+    height:20px;
+    background-color:#D0D0D0;
+    background: -webkit-linear-gradient(bottom, #C4C4C4 25%, #D9D9D9 75%);
+}
+
+#library {
+    position: absolute;
+    top:20px;
+    border-top:1px solid #888;
+    width:100%;
+    height:200px;
+}
+
+
+#library_list {
+    height:100%;
+    overflow-y:scroll;
+    background:#F3F3F3;
+}
+
+#library .track {
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+    font-size:12px;
+    white-space:nowrap;
+    cursor:pointer;
+}
+#library .track .track_info {
+    padding:2px;
+}
+#library .track .track_info > * {
+    display:inline-block;
+    border-right:1px solid #aaa;
+    padding-left:10px;
+    padding-right:10px;
+    text-align: right;
+    overflow:hidden;
+    height:19px;
+    line-height:19px;
+    vertical-align: bottom;
+}
+#library .track .track_info > * > span {
+    vertical-align: top;
+}
+#library .track .track_info > *:last-child {
+    border-right:none;
+    padding-right:0px;
+}
+#library .track .track_info > *:first-child {
+    padding-left:0px;
+}
+#library .track .track_info .duration {
+    color:#333;
+    width:42px;
+}
+#library .track .track_info .title {
+    color:#111;
+    width:170px;
+}
+#library .track .track_info .artist {
+    color:#555;
+    width:100px;
+}
+#library .track .track_info .album {
+    color:#999;
+    width:170px;
+}
+#library .track .track_info .rating {
+    color:#aaa;
+    width:100px;
+}
+#library .track:hover {
+    background-color:#D0D0D0;
+    background-image: -webkit-linear-gradient(bottom, #D6D6D6 25%, #DEDEDE 75%);
+}
+
+#library_controls .track .track_info > * {
+    color:#fff !important;
+    font-weight:bold;
+}
+#library_controls .track,#library_controls .track:hover {
+    border-bottom:1px solid #444;
+    background-color:#707070;
+    background-image: -webkit-linear-gradient(bottom, #666666 25%, #777777 75%);
+}
+
+
+
+
+/* Community  */
+#community_wrapper {
+    height:100%;
+    width: 100%;
+    position: absolute;
+    top:0px;
+    background: #fafafa;
+}
+
+#community_header_wrapper {
+    float:left;
+    width:100%;
+    border-bottom:3px solid #444;
+    background:#29B2D8;
+    background-image: -webkit-linear-gradient(top, #2A9ECC 21%,#2B91D1 79%);
+    color:#fff;
+}
+#community_header {
+    margin: 5px 5px 10px 10px;
+}
+#community_header > h1 {
+    padding:0px;
+    margin:0px 0px;
+    font-family: "Myriad Pro";
+}
+
+
+
+/* Profile layouts */
+#profile_wrapper {
+    position: absolute;
+    right:0px;
+    top:10px;
+}
+
+#profile {
+    float:left;
+    background: #444;
+    background-image: -webkit-linear-gradient(bottom, rgb(48,48,48) 32%, rgb(66,66,66) 76%);
+    box-shadow: 0px 2px 2px #777;
+    width:240px;
+    height:70px;
+}
+
+.profile_info {
+    float:left;
+    margin:8px;
+}
+
+.profile_info .profile_name {
+    font-size:13px;
+    color:#fff;
+}
+
+.profile_btn_set {
+    float:left;
+    position: absolute;
+    bottom:8px;
+}
+
+/* sidebar layout */
+#sidebar_wrapper {
+    position: absolute;
+    right:0px;
+    top:0px;
+    height:100%;
+    width:240px;
+    border-left:1px solid #ccc;
+}
+
+#sidebar_wrapper .sidebar_pane_wrapper {
+    width:100%;
+    height:33.33%;
+    border-top:1px solid #bbb;
+    font-size: 12px;
+}
+
+#sidebar_wrapper .sidebar_pane_wrapper:first-child {
+    border-top:none;
+}
+
+.sidebar_pane_wrapper > .sidebar_header {
+    background: #eee;
+    background-image: -webkit-linear-gradient(bottom, rgb(219,219,219) 37%, rgb(221,221,221) 67%);
+    border-bottom:1px solid #bbb;
+    font-size:13px;
+    font-weight: bold;
+    padding:1px 3px;
+    color:#aaa;
+    cursor: pointer;
+}
+
+.sidebar_pane_wrapper > .sidebar_header:hover {
+    background: #f3f3f3;
+    background-image: -webkit-linear-gradient(bottom, rgb(230,230,230) 37%, rgb(235,235,235) 67%);
+    color:#444;
+}
+
+#sidebar_wrapper .sidebar_pane{
+    overflow-y:scroll;
+    width:100%;
+}
+
+/* sidebar session */
+#sidebar_session {
+
+}
+#sidebar_session .user {
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+}
+#sidebar_session .user .whales_thumbnail_small {
+    border:1px solid #ccc;
+}
+#sidebar_session .user .profile_info {
+    margin:3px;
+}
+#sidebar_session .user .profile_info .profile_name {
+    color:#333;
+    font-size:11px;
+}
+#sidebar_session .user:hover {
+    background-color:#D4D4D4;
+    background-image: -webkit-linear-gradient(bottom, #D6D6D6 25%, #DEDEDE 75%);
+}
+
+/* sidebar playlist */
+
+#sidebar_playlist .track {
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+    font-size:11px;
+    white-space:nowrap;
+    cursor:pointer;
+}
+#sidebar_playlist .track .track_info {
+    padding:3px;
+}
+#sidebar_playlist .track .track_info > * {
+    display:inline-block;
+    border-right:1px solid #aaa;
+    padding-left:4px;
+    padding-right:4px;
+    text-align: right;
+    overflow:hidden;
+    height:15px;
+    line-height:15px;
+    vertical-align: bottom;
+}
+#sidebar_playlist .track .track_info .duration {
+    padding-right:7px;
+    margin-right:4px;
+    border-right:1px solid #ccc;
+}
+#sidebar_playlist .track .track_info .artist {
+    color:#888;
+}
+#sidebar_playlist .track .track_info .title {
+    color:#333;
+}
+
+#sidebar_playlist .track .track_info .album,#sidebar_playlist .track .track_info .rating{
+    display:none;
+}
+#sidebar_playlist .track:hover {
+    background-color:#D4D4D4;
+    background-image: -webkit-linear-gradient(bottom, #D6D6D6 25%, #DEDEDE 75%);
+}
+
+/* sidebar chat */
+
+#sidebar_chat .sidebar_pane .msg {
+    border-bottom:1px solid #ddd;
+    padding:1px 1px 1px 3px;
+}
+
+#sidebar_chat .sidebar_footer .msg {
+    border-bottom:1px solid #ddd;
+    padding:1px 1px 1px 3px;
+}
+
+#sidebar_chat_input {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    height: 20px;
+    line-height: 20px;
+    border-top:1px solid #ccc;
+    width:100%;
+}

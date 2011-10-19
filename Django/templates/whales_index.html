@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="media/css/style.css" />
+        <title>Moving Whales</title>
+    </head>
+    <body>
+        <!-- beginning of templates -->
+
+        <script type="text/html" id="template_form_login">
+            <div class="form_login">
+                Pølse?!?!?!?!?!?!?!?!?!?!?!?!?!?!<br/>
+				og 3 liter mælk
+				<div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_track">
+            <div class="track">
+                <div class="track_info">
+                    <span class="duration">%duration%</span>
+                    <span class="title">%title%</span>
+                    <span class="artist">%artist%</span>
+                    <span class="album">%album%</span>
+                    <span class="rating">%rating%</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_library">
+            <div id="library_wrapper">
+                <div id="library_select">
+                    <div class="whales_square_btn_set">
+                        <div class="whales_btn">My Library</div>
+                        <div class="whales_btn">Playlists</div>
+                        <div class="whales_btn">Favorites</div>
+                    </div>
+                </div>
+                <div id="library">
+                    <div id="library_controls">
+                        <!-- This is the top "track" that show description, and enable sorting -->
+                        <div class="track sorting_controls">
+                            <div class="track_info">
+                                <span class="duration"></span>
+                                <span class="title">Title <span class="icon_round_up"></span></span>
+                                <span class="artist">Artist <span class="icon_round_down"></span></span>
+                                <span class="album">Album <span class="icon_round_down"></span></span>
+                                <span class="rating">rating <span class="icon_round_down"></span></span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <!-- This is the actual library list -->
+                    <div id="library_list"></div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_community">
+            <div id="community_wrapper">
+                <div id="community">
+                    <div id="community_header_wrapper">
+                        <div id="community_header">
+                            <h1>Community</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_profilepage">
+            <div id="profilepage_wrapper">
+                <div id="profilepage">
+                    <div id="profilepage_header_wrapper">
+                        <div id="profilepage_header">
+                            <h1>Profile</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_session">
+            <div id="session_wrapper">
+                <div id="session">
+                    <div id="session_header_wrapper">
+                        <div id="session_header">
+                            <h1>Session</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_settings">
+            <div id="settingspage_wrapper">
+                <div id="settingspage">
+                    <div id="settingspage_header_wrapper">
+                        <div id="settingspage_header">
+                            <h1>Settings</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+
+        <!-- end of templates -->
+
+        <div id="splash">
+            <div id="splash_center">
+                Loading MovingWhales...
+            </div>
+        </div>
+		<div id="modal_wrapper" style="display:none;">
+            <div id="modal">
+                <div class="content">
+					This should never show....
+                </div>
+                <div class="clear"></div>
+            </div>
+		</div>
+        <div id="main">
+            <div id="top_wrapper">
+                <div id="top">
+                    <div id="header_wrapper">
+                        <div id="player_wrapper">
+                            Player goes here
+                        </div>
+                        <div id="profile_wrapper">
+                            <div id="profile">
+                                <div class="whales_thumbnail_big"></div>
+                                <div class="profile_info">
+                                    <div class="profile_name">
+                                        <span>Firstname</span>
+                                        <span>Lastname</span>
+                                    </div>
+                                    <div class="profile_btn_set whales_btn_set" collection="navigation">
+                                        <div class="whales_btn" id="btn_settings">Settings <span class="icon_wrench_plus"></span></div>
+                                        <div class="whales_btn">Log out <span class="icon_on_off"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="navigation_wrapper">
+                        <div class="whales_btn_set" id="navigation_player" collection="player_control">
+                            <div class="whales_btn whales_btn_big"><span class="icon_prev"></span></div>
+                            <div class="whales_btn whales_btn_big"><span class="icon_stop"></span></div>
+                            <div class="whales_btn whales_btn_big"><span class="icon_play"></span></div>
+                            <div class="whales_btn whales_btn_big"><span class="icon_next"></span></div>
+                        </div>
+                        <div class="whales_btn_set" id="navigation_site" collection="navigation">
+                            <div class="whales_btn whales_btn_big" id="btn_library">Library <span class="icon_music"></span></div>
+                            <div class="whales_btn whales_btn_big" id="btn_community">Community <span class="icon_home"></span></div>
+                            <div class="whales_btn whales_btn_big" id="btn_profile">Profile <span class="icon_user"></span></div>
+                            <div class="whales_btn whales_btn_big" id="btn_session">Session <span class="icon_users"></span></div>
+                        </div>
+                        <div id="navigation_loading">
+                            <span class="icon_loading"></span><span id="navigation_loading_text"><span>Loading line 1</span><br/><span>Loading line 2</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="middle_wrapper">
+                <div id="sidebar_wrapper">
+
+                    <div class="sidebar_pane_wrapper" id="sidebar_playlist">
+                        <div class="sidebar_header">Playlist</div>
+                        <div class="sidebar_pane">
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="sidebar_pane_wrapper" id="sidebar_session">
+                        <div class="sidebar_header">Session</div>
+                        <div class="sidebar_pane">
+
+                            <div class="user">
+                                <div class="whales_thumbnail_small"></div>
+                                <div class="profile_info">
+                                    <div class="profile_name">
+                                        <span>Firstname</span>
+                                        <span>Lastname</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div><!--clear ! -->
+                            </div>
+
+                            <div class="user">
+                                <div class="whales_thumbnail_small"></div>
+                                <div class="profile_info">
+                                    <div class="profile_name">
+                                        <span>Firstname</span>
+                                        <span>Lastname</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div><!--clear ! -->
+                            </div>
+
+                            <div class="user">
+                                <div class="whales_thumbnail_small"></div>
+                                <div class="profile_info">
+                                    <div class="profile_name">
+                                        <span>Firstname</span>
+                                        <span>Lastname</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div><!--clear ! -->
+                            </div>
+
+                            <div class="user">
+                                <div class="whales_thumbnail_small"></div>
+                                <div class="profile_info">
+                                    <div class="profile_name">
+                                        <span>Firstname</span>
+                                        <span>Lastname</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div><!--clear ! -->
+                            </div>
+
+                            <div class="user">
+                                <div class="whales_thumbnail_small"></div>
+                                <div class="profile_info">
+                                    <div class="profile_name">
+                                        <span>Firstname</span>
+                                        <span>Lastname</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div><!--clear ! -->
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="sidebar_pane_wrapper" id="sidebar_chat">
+                        <div class="sidebar_header">Chat</div>
+                        <div class="sidebar_pane">
+                            <div class="msg">bla bla bla bla</div>
+                            <div class="msg">bla bla bla bla bla bla</div>
+                            <div class="msg">bla bla bla bla bla</div>
+                            <div class="msg">bla bla bla</div>
+                            <div class="msg">bla bla bla bla bla</div>
+                        </div>
+                        <div class="sidebar_footer">
+                            <input id="sidebar_chat_input" type="text" />
+                        </div>
+                    </div>
+
+                </div>
+                <div id="content_wrapper">
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript"  src="media/js/jquery.event.drag-2.0.min.js"></script>
+        <script type="text/javascript"  src="media/js/jquery.event.drop-2.0.min.js"></script>
+        <script type="text/javascript"  src="media/js/init.js"></script>
+        <script type="text/javascript"  src="media/js/template_engine.js"></script>
+        <script type="text/javascript"  src="media/js/whales.js"></script>
+        <script type="text/javascript"  src="media/js/layout.js"></script>
+    </body>
+</html>

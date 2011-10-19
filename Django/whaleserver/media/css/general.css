@@ -1,0 +1,158 @@
+/* buttons styles */
+
+.whales_btn {
+    height:16px;
+    line-height: 16px;
+    background-color:#D0D0D0;
+    background-image: -webkit-linear-gradient(bottom, #C4C4C4 25%, #D9D9D9 75%);
+    border-radius:3px;
+    border:1px solid #555;
+    color:#333;
+    float:left;
+    font-size:12px;
+    font-weight: bold;
+    padding:2px 5px;
+    cursor: pointer;
+}
+
+.whales_btn > span {
+    vertical-align: sub;
+    margin-right:2px;
+}
+
+.whales_btn_big {
+    font-size:13px;
+    font-weight: normal;
+    font-weight: bold;
+    height:24px;
+    line-height: 24px;
+}
+
+.whales_btn:hover,.whales_btn.selected {
+    background-color:#29B2D8;
+    background: -webkit-linear-gradient(top, #29b2d8 0%,#2b91d1 100%);
+    color:#fff;
+}
+
+.whales_btn:active {
+    background-color:#888;
+    background-image: -webkit-linear-gradient(bottom, rgb(102,102,102) 23%, rgb(140,140,140) 72%);
+    color:#fff;
+}
+
+.whales_btn_set .whales_btn {
+    border-radius:0px;
+    border-style:solid none;
+    padding-left:6px;
+    padding-right:6px;
+}
+.whales_btn_set .whales_btn:first-child {
+    border-radius:3px 0px 0px 3px;
+    border-style: solid none solid solid;
+    padding-left:6px;
+}
+.whales_btn_set .whales_btn:last-child {
+    border-radius:0px 3px 3px 0px;
+    border-style: solid  solid solid none;
+    padding-right:6px;
+}
+
+
+.whales_top_btn_set .whales_btn {
+    border-radius:0px;
+    border-style:none none solid none;
+    padding-left:6px;
+    padding-right:6px;
+}
+.whales_top_btn_set .whales_btn:first-child {
+    border-radius:0px 0px 0px 3px;
+    border-style: none none solid solid;
+    padding-left:6px;
+}
+.whales_top_btn_set .whales_btn:last-child {
+    border-radius:0px 0px 3px 0px;
+    border-style: none solid solid none;
+    padding-right:6px;
+}
+
+
+.whales_square_btn_set .whales_btn {
+    border-radius:0px;
+    border-style:none;
+    padding-left:6px;
+    padding-right:6px;
+}
+
+
+.whales_vertical_btn_set .whales_btn {
+    border-radius:0px;
+    border-style:none solid solid solid;
+    padding-left:6px;
+    padding-right:6px;
+    float:left;
+    clear:both;
+    width:100px;
+}
+.whales_vertical_btn_set .whales_btn:first-child {
+    border-radius:3px 3px 0px 0px;
+    border-style: solid solid none solid;
+    padding-left:6px;
+}
+.whales_vertical_btn_set .whales_btn:last-child {
+    border-radius:0px 0px 3px 3px;
+    padding-right:6px;
+}
+
+/* standard class definition */
+
+.whales_std_margin {
+    margin:5px;
+}
+
+.whales_thumbnail_big {
+    float:right;
+    margin:8px;
+    height:50px;
+    width:50px;
+    background-color:#29B2D8;
+    background: -webkit-linear-gradient(top, #2a9ecc 21%,#2b91d1 79%);
+}
+
+.whales_thumbnail_small {
+    float:right;
+    margin:3px;
+    height:30px;
+    width:30px;
+    background-color:#29B2D8;
+    background: -webkit-linear-gradient(top, #2a9ecc 21%,#2b91d1 79%);
+}
+
+
+/* track */
+
+.track {
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+    font-size:12px;
+    white-space:nowrap;
+    cursor:pointer;
+}
+.track .track_info {
+    padding:2px;
+}
+.track .track_info > * {
+    display:inline-block;
+    border-right:1px solid #aaa;
+    padding-left:10px;
+    padding-right:10px;
+    text-align: right;
+    overflow:hidden;
+    height:19px;
+    line-height:19px;
+    vertical-align: bottom;
+    display:none;
+}
+.track .track_info > .title,.track .track_info > .artist  {
+    display:inline-block;
+}

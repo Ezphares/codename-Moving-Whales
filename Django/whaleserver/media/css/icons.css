@@ -1,0 +1,117 @@
+/*
+    Icon definitions
+*/
+
+.icon_star {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/star_fav_icon%2616.png");
+}
+.icon_star_empty {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/star_fav_empty_icon%2616.png");
+}
+
+.icon_music {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/music_icon%2616.png");
+}
+
+.icon_home {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/home_icon%2616.png");
+}
+
+.icon_user {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/user_icon%2616.png");
+}
+
+.icon_users {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/users_icon%2616.png");
+}
+
+.icon_wrench_plus {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/wrench_plus_2_icon%2616.png");
+}
+
+.icon_on_off {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/on-off_icon%2616.png");
+}
+
+.icon_round {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/round_icon%2616.png");
+}
+.icon_round_down {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/rnd_br_down_icon%2616.png");
+}
+
+.icon_round_up {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/rnd_br_up_icon%2616.png");
+}
+
+/* player controls */
+
+.icon_play {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/playback_play_icon%2616.png");
+}
+.icon_pause {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/playback_pause_icon%2616.png");
+}
+.icon_stop {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/playback_stop_icon%2616.png");
+}
+.icon_next {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/playback_next_icon%2616.png");
+}
+.icon_prev {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("icons/playback_prev_icon%2616.png");
+}
+.icon_loading {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background-image:url("ajax-loader.gif");
+}
