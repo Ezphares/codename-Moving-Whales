@@ -33,7 +33,7 @@ nav = {};
 nav.library = function(callback){
     $("#content_wrapper").html(templates.template_library.html); // load template into content
     $(window).trigger("resize"); // call resize event. Allways a good idea when changing layouts
-    $.getJSON("media/library.json",{},function(data){
+    $.getJSON("management/library/",{},function(data){
         if(data.meta.errors.length == 0) {
             // no errors continue
             //process raw data
