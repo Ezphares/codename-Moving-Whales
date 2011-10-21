@@ -9,7 +9,6 @@
     <body>
 		{%csrf_token%}
         <!-- beginning of templates -->
-
         <script type="text/html" id="template_form_login">
 			<div class="form_login">
 				<div class="clear"></div>
@@ -52,7 +51,7 @@
 		</script>
 
         <script type="text/html" id="template_track">
-            <div class="track">
+			<div class="track">
                 <div class="track_info">
                     <span class="duration">%duration%</span>
                     <span class="title">%title%</span>
@@ -63,7 +62,15 @@
                 <div class="clear"></div>
             </div>
         </script>
-
+		
+        <script type="text/html" id="template_notloggedin">
+		
+			<div>
+				<p>Not logged in :(</p>
+			</div>
+		
+		</script>
+		
         <script type="text/html" id="template_library">
             <div id="library_wrapper">
                 <div id="library_select">
@@ -78,11 +85,11 @@
                         <!-- This is the top "track" that show description, and enable sorting -->
                         <div class="track sorting_controls">
                             <div class="track_info">
-                                <span class="duration"></span>
-                                <span class="title">Title <span class="icon_round_up"></span></span>
-                                <span class="artist">Artist <span class="icon_round_down"></span></span>
-                                <span class="album">Album <span class="icon_round_down"></span></span>
-                                <span class="rating">rating <span class="icon_round_down"></span></span>
+                                <span class="duration"><span class="btn_sort icon_round_down"></span></span>
+                                <span class="title">Title <span class="btn_sort icon_round_down"></span></span>
+                                <span class="artist">Artist <span class="btn_sort icon_round_down"></span></span>
+                                <span class="album">Album <span class="btn_sort icon_round_down"></span></span>
+                                <span class="rating">rating <span class="btn_sort icon_round_down"></span></span>
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -174,7 +181,7 @@
                                     </div>
                                     <div class="profile_btn_set whales_btn_set" collection="navigation">
                                         <div class="whales_btn" id="btn_settings">Settings <span class="icon_wrench_plus"></span></div>
-                                        <div class="whales_btn">Log out <span class="icon_on_off"></span></div>
+                                        <div class="whales_btn" id="btn_logout">Log out <span class="icon_on_off"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -292,12 +299,17 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-        <script type="text/javascript"  src="media/js/jquery.event.drag-2.0.min.js"></script>
-        <script type="text/javascript"  src="media/js/jquery.event.drop-2.0.min.js"></script>
-        <script type="text/javascript"  src="media/js/init.js"></script>
-        <script type="text/javascript"  src="media/js/template_engine.js"></script>
-        <script type="text/javascript"  src="media/js/whales.js"></script>
-        <script type="text/javascript"  src="media/js/layout.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+		<!--
+        <script type="text/javascript" src="media/js/jquery.event.drag-2.0.min.js"></script>
+        <script type="text/javascript" src="media/js/jquery.event.drop-2.0.min.js"></script>
+		-->
+        <script type="text/javascript" src="media/js/init.js"></script>
+        <script type="text/javascript" src="media/js/template_engine.js"></script>
+        <script type="text/javascript" src="media/js/whales.js"></script>
+        <script type="text/javascript" src="media/js/whales.upload.js"></script>
+        <script type="text/javascript" src="media/js/layout.js"></script>
     </body>
 </html>
+
+
