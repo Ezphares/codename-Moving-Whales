@@ -135,29 +135,52 @@ def getMD5Digest(filePath): #TODO: Move to external file
 	return data.hexdigest()
 
 def get_library(request):
-	response = JSONResponse("library")
-	if not request.user.is_authenticated():
-		response.add_error("Not logged in","access_denied")
-		return HttpResponse(response.generate(),mimetype='application/json') # error		
+	try:
+		sort = request.GET.get("sort",None)
+
+		response = JSONResponse("library")
+		if not request.user.is_authenticated():
+			response.add_error("Not logged in","access_denied")
+			return HttpResponse(response.generate(),mimetype='application/json') # error		
+			
+		profile = Profile.objects.filter(userLink = request.user)[0]
+		tracklinks = Profile__Track.objects.filter(profile = profile)
+		if sort in ["rating"]:
+			tracklinks = tracklinks.order_by(sort)
+			print "sorted by "+sort
+		else:
+			print "did not sort tracklinks"
 		
-	profile = Profile.objects.filter(userLink = request.user)[0]	
-	tracklinks = Profile__Track.objects.filter(profile = profile)
-	
-	library = []
-	for eachTrack in tracklinks:
-		track = Track.objects.get(id = eachTrack.track_id)
-		trackObj = {
-			"pk":eachTrack.id,
-			"title":track.title,
-			"artist":track.artist,
-			"album":track.album,
-			"year":track.year,
-			"comment":track.comment,
-			"genre":track.genre,
-			"rating":eachTrack.userRating,
-			"trackNumber":track.trackNo,
-			"duration":track.duration
-		}
-		library.append(trackObj)
-	response.add_data(library=library)
-	return HttpResponse(response.generate(),mimetype='application/json')
+		#tracks = Track.objects.filter(id = [link.track_id for link in tracklinks])
+		tracks = Track.objects.filter(id__in = tracklinks)
+		if sort in ["title","artist","album","year","genre","duration"]:
+			tracks = tracks.order_by(sort)
+			print "sorted by "+sort
+		else:
+			print "did not sort track"
+		
+		library = []
+		for track in tracks:
+			link = Profile__Track.objects.filter(track=track)[0]
+			
+			trackObj = {
+				"pk":link.id,
+				"title":track.title,
+				"artist":track.artist,
+				"album":track.album,
+				"year":track.year,
+				"comment":track.comment,
+				"genre":track.genre,
+				"rating":link.userRating,
+				"trackNumber":track.trackNo,
+				"duration":track.duration
+			}
+			library.append(trackObj)
+			
+		response.add_data(library=library)
+		
+		return HttpResponse(response.generate(),mimetype='application/json')
+	except Exception as ex:
+		print type(ex)
+		print ex.args
+		print ex
