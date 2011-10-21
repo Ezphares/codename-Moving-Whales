@@ -11,8 +11,6 @@ from whales_json import *
 import re
 
 mail_re = None
-if mail_re == None:
-	mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 
 def profile(request, user_id): # TODO: Code should be clarified to distinguish User and Profile
 
@@ -64,6 +62,8 @@ def register(request):
 		if len(request.POST['username']) < 3:
 			response.add_error('The requested username is too short.', 'register_error')
 			valid = False
+		if mail_re == None:
+			mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 		if mail_re.match(request.POST['email']) is None:
 			response.add_error('Invalid email address', 'register_error')
 			valid = False
