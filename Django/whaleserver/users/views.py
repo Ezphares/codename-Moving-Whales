@@ -15,27 +15,34 @@ if mail_re == None:
 	mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 
 def profile(request, user_id): # TODO: Code should be clarified to distinguish User and Profile
-	user = Profile.objects.get(pk=user_id)
-	obj = {
-		'meta': {
-			'errors': [],
-			'type': 'profile'
-		},
-		'data': {
-			'username': user.username,
-			'firstname': user.firstname,
-			'lastname': user.lastname,
-			'emailaddress': user.emailaddress,
-			'created': user.created.strftime("%d/%m-%Y %H:%M"),
-			'modified': user.modified.strftime("%d/%m-%Y %H:%M"),
-			'lastlogin': user.lastlogin.strftime("%d/%m-%Y %H:%M"),
-			'country': user.country,
-			'birthday': user.birthday.strftime("%d/%m-%Y"),
-			'biography': user.biography,
-			'rights': user.rights,
-		}
-	}
-	return HttpResponse(json.dumps(obj))
+
+	response = JSONResponse("profile")
+
+	if user_id is None:
+		user_id = request.user.id
+		
+	try:
+		viewUser = User.objects.get(pk=user_id)
+		viewProile = Profile.objects.get(userLink=viewUser)
+	except (Profile.DoesNotExist, User.DoesNotExist) as ex:
+		response.add_error("User does not exist","does_not_exist")
+		return response.respond()
+		
+	response.add_data({
+			'username': viewUser.username,
+			'firstname': viewProile.firstname,
+			'lastname': viewProile.lastname,
+			'emailaddress': viewProile.emailaddress,
+			'created': viewProile.created.strftime("%d/%m-%Y %H:%M"),
+			'modified': viewProile.modified.strftime("%d/%m-%Y %H:%M"),
+			'lastlogin': viewProile.lastlogin.strftime("%d/%m-%Y %H:%M"),
+			'country': viewProile.country,
+			'birthday': viewProile.birthday.strftime("%d/%m-%Y"),
+			'biography': viewProile.biography,
+			'rights': viewProile.rights,
+	})
+	
+	return response.respond()
 
 def register(request):
 	response = JSONResponse()
@@ -90,8 +97,18 @@ def login_view(request):
 	return HttpResponse(response.generate(), mimetype='application/json')
 		
 def logout_view(request):
+	response = JSONResponse("logout")
+	if not request.user.is_authenticated():
+		response.add_error("No user logged in","logout_error")
+		return response.respond()
+	
 	logout(request)
-	# Todo: Redirect	
+	if request.user.is_authenticated():
+		response.add_error("Could not log out","logout_error")
+		return response.respond()
+		
+	response.add_data(message="Logout successful")
+	return response.respond()
 	
 def edit(request, user_id):
 	user = Profile.objects.get(pk=user_id)
