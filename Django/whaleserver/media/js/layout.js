@@ -71,11 +71,23 @@ $(function(){
             whales.loading(false);
         });
     });
-    $("#btn_settings").bind("click",function(){
-        whales.loading(true, "Loading Settings..");
-        nav.settings(function(){
-            whales.loading(false);
-        });
+	
+    $("#btn_logout").bind("click",function(){
+        whales.common.json("/users/logout",function(data){
+			$("#btn_logout").removeClass("selected");
+			if(data.message) console.log(data.message);
+			whales.common.setUserValid(false);
+		});
+    });
+	
+	
+	
+	
+	//sort buttons in library
+    $(".track.sorting_controls .btn_sort").live("click",function(){
+        nav.library_sort = $(this).parent().attr("class");
+		nav.library();
+		console.log("sorting by: "+nav.library_sort);
     });
 
 
@@ -97,6 +109,7 @@ $(function(){
 				if (data.meta.errors.length === 0)
 				{
 					$('#modal_wrapper').hide();
+					whales.common.setUserValid(true);
 					// TODO: Post-login procedure
 				}
 				else if (data.meta.type === 'login_error')
@@ -114,7 +127,7 @@ $(function(){
 	
 	$('#form_login_register').live("click",function(ev){
 		ev.preventDefault();
-		whales.modal({}, templates.template_form_register).show()
+		whales.common.login();
 	});
 	
 	$('#form_login_resetpass').live("click",function(ev){
@@ -146,6 +159,7 @@ $(function(){
 				if (data.meta.errors.length === 0)
 				{
 					$('#modal_wrapper').hide();
+					whales.common.setUserValid(true);
 					// TODO: Post-login procedure
 				}
 				else if (data.meta.type === 'register_error')
@@ -163,40 +177,51 @@ $(function(){
 	
 	$('#form_register_back').live("click",function(ev){
 		ev.preventDefault();
-		whales.modal({}, templates.template_form_login).show()
+		whales.common.login();
 	});
 
     /* DRAG EVENTS */
-    $('.track')
+    $('.track:not(.sorting_controls)')
     .live("dragstart",function(){
-        return $( this )
-        .css({
+		console.log("track dragstart");
+        var el = $( this );
+		if(el.parent().attr("id") === "library_list") {
+			el = el.clone();
+		}
+		el = el.css({
             "z-index":2000,
             "position":"absolute"
-        })
-        .appendTo( document.body );
+        }).appendTo( document.body );
+		
+		return el;
     })
     .live("drag",function( ev, dd ){
+		console.log("track drag");
         $( dd.proxy ).css({
             top: dd.offsetY,
             left: dd.offsetX
         });
     })
     .live("dragend",function( ev, dd ){
+		console.log("track dragend");
         $( dd.proxy ).remove();
     });
 
     $('#sidebar_playlist > .sidebar_pane')
-    .live("dropstart",function(ev,dd){
+    .bind("dropstart",function(ev,dd){
+			console.log("dropstart");
         })
-    .live("drop",function(ev,dd){
-        $( dd.proxy ).clone()
-        .css({
+		
+    .bind("drop",function(ev,dd){
+			console.log("drop");
+        $( dd.proxy ).clone().css({
             "z-index":"auto",
             "position":"static"
-        }).appendTo( $(this) )
+        }).appendTo( $(this) );
     })
-    .live("dropend",function(ev,dd){
+	
+    .bind("dropend",function(ev,dd){
+			console.log("dropend");
         });
 
 
@@ -204,11 +229,18 @@ $(function(){
 
     $(window).resize(); // fire resize event to callibrate UI
 
-    $("#btn_community").click(); // DEFAULT PAGE ASSIGNMENT
-
-
     $(window).bind('load',function(e){
-		whales.modal({}, templates.template_form_login).show();
+		whales.common.json("/users/profile/",function(data){
+			if(data.meta.type === "does_not_exist") {
+				whales.common.setUserValid(false);
+				whales.common.login();
+			} else {
+				whales.common.setUserValid(true);
+				console.log("welcome, "+data.data.username);
+
+				$("#btn_library").click();
+			}
+		});
         $("#splash").fadeOut(1000);
     });
 });

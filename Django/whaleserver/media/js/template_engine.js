@@ -36,8 +36,6 @@ var Template = function(html) {
 
     this.init = function() {
 
-		console.log(this.html);
-
         var findTemplateVars_re = new RegExp(this.varStart+"(.+?)"+this.varEnd,"g");
         var trimVarChars_re = new RegExp("^"+this.varStart+"|"+this.varEnd+"$","g");
 
