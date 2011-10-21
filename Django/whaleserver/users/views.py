@@ -14,14 +14,16 @@ mail_re = None
 
 def profile(request, user_id): #TODO: user_id as POST data
 	response = JSONResponse()
-	if request.method != 'POST':
+	if user_id == None:
+		response.add_error('User does not exist', 'does_not_exist')
+	elif request.method != 'POST':
 		response.add_error('Bad request.')
 	elif not request.user.is_authenticated():
 		response.add_error("Not logged in","access_denied")
 	else:
 		profile = Profile.objects.get(pk=user_id)
 		if profile is None:
-			response.add_error('Profile not found.', 'no_data')
+			response.add_error('Profile not found.', 'does_not_exist')
 		else:
 			info_level = 0
 			myprofile = Profile.objects.filter(userLink=request.user)[0]
@@ -59,7 +61,7 @@ def profile(request, user_id): #TODO: user_id as POST data
 				profile_obj['rights'] = profile.rights
 			response.add_data(profile=profile_obj)
 			response.force_type('profile')
-	return HttpResponse(response.generate(), mimetype='application/json')
+	return response.respond()
 
 def register(request):
 	response = JSONResponse()
@@ -97,7 +99,7 @@ def register(request):
 			user = authenticate(username=request.POST['username'], password=request.POST['password'])
 			login(request, user)
 			response.force_type('success')
-	return HttpResponse(response.generate(), mimetype='application/json')
+	return response.respond()
 
 def login_view(request):
 	response = JSONResponse()
@@ -113,11 +115,19 @@ def login_view(request):
 				response.add_error('Account disabled.', 'login_error')
 		else:
 			response.add_error('Wrong username or password.', 'login_error')
-	return HttpResponse(response.generate(), mimetype='application/json')
+	return response.respond()
 		
 def logout_view(request):
-	logout(request)
-	# Todo: Redirect	
+	response = JSONResponse("logout")
+	if not request.user.is_authenticated():
+		response.add_error('No user logged in.', 'logout_error')
+	else:
+		logout(request)
+		if request.user.is_authenticated():
+			response.add_error('Could not log out.', 'logout_error')
+		else:
+			response.add_data(message='Logout successful')
+	return response.respond()	
 	
 def edit(request, user_id):
 	user = Profile.objects.get(pk=user_id)
