@@ -11,31 +11,55 @@ from whales_json import *
 import re
 
 mail_re = None
-if mail_re == None:
-	mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 
-def profile(request, user_id): # TODO: Code should be clarified to distinguish User and Profile
-	user = Profile.objects.get(pk=user_id)
-	obj = {
-		'meta': {
-			'errors': [],
-			'type': 'profile'
-		},
-		'data': {
-			'username': user.username,
-			'firstname': user.firstname,
-			'lastname': user.lastname,
-			'emailaddress': user.emailaddress,
-			'created': user.created.strftime("%d/%m-%Y %H:%M"),
-			'modified': user.modified.strftime("%d/%m-%Y %H:%M"),
-			'lastlogin': user.lastlogin.strftime("%d/%m-%Y %H:%M"),
-			'country': user.country,
-			'birthday': user.birthday.strftime("%d/%m-%Y"),
-			'biography': user.biography,
-			'rights': user.rights,
-		}
-	}
-	return HttpResponse(json.dumps(obj))
+def profile(request, user_id): #TODO: user_id as POST data
+	response = JSONResponse()
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	elif not request.user.is_authenticated():
+		response.add_error("Not logged in","access_denied")
+	else:
+		profile = Profile.objects.get(pk=user_id)
+		if profile is None:
+			response.add_error('Profile not found.', 'no_data')
+		else:
+			info_level = 0
+			myprofile = Profile.objects.filter(userLink=request.user)[0]
+			if profile == myprofile:
+				info_level = 2
+			else:
+				friend_profiles = Profile__Profile.objects.filter(user = profile)
+				for i in friend_profiles:
+					if i.friend == myprofile and i.type == 1:
+						info_level = 1
+				friend_profiles = Profile__Profile.objects.filter(friend = profile) #TODO: This is doing double work, move a function to external file
+				for i in friend_profiles:
+					if i.user == myprofile and i.type == 1:
+						info_level = 1
+			profile_obj = { #TODO: Username
+				'firstname':profile.firstname,
+				'lastname':profile.lastname,
+				'emailaddress':'',
+				'created':'',
+				'modified':'',
+				'lastlogin':'',
+				'country':'',
+				'birthday':'',
+				'biography':profile.biography,
+				'rights':0
+				}
+			if info_level > 0:
+				profile_obj['country'] = profile.country
+				profile_obj['birthday'] = profile.birthday.strftime('%B %d, %Y')
+				profile_obj['emailaddress'] = profile.emailaddress
+			if info_level > 1:
+				profile_obj['created'] = profile.created.strftime('%B %d, %Y')
+				profile_obj['modified'] = profile.modified.strftime('%B %d, %Y')
+				profile_obj['lastlogin'] = profile.lastlogin.strftime('%B %d, %Y')
+				profile_obj['rights'] = profile.rights
+			response.add_data(profile=profile_obj)
+			response.force_type('profile')
+	return HttpResponse(response.generate(), mimetype='application/json')
 
 def register(request):
 	response = JSONResponse()
@@ -57,6 +81,8 @@ def register(request):
 		if len(request.POST['username']) < 3:
 			response.add_error('The requested username is too short.', 'register_error')
 			valid = False
+		if mail_re == None:
+			mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 		if mail_re.match(request.POST['email']) is None:
 			response.add_error('Invalid email address', 'register_error')
 			valid = False
