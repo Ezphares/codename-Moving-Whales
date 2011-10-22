@@ -82,6 +82,12 @@ whales.common.json = function(url,data,callback) {
 whales.common.setUserValid = function (isValid) {
 	if(isValid){
 		$("#profile").show();
+		// Post-login procedures:
+		whales.common.json('/users/profile/', function(data){
+			pn = $('#profile .profile_name');
+			pn.children('span:first').html(data.data.profile['firstname']);
+			pn.children('span:last').html(data.data.profile['lastname']);
+		});
 	} else {
 		$("#profile").hide();
 		whales.common.login();
