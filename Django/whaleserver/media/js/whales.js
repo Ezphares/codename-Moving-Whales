@@ -48,24 +48,33 @@ whales.common.json = function(url,data,callback) {
 		data = {};
 	}
 	
-	return $.getJSON(url,data,function(ret){
-		handled = false;
-		if(ret.meta.errors.length > 0)	{
-			switch(ret.meta.type){
-				// handle common errors here. (not logged in, could not retrieve data, etc)
-				case "access_denied":
-					console.log("not logged in");
-					$("#content_wrapper").html(templates.template_notloggedin.html);
-					whales.common.setUserValid(false);
-					break;
-				default:
-					console.log("The response contained errors:");
-					console.log(ret);
-					break;
+	return $.ajax({
+		url: url,
+		dataType: 'json',
+		type: 'POST',
+		data: data,
+		headers: {
+			'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
+		},
+		success: function(ret){
+			handled = false;
+			if(ret.meta.errors.length > 0)	{
+				switch(ret.meta.type){
+					// handle common errors here. (not logged in, could not retrieve data, etc)
+					case "access_denied":
+						console.log("not logged in");
+						$("#content_wrapper").html(templates.template_notloggedin.html);
+						whales.common.setUserValid(false);
+						break;
+					default:
+						console.log("The response contained errors:");
+						console.log(ret);
+						break;
+				}
 			}
-		}
-		if(!handled) {
-			callback(ret);
+			if(!handled) {
+				callback(ret);
+			}
 		}
 	});
 };
