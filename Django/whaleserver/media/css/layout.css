@@ -37,6 +37,10 @@ html,body,div {
 	margin:5px;
 }
 
+#modal label {
+	display:block;
+}
+
 #splash {
     height:100%;
     width:100%;
