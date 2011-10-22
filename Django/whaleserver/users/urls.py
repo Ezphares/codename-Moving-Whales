@@ -7,4 +7,5 @@ urlpatterns = patterns ('',
 	(r'^logout/$', 'users.views.logout_view'),
 	(r'^register/$', 'users.views.register'),
 	(r'^edit/$', 'users.views.edit'),
+	(r'^edit/submit/$', 'users.views.edit_submit'),
 )
