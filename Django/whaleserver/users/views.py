@@ -14,31 +14,35 @@ mail_re = None
 
 def profile(request, user_id): #TODO: user_id as POST data
 	response = JSONResponse()
-	if user_id == None:
-		response.add_error('User does not exist', 'does_not_exist')
-	elif request.method != 'POST':
+	if request.method != 'POST':
 		response.add_error('Bad request.')
-	elif not request.user.is_authenticated():
-		response.add_error("Not logged in","access_denied")
+	if False:
+		pass
 	else:
-		profile = Profile.objects.get(pk=user_id)
-		if profile is None:
+		if user_id == None:
+			user_id = request.user.id
+		try:
+			profile = Profile.objects.get(pk=user_id)
+			user = User.objects.get(pk=profile.userLink_id)
+		except (Profile.DoesNotExist, User.DoesNotExist) as ex:
 			response.add_error('Profile not found.', 'does_not_exist')
 		else:
 			info_level = 0
-			myprofile = Profile.objects.filter(userLink=request.user)[0]
-			if profile == myprofile:
-				info_level = 2
-			else:
-				friend_profiles = Profile__Profile.objects.filter(user = profile)
-				for i in friend_profiles:
-					if i.friend == myprofile and i.type == 1:
-						info_level = 1
-				friend_profiles = Profile__Profile.objects.filter(friend = profile) #TODO: This is doing double work, move a function to external file
-				for i in friend_profiles:
-					if i.user == myprofile and i.type == 1:
-						info_level = 1
-			profile_obj = { #TODO: Username
+			if request.user.is_authenticated():
+				myprofile = Profile.objects.filter(userLink=request.user)[0]
+				if profile == myprofile:
+					info_level = 2
+				else:
+					friend_profiles = Profile__Profile.objects.filter(user = profile)
+					for i in friend_profiles:
+						if i.friend == myprofile and i.type == 1:
+							info_level = 1
+					friend_profiles = Profile__Profile.objects.filter(friend = profile) #TODO: This is doing double work, move a function to external file
+					for i in friend_profiles:
+						if i.user == myprofile and i.type == 1:
+							info_level = 1
+			profile_obj = {
+				'username':user.username,
 				'firstname':profile.firstname,
 				'lastname':profile.lastname,
 				'emailaddress':'',
@@ -68,6 +72,7 @@ def register(request):
 	if request.method != 'POST':
 		response.add_error('Bad request.')
 	else:
+		print request.POST['birthday']
 		valid = True
 		match = User.objects.filter(username = request.POST['username'])
 		if len(match) > 0:
@@ -83,6 +88,7 @@ def register(request):
 		if len(request.POST['username']) < 3:
 			response.add_error('The requested username is too short.', 'register_error')
 			valid = False
+		global mail_re
 		if mail_re == None:
 			mail_re = re.compile('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$')
 		if mail_re.match(request.POST['email']) is None:
@@ -93,7 +99,11 @@ def register(request):
 			user.save()
 			profile = Profile()
 			profile.userLink = user
-			profile.birthday = datetime.datetime.now()
+			profile.birthday = datetime.datetime.strptime(request.POST['birthday'], '%Y-%m-%d').date()
+			profile.firstname = request.POST['firstname']
+			profile.lastname = request.POST['lastname']
+			profile.country = request.POST['country']
+			profile.biography = request.POST['bio']
 			profile.rights = 0
 			profile.save()
 			user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -129,37 +139,34 @@ def logout_view(request):
 			response.add_data(message='Logout successful')
 	return response.respond()	
 	
-def edit(request, user_id):
-	user = Profile.objects.get(pk=user_id)
-	#if request.method != 'POST':
-		#return HttpResponse("Error") # TODO: Json
-	if request.user.is_authenticated() and request.user == user.userLink:
-		obj = {
-			'meta': {
-				'errors': [],
-				'type': 'edit'
-			},
-			'data': {
-				'username': user.username,
-				'firstname': user.firstname,
-				'lastname': user.lastname,
-				'emailaddress': user.emailaddress,
-				'created': user.created.strftime("%d/%m-%Y %H:%M"),
-				'modified': user.modified.strftime("%d/%m-%Y %H:%M"),
-				'lastlogin': user.lastlogin.strftime("%d/%m-%Y %H:%M"),
-				'country': user.country,
-				'birthday': user.birthday.strftime("%d/%m-%Y"),
-				'biography': user.biography,
-				'rights': user.rights,
-			}
-		}
+def edit(request):
+	response = JSONResponse('profile_edit')
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	elif not request.user.is_authenticated():
+		response.add_error('Not logged in','access_denied')
 	else:
-		obj = {
-			'meta': {
-				'errors': [], #Some error. you are not authenticated or not the user..
-				'type': 'edit'
-			},
-			'data': {
-			}
-		}
-	return HttpResponse(json.dumps(obj))	
+		profile = Profile.objects.filter(userLink=request.user)[0]
+		response.add_data(firstname = profile.firstname)
+		response.add_data(lastname = profile.lastname)
+		response.add_data(birthday = profile.birthday.strftime('%Y-%m-%d'))
+		response.add_data(bio = profile.biography)
+		response.add_data(country = profile.country)
+		response.add_data(emailaddress = profile.emailaddress)
+	return response.respond()
+	
+def edit_submit(request):
+	response = JSONResponse('success')
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	elif not request.user.is_authenticated():
+		response.add_error('Not logged in','access_denied')
+	else:
+		profile = Profile.objects.filter(userLink=request.user)[0]
+		profile.birthday = datetime.datetime.strptime(request.POST['birthday'], '%Y-%m-%d').date()
+		profile.firstname = request.POST['firstname']
+		profile.lastname = request.POST['lastname']
+		profile.country = request.POST['country']
+		profile.biography = request.POST['bio']
+		profile.save()
+	return response.respond()
