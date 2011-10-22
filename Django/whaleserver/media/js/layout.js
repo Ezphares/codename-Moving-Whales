@@ -73,15 +73,18 @@ $(function(){
     });
 	
     $("#btn_logout").bind("click",function(){
-        whales.common.json("/users/logout",function(data){
+        whales.common.json("/users/logout/",function(data){
 			$("#btn_logout").removeClass("selected");
 			if(data.message) console.log(data.message);
 			whales.common.setUserValid(false);
 		});
     });
 	
-	
-	
+	$('#btn_settings').bind("click",function(){
+		whales.common.json('/users/edit/', function(data){
+			whales.modal(data.data, templates.template_form_edit).show()
+		});
+	});
 	
 	//sort buttons in library
     $(".track.sorting_controls .btn_sort").live("click",function(){
@@ -94,40 +97,32 @@ $(function(){
 	/* FORM EVENTS */
 	$('#form_login_submit').live("click",function(ev){
 		ev.preventDefault();
-		$.ajax({
-			url: '/users/login/',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				'username' : $('#form_login_username').val(),
-				'password' : $('#form_login_password').val()
-			},
-			headers: {
-				'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
-			},
-			success: function(data){
-				if (data.meta.errors.length === 0)
+		data = {
+			'username' : $('#form_login_username').val(),
+			'password' : $('#form_login_password').val()
+		};
+		whales.common.json('/users/login/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('#modal_wrapper').hide();
+				whales.common.setUserValid(true);
+				// TODO: Post-login procedure
+			}
+			else if (data.meta.type === 'login_error')
+			{
+				var error_string = '';
+				for (var i in data.meta.errors)
 				{
-					$('#modal_wrapper').hide();
-					whales.common.setUserValid(true);
-					// TODO: Post-login procedure
+					error_string += data.meta.errors[i] + '<br/>';
 				}
-				else if (data.meta.type === 'login_error')
-				{
-					var error_string = '';
-					for (var i in data.meta.errors)
-					{
-						error_string += data.meta.errors[i] + '<br/>';
-					}
-					$('#form_login_error').html(error_string);
-				}
+				$('#form_login_error').html(error_string);
 			}
 		});
 	});
 	
 	$('#form_login_register').live("click",function(ev){
 		ev.preventDefault();
-		whales.common.login();
+		whales.modal({}, templates.template_form_register).show()
 	});
 	
 	$('#form_login_resetpass').live("click",function(ev){
@@ -143,34 +138,31 @@ $(function(){
 			$('#form_register_error').html('Passwords do not match.<br/>');
 			return;
 		}
-		$.ajax({
-			url: '/users/register/',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				'username' : $('#form_register_username').val(),
-				'password' : $('#form_register_password').val(),
-				'email' : $('#form_register_email').val()
-			},
-			headers: {
-				'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
-			},
-			success: function(data){
-				if (data.meta.errors.length === 0)
+		data = {
+			'username' : $('#form_register_username').val(),
+			'password' : $('#form_register_password').val(),
+			'email' : $('#form_register_email').val(),
+			'firstname' : $('#form_register_firstname').val(),
+			'lastname' : $('#form_register_lastname').val(),
+			'birthday' : $('#form_register_birthday').val(),
+			'country' : $('#form_register_country').val(),
+			'bio' : $('#form_register_bio').val()
+		};
+		whales.common.json('/users/register/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('#modal_wrapper').hide();
+				whales.common.setUserValid(true);
+				// TODO: Post-login procedure
+			}
+			else if (data.meta.type === 'register_error')
+			{
+				var error_string = '';
+				for (var i in data.meta.errors)
 				{
-					$('#modal_wrapper').hide();
-					whales.common.setUserValid(true);
-					// TODO: Post-login procedure
+					error_string += data.meta.errors[i] + '<br/>';
 				}
-				else if (data.meta.type === 'register_error')
-				{
-					var error_string = '';
-					for (var i in data.meta.errors)
-					{
-						error_string += data.meta.errors[i] + '<br/>';
-					}
-					$('#form_register_error').html(error_string);
-				}
+				$('#form_register_error').html(error_string);
 			}
 		});
 	});
@@ -178,6 +170,33 @@ $(function(){
 	$('#form_register_back').live("click",function(ev){
 		ev.preventDefault();
 		whales.common.login();
+	});
+	
+	
+	$('#form_edit_save').live("click",function(ev){
+		ev.preventDefault();
+		data = {
+			'firstname': $('#form_edit_firstname').val(),
+			'lastname': $('#form_edit_lastname').val(),
+			'country': $('#form_edit_country').val(),
+			'email': $('#form_edit_email').val(),
+			'birthday': $('#form_edit_birthday').val(),
+			'bio': $('#form_edit_bio').val(),
+		}
+		whales.common.json('/users/edit/submit/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('#modal_wrapper').hide();
+				$('#btn_settings').removeClass("selected");
+			}
+			//TODO: Handle any remaining errors
+		});
+	});
+	
+	$('#form_edit_cancel').live("click",function(ev){
+		ev.preventDefault();
+		$('#modal_wrapper').hide();
+		$('#btn_settings').removeClass("selected");
 	});
 
     /* DRAG EVENTS */
