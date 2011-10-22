@@ -32,11 +32,19 @@
 		<script type="text/html" id="template_form_register">
 			<div class="form_register">
 				<div class="clear"></div>
-				<div class="form_register_fields">
+				<div class="form_register_required">
 					<label for="form_register_username">Username:<input type="text" id="form_register_username"/></label>
 					<label for="form_register_email">Email address:<input type="email" id="form_register_email"/></label>
 					<label for="form_register_password">Password:<input type="password" id="form_register_password"/></label>
 					<label for="form_register_passwordrepeat">Repeat password:<input type="password" id="form_register_passwordrepeat"/></label>
+					<label for="form_register_firstname">First name:<input type="text" id="form_register_firstname"/></label>
+					<label for="form_register_lastname">Last name:<input type="text" id="form_register_lastname"/></label>
+				</div>
+				<div class="clear"></div>
+				<div class="form_register_optional">
+					<label for="form_register_birthday">Birthday:<input type="date" value="1980-01-01" id="form_register_birthday"/></label>
+					<label for="form_register_country">Country:<input type="country" id="form_register_country"/></label>
+					<label for="form_register_bio">Biography:<input type="text" id="form_register_bio"/></label>
 				</div>
 				<div class="clear"></div>
 				<div class="form_register_messages">
@@ -46,6 +54,25 @@
 				<div class="form_register_buttons">
 					<div class="whales_btn" id="form_register_submit">Register</div>
 					<div class="whales_btn" id="form_register_back">Back</div>
+				</div>
+			</div>
+		</script>
+		
+		<script type="text/html" id="template_form_edit">
+			<div class="form_edit">
+				<div class="clear"></div>
+				<div class="form_edit_fields">
+					<label for="form_edit_firstname">First name:<input type="text" value="%firstname%" id="form_edit_firstname"/></label>
+					<label for="form_edit_lastname">Last name:<input type="text" value="%lastname%" id="form_edit_lastname"/></label>
+					<label for="form_edit_email">Email address:<input type="text" value="%emailaddress%" id="form_edit_email"/></label>
+					<label for="form_edit_birthday">Birthday:<input type="date" value="%birthday%" id="form_edit_birthday"/></label>
+					<label for="form_edit_country">Country:<input type="text" value="%country%" id="form_edit_country"/></label>
+					<label for="form_edit_bio">Biography:<input type="text" value="%bio%" id="form_edit_bio"/></label>
+				</div>
+				<div class="clear"></div>
+				<div class="form_register_buttons">
+					<div class="whales_btn" id="form_edit_save">Save</div>
+					<div class="whales_btn" id="form_edit_cancel">Cancel</div>
 				</div>
 			</div>
 		</script>
