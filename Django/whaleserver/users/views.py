@@ -16,8 +16,6 @@ def profile(request, user_id): #TODO: user_id as POST data
 	response = JSONResponse()
 	if request.method != 'POST':
 		response.add_error('Bad request.')
-	if False:
-		pass
 	else:
 		if user_id == None:
 			user_id = request.user.id
