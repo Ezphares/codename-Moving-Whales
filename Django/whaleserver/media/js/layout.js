@@ -188,6 +188,7 @@ $(function(){
 			{
 				$('#modal_wrapper').hide();
 				$('#btn_settings').removeClass("selected");
+				whales.common.setUserValid(true)
 			}
 			//TODO: Handle any remaining errors
 		});
