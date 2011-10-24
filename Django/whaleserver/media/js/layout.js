@@ -104,7 +104,7 @@ $(function(){
 		whales.common.json('/users/login/', data, function(data){
 			if (data.meta.errors.length === 0)
 			{
-				$('#modal_wrapper').hide();
+				whales.modal().hide();
 				whales.common.setUserValid(true);
 				// TODO: Post-login procedure
 			}
@@ -151,7 +151,7 @@ $(function(){
 		whales.common.json('/users/register/', data, function(data){
 			if (data.meta.errors.length === 0)
 			{
-				$('#modal_wrapper').hide();
+				whales.modal().hide();
 				whales.common.setUserValid(true);
 				// TODO: Post-login procedure
 			}
@@ -186,7 +186,7 @@ $(function(){
 		whales.common.json('/users/edit/submit/', data, function(data){
 			if (data.meta.errors.length === 0)
 			{
-				$('#modal_wrapper').hide();
+				whales.modal().hide();
 				$('#btn_settings').removeClass("selected");
 				whales.common.setUserValid(true)
 			}
@@ -196,7 +196,7 @@ $(function(){
 	
 	$('#form_edit_cancel').live("click",function(ev){
 		ev.preventDefault();
-		$('#modal_wrapper').hide();
+		whales.modal().hide();
 		$('#btn_settings').removeClass("selected");
 	});
 

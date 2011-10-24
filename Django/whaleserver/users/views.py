@@ -13,15 +13,15 @@ import re
 mail_re = None
 
 def profile(request, user_id): #TODO: user_id as POST data
-	response = JSONResponse()
+	response = JSONResponse("profile")
 	if request.method != 'POST':
 		response.add_error('Bad request.')
 	else:
 		if user_id == None:
 			user_id = request.user.id
 		try:
-			profile = Profile.objects.get(pk=user_id)
-			user = User.objects.get(pk=profile.userLink_id)
+			user = User.objects.get(pk=user_id)
+			profile = Profile.objects.get(userLink=user)
 		except (Profile.DoesNotExist, User.DoesNotExist) as ex:
 			response.add_error('Profile not found.', 'does_not_exist')
 		else:
@@ -62,11 +62,10 @@ def profile(request, user_id): #TODO: user_id as POST data
 				profile_obj['lastlogin'] = profile.lastlogin.strftime('%B %d, %Y')
 				profile_obj['rights'] = profile.rights
 			response.add_data(profile=profile_obj)
-			response.force_type('profile')
 	return response.respond()
 
 def register(request):
-	response = JSONResponse()
+	response = JSONResponse("success")
 	if request.method != 'POST':
 		response.add_error('Bad request.')
 	else:
@@ -106,11 +105,10 @@ def register(request):
 			profile.save()
 			user = authenticate(username=request.POST['username'], password=request.POST['password'])
 			login(request, user)
-			response.force_type('success')
 	return response.respond()
 
 def login_view(request):
-	response = JSONResponse()
+	response = JSONResponse("success")
 	if request.method != 'POST':
 		response.add_error('Bad request.')
 	else:
@@ -118,7 +116,6 @@ def login_view(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				response.force_type('success')
 			else:
 				response.add_error('Account disabled.', 'login_error')
 		else:
