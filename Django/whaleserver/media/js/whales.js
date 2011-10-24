@@ -28,9 +28,16 @@ whales.loading = function(isLoading,message,keepAlive) {
 }
 
 whales.modal = function (data,template) {
-	var modalContent = tEngine.apply(data, template);
-	$("#modal > .content").html(modalContent);
-	return $("#modal_wrapper");
+	if ( typeof data === "string" && typeof template === "undefined") {
+		template = data;
+		data = {};
+	}
+	if(typeof template !== "undefined") {
+		var modalContent = tEngine.apply(data, template);
+		$("#modal > .content").html(modalContent);
+	}
+
+	return $([$("#modal_wrapper")[0],$("#modal_bg")[0]]);
 };
 
 
