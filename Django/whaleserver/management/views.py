@@ -57,8 +57,7 @@ def sendfile(request):
 		tempTrack.artist = getID3Info(audioInfo, 'performer', 'Unknown Artist')
 		tempTrack.trackNo = getID3Info(audioInfo, 'tracknumber', 0)
 		tempTrack.year = getID3Info(audioInfo, 'date', '0000')
-	
-	ID3(tempPath).delete()
+		ID3(tempPath).delete()
 	
 	try:
 		tempTrack.hashNo = getMD5Digest(tempPath)
