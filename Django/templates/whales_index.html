@@ -11,18 +11,21 @@
         <!-- beginning of templates -->
         <script type="text/html" id="template_form_login">
 			<div class="form_login">
-				<div class="clear"></div>
 				<div class="form_login_main">
-					<label for="form_login_username">Username:<input type="text" id="form_login_username"/></label>
-					<label for="form_login_password">Password:<input type="password" id="form_login_password"/></label>
-					<div class="whales_btn" id="form_login_submit">Login</div>
+					<label for="form_login_username"><span>Username:</span><input type="text" id="form_login_username"/></label>
+					<label for="form_login_password"><span>Password:</span><input type="password" id="form_login_password"/></label>
+
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
+				
+				<div class="clear verticalspace"></div>
 				<div class="form_login_messages">
 					<span id="form_login_error"></span>
+					<div class="clear verticalspace"></div>
 				</div>
-				<div class="clear"></div>
-				<div class="form_login_nav">
+				<div class="whales_btn_set">
+					<div class="whales_btn" id="form_login_submit">Login</div>
+					<div class="whales_btn_sep">|</div>
 					<div class="whales_btn" id="form_login_register">Register</div>
 					<div class="whales_btn" id="form_login_resetpass">Forgot your password?</div>
 				</div>
@@ -31,51 +34,51 @@
 		
 		<script type="text/html" id="template_form_register">
 			<div class="form_register">
-				<div class="clear"></div>
 				<div class="form_register_required">
-					<label for="form_register_username">Username:<input type="text" id="form_register_username"/></label>
-					<label for="form_register_email">Email address:<input type="email" id="form_register_email"/></label>
-					<label for="form_register_password">Password:<input type="password" id="form_register_password"/></label>
-					<label for="form_register_passwordrepeat">Repeat password:<input type="password" id="form_register_passwordrepeat"/></label>
-					<label for="form_register_firstname">First name:<input type="text" id="form_register_firstname"/></label>
-					<label for="form_register_lastname">Last name:<input type="text" id="form_register_lastname"/></label>
+					<label for="form_register_username"><span>Username:</span><input type="text" id="form_register_username"/></label>
+					<label for="form_register_email"><span>Email address:</span><input type="email" id="form_register_email"/></label>
+					<label for="form_register_password"><span>Password:</span><input type="password" id="form_register_password"/></label>
+					<label for="form_register_passwordrepeat"><span>Repeat password:</span><input type="password" id="form_register_passwordrepeat"/></label>
+					<label for="form_register_firstname"><span>First name:</span><input type="text" id="form_register_firstname"/></label>
+					<label for="form_register_lastname"><span>Last name:</span><input type="text" id="form_register_lastname"/></label>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
 				<div class="form_register_optional">
-					<label for="form_register_birthday">Birthday:<input type="date" value="1980-01-01" id="form_register_birthday"/></label>
-					<label for="form_register_country">Country:<input type="country" id="form_register_country"/></label>
-					<label for="form_register_bio">Biography:<input type="text" id="form_register_bio"/></label>
+					<label for="form_register_birthday"><span>Birthday:</span><input type="date" value="1980-01-01" id="form_register_birthday"/></label>
+					<label for="form_register_country"><span>Country:</span><input type="country" id="form_register_country"/></label>
+					<label for="form_register_bio"><span>Biography:</span><input type="text" id="form_register_bio"/></label>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
 				<div class="form_register_messages">
 					<span id="form_register_error"></span>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
-				<div class="form_register_buttons">
-					<div class="whales_btn" id="form_register_submit">Register</div>
+				<div class="whales_btn_set">
 					<div class="whales_btn" id="form_register_back">Back</div>
+					<div class="whales_btn_sep">|</div>
+					<div class="whales_btn" id="form_register_submit">Register</div>
 				</div>
 			</div>
 		</script>
 		
 		<script type="text/html" id="template_form_edit">
 			<div class="form_edit">
-				<div class="clear"></div>
 				<div class="form_edit_fields">
-					<label for="form_edit_firstname">First name:<input type="text" value="%firstname%" id="form_edit_firstname"/></label>
-					<label for="form_edit_lastname">Last name:<input type="text" value="%lastname%" id="form_edit_lastname"/></label>
-					<label for="form_edit_email">Email address:<input type="text" value="%emailaddress%" id="form_edit_email"/></label>
-					<label for="form_edit_birthday">Birthday:<input type="date" value="%birthday%" id="form_edit_birthday"/></label>
-					<label for="form_edit_country">Country:<input type="text" value="%country%" id="form_edit_country"/></label>
-					<label for="form_edit_bio">Biography:<input type="text" value="%bio%" id="form_edit_bio"/></label>
+					<label for="form_edit_firstname"><span>First name:</span><input type="text" value="%firstname%" id="form_edit_firstname"/></label>
+					<label for="form_edit_lastname"><span>Last name:</span><input type="text" value="%lastname%" id="form_edit_lastname"/></label>
+					<label for="form_edit_email"><span>Email address:</span><input type="text" value="%emailaddress%" id="form_edit_email"/></label>
+					<label for="form_edit_birthday"><span>Birthday:</span><input type="date" value="%birthday%" id="form_edit_birthday"/></label>
+					<label for="form_edit_country"><span>Country:</span><input type="text" value="%country%" id="form_edit_country"/></label>
+					<label for="form_edit_bio"><span>Biography:</span><input type="text" value="%bio%" id="form_edit_bio"/></label>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
 				<div class="form_edit_messages">
 					<span id="form_edit_error"></span>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
-				<div class="form_register_buttons">
+				<div class="whales_btn_set">
 					<div class="whales_btn" id="form_edit_save">Save</div>
+					<div class="whales_btn_sep">|</div>
 					<div class="whales_btn" id="form_edit_cancel">Cancel</div>
 				</div>
 			</div>
@@ -187,6 +190,8 @@
                 Loading MovingWhales...
             </div>
         </div>
+
+        <div id="modal_bg"></div>
 		<div id="modal_wrapper" style="display:none;">
             <div id="modal">
                 <div class="content">
