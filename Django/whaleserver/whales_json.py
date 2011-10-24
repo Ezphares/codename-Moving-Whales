@@ -3,6 +3,7 @@ __author__ = "Tudborg"
 __date__ = "$12-10-2011 16:31:16$"
 
 import json
+from django.http import HttpResponse
 
 class JSONResponseException(Exception):
 	def __init__(self, value):
@@ -35,6 +36,8 @@ class JSONResponse():
 		}
 		return json.dumps(structure, sort_keys=True, indent=4)
 
+	def respond(self):
+		return HttpResponse(self.generate(), mimetype='application/json')
 
 	def add_error(self, error, type="generic_error"):
 		self.errors.append(error)

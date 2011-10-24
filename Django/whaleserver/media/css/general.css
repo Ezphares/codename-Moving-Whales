@@ -1,6 +1,6 @@
 /* buttons styles */
 
-.whales_btn {
+.whales_btn,.whales_btn_sep {
     height:16px;
     line-height: 16px;
     background-color:#D0D0D0;
@@ -13,6 +13,15 @@
     font-weight: bold;
     padding:2px 5px;
     cursor: pointer;
+}
+
+.whales_btn_sep {
+	padding:2px 2px;
+	border-radius:0px;
+	border-style:solid none;	
+	cursor:default;
+	color:#999;
+	font-family:monospace;
 }
 
 .whales_btn > span {

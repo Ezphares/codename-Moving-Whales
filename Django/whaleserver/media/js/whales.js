@@ -1,5 +1,7 @@
 var whales = {};
-whales.loading = function(isLoading,message) {
+whales.loadingTimeout = false;
+whales.loading = function(isLoading,message,keepAlive) {
+	clearTimeout(whales.loadingTimeout);
     if(typeof isLoading === "undefined") {
         isLoading = true;
     }
@@ -9,31 +11,104 @@ whales.loading = function(isLoading,message) {
 
     $("#navigation_loading").stop();
     if(isLoading) {
-        $("#navigation_loading").fadeIn(200);
+        $("#navigation_loading").show(0);
         $("#navigation_loading_text > span:first-child").html($("#navigation_loading_text > span:last-child").html());
         $("#navigation_loading_text > span:last-child").html(message);
     } else {
-        $("#navigation_loading").fadeOut(600,function(){
+        $("#navigation_loading").hide(0,function(){
             $("#navigation_loading_text > span").empty();
         });
+    }
+	
+    if(typeof keepAlive === "number") {
+        whales.loadingTimeout = setTimeout("whales.loading(false)",keepAlive);
     }
 
     return true;
 }
 
 whales.modal = function (data,template) {
-	var modalContent = tEngine.apply(data, template);
-	$("#modal > .content").html(modalContent);
-	return $("#modal_wrapper");
+	if ( typeof data === "string" && typeof template === "undefined") {
+		template = data;
+		data = {};
+	}
+	if(typeof template !== "undefined") {
+		var modalContent = tEngine.apply(data, template);
+		$("#modal > .content").html(modalContent);
+	}
+
+	return $([$("#modal_wrapper")[0],$("#modal_bg")[0]]);
+};
+
+
+whales.common = {};
+whales.common.login = function(){
+	whales.modal({}, templates.template_form_login).show()
+};
+
+whales.common.json = function(url,data,callback) {
+	if(typeof(url) !== "string") {
+		throw new Exception("wtf!");
+	}
+	if(typeof(callback) === "undefined" && typeof(data) === "function"){
+		callback = data;
+		data = {};
+	}
+	
+	return $.ajax({
+		url: url,
+		dataType: 'json',
+		type: 'POST',
+		data: data,
+		headers: {
+			'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
+		},
+		success: function(ret){
+			handled = false;
+			if(ret.meta.errors.length > 0)	{
+				switch(ret.meta.type){
+					// handle common errors here. (not logged in, could not retrieve data, etc)
+					case "access_denied":
+						console.log("not logged in");
+						$("#content_wrapper").html(templates.template_notloggedin.html);
+						whales.common.setUserValid(false);
+						break;
+					default:
+						console.log("The response contained errors:");
+						console.log(ret);
+						break;
+				}
+			}
+			if(!handled) {
+				callback(ret);
+			}
+		}
+	});
+};
+
+whales.common.setUserValid = function (isValid) {
+	if(isValid){
+		$("#profile").show();
+		// Post-login procedures:
+		whales.common.json('/users/profile/', function(data){
+			pn = $('#profile .profile_name');
+			pn.children('span:first').html(data.data.profile['firstname']);
+			pn.children('span:last').html(data.data.profile['lastname']);
+		});
+	} else {
+		$("#profile").hide();
+		whales.common.login();
+	}
 };
 
 
 //navigation shortcuts and functions
 nav = {};
+nav.library_sort = "title";
 nav.library = function(callback){
     $("#content_wrapper").html(templates.template_library.html); // load template into content
     $(window).trigger("resize"); // call resize event. Allways a good idea when changing layouts
-    $.getJSON("management/library/",{},function(data){
+    whales.common.json("management/library/",{"sort":nav.library_sort},function(data){
         if(data.meta.errors.length == 0) {
             // no errors continue
             //process raw data
@@ -47,12 +122,21 @@ nav.library = function(callback){
             $("#library_list").html(tEngine.apply(data.data.library,templates.template_track));
 
             if(typeof callback === "function") {
-                callback();
+                callback(true);
             }
         } else {
-			console.log("Returned json contained an error message");
+			if(data.meta.type === "access_denied") {
+				// if access is denied, the user is not logged in
+				
+				
+			}
+			
+            if(typeof callback === "function") {
+                callback(false);
+            }
 		}
     });
+	return true;
 };
 
 nav.community = function(callback){
@@ -61,7 +145,7 @@ nav.community = function(callback){
 
 
     // fill community here
-    $.getJSON("media/library.json",{},function(data){
+    whales.common.json("media/library.json",{},function(data){
 
         if(typeof callback === "function") {
             callback();
@@ -76,8 +160,7 @@ nav.profile = function(callback){
 
 
     // fill community here
-    $.getJSON("media/library.json",{},function(data){
-
+    whales.common.json("media/library.json",{},function(data){
         if(typeof callback === "function") {
             callback();
         }
@@ -91,7 +174,7 @@ nav.session = function(callback){
 
 
     // fill community here
-    $.getJSON("media/library.json",{},function(data){
+    whales.common.json("media/library.json",{},function(data){
 
         if(typeof callback === "function") {
             callback();
@@ -106,7 +189,7 @@ nav.settings = function(callback){
 
 
     // fill community here
-    $.getJSON("media/library.json",{},function(data){
+    whales.common.json("media/library.json",{},function(data){
 
         if(typeof callback === "function") {
             callback();

@@ -20,22 +20,14 @@ html,body,div {
     clear:both;
 }
 
+.verticalspace {
+	height:10px;
+	display:block;
+}
+
 
 /* rough layout */
 
-#modal_wrapper {
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:999;
-	background:#fafafa;
-	color:#222;
-	border:1px solid #888;
-	border-radius:5px;
-}
-#modal {
-	margin:5px;
-}
 
 #splash {
     height:100%;

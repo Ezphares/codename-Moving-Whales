@@ -71,43 +71,51 @@ $(function(){
             whales.loading(false);
         });
     });
-    $("#btn_settings").bind("click",function(){
-        whales.loading(true, "Loading Settings..");
-        nav.settings(function(){
-            whales.loading(false);
-        });
+	
+    $("#btn_logout").bind("click",function(){
+        whales.common.json("/users/logout/",function(data){
+			$("#btn_logout").removeClass("selected");
+			if(data.message) console.log(data.message);
+			whales.common.setUserValid(false);
+		});
+    });
+	
+	$('#btn_settings').bind("click",function(){
+		whales.common.json('/users/edit/', function(data){
+			whales.modal(data.data, templates.template_form_edit).show()
+		});
+	});
+	
+	//sort buttons in library
+    $(".track.sorting_controls .btn_sort").live("click",function(){
+        nav.library_sort = $(this).parent().attr("class");
+		nav.library();
+		console.log("sorting by: "+nav.library_sort);
     });
 
 
 	/* FORM EVENTS */
 	$('#form_login_submit').live("click",function(ev){
 		ev.preventDefault();
-		$.ajax({
-			url: '/users/login/',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				'username' : $('#form_login_username').val(),
-				'password' : $('#form_login_password').val()
-			},
-			headers: {
-				'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
-			},
-			success: function(data){
-				if (data.meta.errors.length === 0)
+		data = {
+			'username' : $('#form_login_username').val(),
+			'password' : $('#form_login_password').val()
+		};
+		whales.common.json('/users/login/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				whales.modal().hide();
+				whales.common.setUserValid(true);
+				// TODO: Post-login procedure
+			}
+			else if (data.meta.type === 'login_error')
+			{
+				var error_string = '';
+				for (var i in data.meta.errors)
 				{
-					$('#modal_wrapper').hide();
-					// TODO: Post-login procedure
+					error_string += data.meta.errors[i] + '<br/>';
 				}
-				else if (data.meta.type === 'login_error')
-				{
-					var error_string = '';
-					for (var i in data.meta.errors)
-					{
-						error_string += data.meta.errors[i] + '<br/>';
-					}
-					$('#form_login_error').html(error_string);
-				}
+				$('#form_login_error').html(error_string);
 			}
 		});
 	});
@@ -130,73 +138,110 @@ $(function(){
 			$('#form_register_error').html('Passwords do not match.<br/>');
 			return;
 		}
-		$.ajax({
-			url: '/users/register/',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				'username' : $('#form_register_username').val(),
-				'password' : $('#form_register_password').val(),
-				'email' : $('#form_register_email').val()
-			},
-			headers: {
-				'X-CSRFToken' : $('*[name=csrfmiddlewaretoken]').val()
-			},
-			success: function(data){
-				if (data.meta.errors.length === 0)
+		data = {
+			'username' : $('#form_register_username').val(),
+			'password' : $('#form_register_password').val(),
+			'email' : $('#form_register_email').val(),
+			'firstname' : $('#form_register_firstname').val(),
+			'lastname' : $('#form_register_lastname').val(),
+			'birthday' : $('#form_register_birthday').val(),
+			'country' : $('#form_register_country').val(),
+			'bio' : $('#form_register_bio').val()
+		};
+		whales.common.json('/users/register/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				whales.modal().hide();
+				whales.common.setUserValid(true);
+				// TODO: Post-login procedure
+			}
+			else if (data.meta.type === 'register_error')
+			{
+				var error_string = '';
+				for (var i in data.meta.errors)
 				{
-					$('#modal_wrapper').hide();
-					// TODO: Post-login procedure
+					error_string += data.meta.errors[i] + '<br/>';
 				}
-				else if (data.meta.type === 'register_error')
-				{
-					var error_string = '';
-					for (var i in data.meta.errors)
-					{
-						error_string += data.meta.errors[i] + '<br/>';
-					}
-					$('#form_register_error').html(error_string);
-				}
+				$('#form_register_error').html(error_string);
 			}
 		});
 	});
 	
 	$('#form_register_back').live("click",function(ev){
 		ev.preventDefault();
-		whales.modal({}, templates.template_form_login).show()
+		whales.common.login();
+	});
+	
+	
+	$('#form_edit_save').live("click",function(ev){
+		ev.preventDefault();
+		data = {
+			'firstname': $('#form_edit_firstname').val(),
+			'lastname': $('#form_edit_lastname').val(),
+			'country': $('#form_edit_country').val(),
+			'email': $('#form_edit_email').val(),
+			'birthday': $('#form_edit_birthday').val(),
+			'bio': $('#form_edit_bio').val(),
+		}
+		whales.common.json('/users/edit/submit/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				whales.modal().hide();
+				$('#btn_settings').removeClass("selected");
+				whales.common.setUserValid(true)
+			}
+			//TODO: Handle any remaining errors
+		});
+	});
+	
+	$('#form_edit_cancel').live("click",function(ev){
+		ev.preventDefault();
+		whales.modal().hide();
+		$('#btn_settings').removeClass("selected");
 	});
 
     /* DRAG EVENTS */
-    $('.track')
+    $('.track:not(.sorting_controls)')
     .live("dragstart",function(){
-        return $( this )
-        .css({
+		console.log("track dragstart");
+        var el = $( this );
+		if(el.parent().attr("id") === "library_list") {
+			el = el.clone();
+		}
+		el = el.css({
             "z-index":2000,
             "position":"absolute"
-        })
-        .appendTo( document.body );
+        }).appendTo( document.body );
+		
+		return el;
     })
     .live("drag",function( ev, dd ){
+		console.log("track drag");
         $( dd.proxy ).css({
             top: dd.offsetY,
             left: dd.offsetX
         });
     })
     .live("dragend",function( ev, dd ){
+		console.log("track dragend");
         $( dd.proxy ).remove();
     });
 
     $('#sidebar_playlist > .sidebar_pane')
-    .live("dropstart",function(ev,dd){
+    .bind("dropstart",function(ev,dd){
+			console.log("dropstart");
         })
-    .live("drop",function(ev,dd){
-        $( dd.proxy ).clone()
-        .css({
+		
+    .bind("drop",function(ev,dd){
+			console.log("drop");
+        $( dd.proxy ).clone().css({
             "z-index":"auto",
             "position":"static"
-        }).appendTo( $(this) )
+        }).appendTo( $(this) );
     })
-    .live("dropend",function(ev,dd){
+	
+    .bind("dropend",function(ev,dd){
+			console.log("dropend");
         });
 
 
@@ -204,11 +249,18 @@ $(function(){
 
     $(window).resize(); // fire resize event to callibrate UI
 
-    $("#btn_community").click(); // DEFAULT PAGE ASSIGNMENT
-
-
     $(window).bind('load',function(e){
-		whales.modal({}, templates.template_form_login).show();
+		whales.common.json("/users/profile/",function(data){
+			if(data.meta.type === "does_not_exist") {
+				whales.common.setUserValid(false);
+				whales.common.login();
+			} else {
+				whales.common.setUserValid(true);
+				console.log("welcome, "+data.data.username);
+
+				$("#btn_library").click();
+			}
+		});
         $("#splash").fadeOut(1000);
     });
 });
