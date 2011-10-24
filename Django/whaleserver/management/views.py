@@ -136,7 +136,7 @@ def getMD5Digest(filePath): #TODO: Move to external file
 
 def get_library(request):
 	try:
-		sort = request.GET.get("sort",None)
+		sort = request.POST.get("sort",None)
 
 		response = JSONResponse("library")
 		if not request.user.is_authenticated():
