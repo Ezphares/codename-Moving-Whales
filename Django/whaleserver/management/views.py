@@ -13,12 +13,17 @@ from os import remove, rename
 from hashlib import md5
 from datetime import datetime
 
+from whales_json import JSONResponse
+
 def upload(request):
 	return render_to_response('management/upload.html', context_instance=RequestContext(request))
 	
 def sendfile(request):
+	response = JSONResponse("file_uploaded")
 	if not request.user.is_authenticated():
-		return HttpResponse("Not logged in.") #TODO: json
+		response.add_error("Not logged in","access_denied")
+		return HttpResponse(response.generate(),mimetype='application/json') # error
+		
 	filename = datetime.now().strftime('%j%H%M%S%f')
 	tempPath = './upload/' + filename
 	destination = open(tempPath, 'wb')
@@ -39,7 +44,8 @@ def sendfile(request):
 			audioInfo = MP3(tempPath)
 	except:
 		remove(tempPath)
-		return HttpResponse("Unknown file type.")
+		response.add_error("Unknown filetype","invalid_filetype")
+		return HttpResponse(response.generate(),mimetype='application/json')
 	
 	tempTrack = Track()
 	tempTrack.duration = audioInfo.info.length
@@ -58,19 +64,27 @@ def sendfile(request):
 		tempTrack.hashNo = getMD5Digest(tempPath)
 	except:
 		# File error!
-		return HttpResponse("Unknown error")
+		response.add_error("Unknown file error","unkown")
+		return HttpResponse(response.generate(),mimetype='application/json')
 	
 	trackMatch = Track.objects.filter(hashNo=tempTrack.hashNo)
-	
-	link = User__Track()
-	link.user_id = request.user.id
-	
+
+	try:
+		profile = Profile.objects.filter(userLink = request.user)[0]
+		link = Profile__Track()
+		link.profile = profile
+	except Exception as ex:
+		print ex
+		response.add_error(str(ex),"exception_see_error_message")
+		return HttpResponse(response.generate(),mimetype='application/json')
+		
 	if len(trackMatch) == 0:
 		fixedPath = './tracks/' + tempTrack.hashNo + '.mp3'
 		tempTrack.path = fixedPath
 		tempTrack.save()
 		rename(tempPath, fixedPath)
-		link.track_id = tempTrack.id
+		print "before track assignment"
+		link.track = tempTrack
 	else:
 		# Merge ID3 info on tracks
 		if (trackMatch[0].title == 'Unknown Track' and tempTrack.title != 'Unknown Track'):
@@ -86,9 +100,19 @@ def sendfile(request):
 		if (trackMatch[0].year == '0000' and tempTrack.year != '0000'):
 			trackMatch[0].year = tempTrack.year
 		trackMatch[0].save()
-		link.track_id = trackMatch[0].id
-	link.save()
-	return HttpResponse("Received: " + tempTrack.hashNo) # TODO: json
+		
+		print "before second track assignment"
+		link.track = trackMatch[0]
+		
+	print "before save"
+	try:
+		link.save()
+	except Exception as ex:
+		print ex
+	print "after save"
+	
+	response.add_data(stored_as=tempTrack.hashNo)
+	return HttpResponse(response.generate(),mimetype='application/json')
 
 def getID3Info(ID3Tag, content, default): #TODO: Move to external file
 	info = default
@@ -110,20 +134,53 @@ def getMD5Digest(filePath): #TODO: Move to external file
 		data.update(eachLine)
 	return data.hexdigest()
 
-def getLibrary(request):
-	if not request.user.is_authenticated():
-		return HttpResponse("Not logged in.") #TODO: json
-	profile = Profile.objects.filter(userLink = request.user)[0]
-	tracklinks = Profile__Track.objects.filter(user = profile)
-	responseString = ''
-	for eachTrack in tracklinks:
-		track = Track.objects.get(id = eachTrack.track_id)
-		responseString += track.title + ' - '
-		responseString += track.artist + ' - '
-		responseString += track.album + ' - '
-		responseString += track.year + ' - '
-		responseString += track.comment + ' - '
-		responseString += track.genre + ' - '
-		responseString += track.trackNo + ' - '
-		responseString += track.duration + '\n' 
-	return HttpResponse(responseString)
+def get_library(request):
+	try:
+		sort = request.GET.get("sort",None)
+
+		response = JSONResponse("library")
+		if not request.user.is_authenticated():
+			response.add_error("Not logged in","access_denied")
+			return HttpResponse(response.generate(),mimetype='application/json') # error		
+			
+		profile = Profile.objects.filter(userLink = request.user)[0]
+		tracklinks = Profile__Track.objects.filter(profile = profile)
+		if sort in ["rating"]:
+			tracklinks = tracklinks.order_by(sort)
+			print "sorted by "+sort
+		else:
+			print "did not sort tracklinks"
+		
+		#tracks = Track.objects.filter(id = [link.track_id for link in tracklinks])
+		tracks = Track.objects.filter(id__in = tracklinks)
+		if sort in ["title","artist","album","year","genre","duration"]:
+			tracks = tracks.order_by(sort)
+			print "sorted by "+sort
+		else:
+			print "did not sort track"
+		
+		library = []
+		for track in tracks:
+			link = Profile__Track.objects.filter(track=track)[0]
+			
+			trackObj = {
+				"pk":link.id,
+				"title":track.title,
+				"artist":track.artist,
+				"album":track.album,
+				"year":track.year,
+				"comment":track.comment,
+				"genre":track.genre,
+				"rating":link.userRating,
+				"trackNumber":track.trackNo,
+				"duration":track.duration
+			}
+			library.append(trackObj)
+			
+		response.add_data(library=library)
+		
+		return HttpResponse(response.generate(),mimetype='application/json')
+	except Exception as ex:
+		print type(ex)
+		print ex.args
+		print ex

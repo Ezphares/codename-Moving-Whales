@@ -15,13 +15,13 @@ class Track(models.Model):
 	hashNo = models.CharField(max_length=32)
 	
 class Profile__Track(models.Model):
-	user = models.ForeignKey('users.Profile')
+	profile = models.ForeignKey('users.Profile')
 	track = models.ForeignKey('Track')
 	created = models.DateTimeField(auto_now_add = True)
 	playCount = models.IntegerField(default = 0)
 	userRating = models.IntegerField(default = -1)
 	joinable = models.BooleanField(default = True)
-	note = models.CharField(max_length=200)
+	note = models.CharField(max_length=200,default="")
 	
 class Playlist(models.Model):
 	user = models.ForeignKey(User)
