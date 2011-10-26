@@ -146,7 +146,7 @@ def edit(request):
 		response.add_data(birthday = profile.birthday.strftime('%Y-%m-%d'))
 		response.add_data(bio = profile.biography)
 		response.add_data(country = profile.country)
-		response.add_data(emailaddress = profile.emailaddress)
+		response.add_data(emailaddress = profile.userLink.email)
 	return response.respond()
 	
 def edit_submit(request):
@@ -163,6 +163,9 @@ def edit_submit(request):
 		profile.country = request.POST['country']
 		profile.biography = request.POST['bio']
 		profile.save()
+		user = profile.userLink
+		user.email = request.POST['email']
+		user.save()
 	return response.respond()
 
 def search(request):
@@ -173,9 +176,9 @@ def search(request):
 		response.add_error('Not logged in','access_denied')
 	else:
 		results = []
-		# If the search matches a **username** exactly, add it with high weight, else exclude usernames
+		# If the search matches a **username** or **email** exactly, add it with high weight, else exclude usernames
 		try:
-			user = User.objects.get(username=request.POST['query'])
+			user = User.objects.get(Q(username=request.POST['query'])|Q(email=request.POST['query']))
 			profile = user.profile
 		except (User.DoesNotExist, Profile.DoesNotExist):
 			pass
