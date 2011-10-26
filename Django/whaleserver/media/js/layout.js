@@ -92,6 +92,36 @@ $(function(){
 		nav.library();
 		console.log("sorting by: "+nav.library_sort);
     });
+	
+	/* COMMUNITY EVENTS */
+	
+	$('#community_search_button').live("click", function(ev){
+		ev.preventDefault();
+		console.log('Searching...');
+		whales.common.json('/users/profile/search/', {'query': $('#community_profile_search').val()}, function (data){
+			if (data.meta.errors.length === 0)
+			{
+				$('#community_content').html(tEngine.apply({}, templates.template_community_searchresults));
+				var resultstring = '';
+				var i = 0;
+				for (i = 0; i < data.data.results.length; i++)
+				{
+					resultstring += tEngine.apply(data.data.results[i], templates.template_user);
+				}
+				$('#community_searchresults_list').html(resultstring);
+			}
+			else
+			{
+				// TODO: Handle remaining errors.
+			}
+			// Handle search results
+		});
+	});
+	
+	$('#community_content div.user').live("click", function(ev){
+		ev.preventDefault();
+		whales.community.viewprofile($(this).data().user_id);
+	});
 
 
 	/* FORM EVENTS */
