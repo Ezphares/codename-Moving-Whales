@@ -117,7 +117,7 @@ html,body,div {
     position: absolute;
     top:0px;
     left: 134px;
-    width:196px;
+    width:272px;
     color:#fff;
     background-color:#333;
     background-image: -webkit-linear-gradient(bottom, #333333 25%, #555555 75%);
@@ -301,10 +301,60 @@ html,body,div {
 #community_header {
     margin: 5px 5px 10px 10px;
 }
+#community_search_form{
+	float: right;
+	padding: 8px
+}
+#community_search_form > label{
+	float: left;
+}
+#community_search_form > input{
+	float: left;
+}
 #community_header > h1 {
     padding:0px;
     margin:0px 0px;
     font-family: "Myriad Pro";
+}
+
+
+#community_searchresults_wrapper{
+	padding: 5px;
+}
+#community_searchresults_list_wrapper{
+	border-style: solid;
+}
+
+
+/* Community user */
+
+#community_content .user_wrapper{
+	padding:10px;
+}
+#community_content .user {
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+}
+#community_content .user .whales_thumbnail_small {
+    border:1px solid #ccc;
+}
+#community_content .user .profile_info {
+    margin:3px;
+}
+#community_content .user .profile_info .profile_name {
+    color:#333;
+    font-size:11px;
+}
+#community_content .user:hover , #community_content.user.selected{
+    background-color:#29B2D8;
+    background: -webkit-linear-gradient(top, #29b2d8 0%,#2b91d1 100%);
+    color:#fff;
+}
+#community_content .user:active {
+    background-color:#888;
+    background-image: -webkit-linear-gradient(bottom, rgb(102,102,102) 23%, rgb(140,140,140) 72%);
+    color:#fff;
 }
 
 
