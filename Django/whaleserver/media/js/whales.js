@@ -88,6 +88,7 @@ whales.common.json = function(url,data,callback) {
 
 whales.common.setUserValid = function (isValid) {
 	if(isValid){
+                $(window).trigger("user_valid"); //adding event triggers to hook in to
 		$("#profile").show();
 		// Post-login procedures:
 		whales.common.json('/users/profile/', function(data){
@@ -96,6 +97,7 @@ whales.common.setUserValid = function (isValid) {
 			pn.children('span:last').html(data.data.profile['lastname']);
 		});
 	} else {
+                $(window).trigger("user_invalid"); //adding event triggers to hook in to
 		$("#profile").hide();
 		whales.common.login();
 	}
