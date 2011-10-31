@@ -38,7 +38,7 @@ whales.sync = {
     events: {}, // define below
     _server: { // server information setable with whales.sync.server()
         host:window.location.hostname,
-        port:"20000",
+        port:"8888",
         adress:"sync/",
         protocol:"ws"
     },

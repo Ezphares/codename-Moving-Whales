@@ -20,12 +20,12 @@ class Application(tornado.web.Application):
             (r"/sync/", ChatSocketHandler),
         ]
         settings = dict(
-                        cookie_secret="43oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
-                        template_path=os.path.join(os.path.dirname(__file__), "templates"),
-                        static_path=os.path.join(os.path.dirname(__file__), "static"),
-                        xsrf_cookies=False,
-                        autoescape=None,
-                        )
+            cookie_secret="43oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
+            template_path=os.path.join(os.path.dirname(__file__), "templates"),
+            static_path=os.path.join(os.path.dirname(__file__), "static"),
+            xsrf_cookies=False,
+            autoescape=None,
+            )
         tornado.web.Application.__init__(self, handlers, ** settings)
         self.lock = thread.allocate_lock()
         #thread.start_new_thread(ChatSocketHandler.syncronization, (self.lock, ))
@@ -74,7 +74,9 @@ class ChatSocketHandler(tornado.websocket.WebSocketHandler):
                 self.sessionManager.join(self)
                 logging.info("found old sessionManager")
 
+            logging.info(self.sessionManager.managers)
             ChatSocketHandler.connections.append(self)
+
         else:
             try:
                 self.close()

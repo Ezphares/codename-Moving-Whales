@@ -13,8 +13,8 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-"""Simplified chat demo for websockets.
-
+"""
+Simplified chat demo for websockets.
 Authentication, error handling, etc are left as an exercise for the reader :)
 """
 
@@ -33,7 +33,7 @@ logging.basicConfig(
                     format='[%(asctime)s] [WEBSOCKET] %(message)s',
                     )
 
-define("port", default=20000, help="run on the given port", type=int)
+define("port", default=8888, help="run on the given port", type=int)
 define("address", default="0.0.0.0", help="run on the given adress", type=str)
 
 
