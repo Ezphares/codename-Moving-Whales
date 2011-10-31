@@ -15,6 +15,7 @@ import re
 mail_re = None
 
 def profile(request, user_id): #TODO: user_id as POST data
+	hidden_data = 'Non-public'
 	response = JSONResponse("profile")
 	if request.method != 'POST':
 		response.add_error('Bad request.')
@@ -28,39 +29,101 @@ def profile(request, user_id): #TODO: user_id as POST data
 			response.add_error('Profile not found.', 'does_not_exist')
 		else:
 			info_level = 0
+			relation_type = None
+			requests = []
 			if request.user.is_authenticated():
 				myprofile = request.user.profile
 				if profile == myprofile:
 					info_level = 2
 				else:
-					if is_friends(profile, myprofile):
+					relation_type = get_relation_type(profile, myprofile)
+					if relation_type == 1:
 						info_level = 1
 			profile_obj = {
+				'relation':'stranger',
 				'id':user.id,
 				'username':user.username,
 				'firstname':profile.firstname,
 				'lastname':profile.lastname,
-				'emailaddress':'',
-				'created':'',
-				'modified':'',
-				'lastlogin':'',
-				'country':'',
-				'birthday':'',
+				'emailaddress':hidden_data,
+				'created':hidden_data,
+				'modified':hidden_data,
+				'lastlogin':hidden_data,
+				'country':hidden_data,
+				'birthday':hidden_data,
 				'biography':profile.biography,
 				'rights':0
 				}
+			if info_level == 0:
+				if relation_type == -1:
+					profile_obj['relation'] = 'stranger_add'
 			if info_level > 0:
+				profile_obj['relation'] = 'friend'
 				profile_obj['country'] = profile.country
 				profile_obj['birthday'] = profile.birthday.strftime('%B %d, %Y')
-				profile_obj['emailaddress'] = profile.emailaddress
+				profile_obj['emailaddress'] = profile.userLink.email
 			if info_level > 1:
+				profile_obj['relation'] = 'self'
 				profile_obj['created'] = profile.created.strftime('%B %d, %Y')
 				profile_obj['modified'] = profile.modified.strftime('%B %d, %Y')
 				profile_obj['lastlogin'] = profile.lastlogin.strftime('%B %d, %Y')
 				profile_obj['rights'] = profile.rights
+				for request_link in get_relations(profile, 0, 'in'):
+					requests.append(get_user_obj(request_link.user))
 			response.add_data(profile=profile_obj)
+			response.add_data(requests=requests)
+			friends = []
+			for friend_link in get_relations(profile, 1, 'both'):
+				friends.append(get_user_obj(get_other_user(friend_link, profile)))
+			response.add_data(friends=friends)
 	return response.respond()
-
+	
+def add_friend(request):
+	response = JSONResponse('success')
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	elif not request.user.is_authenticated():
+		response.add_error('Not logged in','access_denied')
+	else:
+		try:
+			friend = User.objects.get(pk=request.POST['friend_id'])
+			friend_profile = friend.profile
+		except (Profile.DoesNotExist, User.DoesNotExist) as ex:
+			response.add_error('Profile not found.', 'does_not_exist')
+		else:
+			if get_relation_type(request.user.profile, friend_profile) == -1:
+				link = Profile__Profile()
+				link.user = request.user.profile
+				link.friend = friend_profile
+				link.type = 0
+				link.save()
+			else:
+				response.add_error('Users already related.', 'friend_error')
+	return response.respond()
+	
+def answer_request(request):
+	response = JSONResponse('success')
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	elif not request.user.is_authenticated():
+		response.add_error('Not logged in','access_denied')
+	else:
+		link = None
+		try:
+			friend = User.objects.get(pk=request.POST['friend_id'])
+			link = Profile__Profile.objects.get(user = friend, friend = request.user, type = 0)
+		except (Profile__Profile.DoesNotExist) as ex:
+			response.add_error('No friend request to handle', 'friend_error')
+		else:
+			if request.POST['response'] == 'accept':
+				link.type = 1
+				link.save()
+			elif request.POST['response'] == 'deny':
+				link.delete()
+			else:
+				response.add_error('Invalid response type', 'friend_error')
+	return response.respond()
+	
 def register(request):
 	response = JSONResponse("success")
 	if request.method != 'POST':
@@ -183,28 +246,22 @@ def search(request):
 		except (User.DoesNotExist, Profile.DoesNotExist):
 			pass
 		else:
-			results.append({
-				'id':user.id,
-				'firstname':profile.firstname,
-				'lastname':profile.lastname,
-				'weight':100
-			})
+			user_obj = get_user_obj(profile)
+			user_obj['weight'] = 100
+			results.append(user_obj)
 			
 		for term in request.POST['query'].split():
 			for profile in Profile.objects.filter(Q(firstname__icontains=term)|Q(lastname__icontains=term)):
 				added = False
 				# Dublicate avoidance, and weighting
 				for check in results:
-					if check['id'] == profile.id:
+					if check['id'] == profile.userLink.id:
 						added = True
 						check['weight'] = check['weight'] + 1
 				if added == False:
-					results.append({
-						'id':profile.userLink.id,
-						'firstname':profile.firstname,
-						'lastname':profile.lastname,
-						'weight':1
-					})
+					user_obj = get_user_obj(profile)
+					user_obj['weight'] = 1
+					results.append(user_obj)
 		results.sort(cmp=lambda x,y: cmp(y['weight'], x['weight'])) # Descending weight sort
 		response.add_data(results=results)
 		
