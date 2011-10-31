@@ -83,6 +83,34 @@
 				</div>
 			</div>
 		</script>
+		
+		<script type="text/html" id="template_form_friendrequests">
+			<div class="form_friendrequests">
+				<div id="form_friendrequests_list_wrapper">
+					<div id="form_friendrequests_list">
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="form_friendrequests_buttons">
+					<div class="whales_btn" id="form_friendrequests_close">Close</div>
+				</div>
+			</div>
+		</script>
+		
+		<script type="text/html" id="template_request">
+			<div class="request request%id%">
+				<div class="request_user">
+				</div>
+				<div class="request_buttons">
+					<div class="whales_btn_set">
+						<div class="whales_btn btn_request_accept" data-user_id="%id%">Accept!</div>
+						<div class="whales_btn_sep">|</div>
+						<div class="whales_btn btn_request_deny" data-user_id="%id%">Deny</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</script>
 
         <script type="text/html" id="template_track">
 			<div class="track">
@@ -142,21 +170,61 @@
                 <div id="community">
                     <div id="community_header_wrapper">
                         <div id="community_header">
-                            <h1>Community</h1>
+							<div id="community_search_form">
+								<label for="community_profile_search">Find people:<input type="text" id="community_profile_search"/></label>
+								<div class="whales_btn" id="community_search_button">Search!</div>
+							</div>
+							<h1>Community</h1>
                         </div>
                     </div>
+					<div class="clear"></div>
+					<div id="community_content_wrapper">
+						<div id="community_content">
+						</div>
+					</div>		
                 </div>
             </div>
         </script>
+		
+		<script type="text/html" id="template_community_searchresults">
+			<div id="community_searchresults_wrapper">
+				<div id="community_searchresults">
+					<div id="community_searchresults_header">
+						<h4>Search results:</h4>
+					</div>
+					<div class="clear"></div>
+					<div id="community_searchresults_list_wrapper">
+						<div id="community_searchresults_list">
+						</div>
+					</div>
+				</div>
+			</div>
+		</script>
 
         <script type="text/html" id="template_profilepage">
             <div id="profilepage_wrapper">
                 <div id="profilepage">
                     <div id="profilepage_header_wrapper">
                         <div id="profilepage_header">
-                            <h1>Profile</h1>
+							<div id="profilepage_addfriend">
+								<div class="whales_btn" id="button_add_friend" data-user_id="%id%">Add friend!</div>
+								<div class="whales_btn" id="button_accept_requests"></div>
+							</div>
+                            <h1>%firstname% %lastname%'s Profile</h1>
                         </div>
                     </div>
+					<div id="profilepage_info_wrapper">
+						<div id="profilepage_info">
+							<div class="profile_info_field"><span>Biography: %biography%</span></div>
+							<div class="profile_info_field"><span>Country: %country%</span></div>
+							<div class="profile_info_field"><span>Birthday: %birthday%</span></div>
+							<div class="profile_info_field"><span>Email: %emailaddress%</span></div>
+						</div>
+					</div>
+					<div id="profilepage_friends_wrapper">
+						<div id="profilepage_friends">
+						</div>
+					</div>
                 </div>
             </div>
         </script>
@@ -184,7 +252,22 @@
                 </div>
             </div>
         </script>
-
+		
+		<script type="text/html" id="template_user">
+			<div class="user_wrapper">
+				<div class="user" data-user_id="%id%">
+					<div class="whales_thumbnail_small"></div>
+					<div class="profile_info">
+						<div class="profile_name">
+							<span>%firstname%</span>
+							<span>%lastname%</span>
+						</div>
+					</div>
+					<div class="clear"></div><!--clear ! -->
+				</div>
+				<div class="clear"></div>
+			</div>
+		</script>
 
         <!-- end of templates -->
 
@@ -236,7 +319,6 @@
                         <div class="whales_btn_set" id="navigation_site" collection="navigation">
                             <div class="whales_btn whales_btn_big" id="btn_library">Library <span class="icon_music"></span></div>
                             <div class="whales_btn whales_btn_big" id="btn_community">Community <span class="icon_home"></span></div>
-                            <div class="whales_btn whales_btn_big" id="btn_profile">Profile <span class="icon_user"></span></div>
                             <div class="whales_btn whales_btn_big" id="btn_session">Session <span class="icon_users"></span></div>
                         </div>
                         <div id="navigation_loading">
@@ -347,6 +429,10 @@
         <script type="text/javascript" src="media/js/template_engine.js"></script>
         <script type="text/javascript" src="media/js/whales.js"></script>
         <script type="text/javascript" src="media/js/whales.upload.js"></script>
+		<script type="text/javascript" src="media/js/whales.community.js"></script>
+		<script type="text/javascript" src="media/js/whales.sync.js"></script>
+		<script type="text/javascript" src="media/js/whales.chat.js"></script>
+		<script type="text/javascript" src="media/js/whales.session.js"></script>
         <script type="text/javascript" src="media/js/layout.js"></script>
     </body>
 </html>

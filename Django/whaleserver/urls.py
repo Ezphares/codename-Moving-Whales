@@ -25,3 +25,17 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 )
+
+websocketServer = None
+try:
+    from websocket.main import WhalesWebsocket
+    websocketServer = WhalesWebsocket()
+except Exception as ex:
+    print "Error trying to create websocket server"
+    raise
+
+try:
+    websocketServer.start()
+except:
+    print type(websocketServer)
+    print "Error trying to start websocket server"
