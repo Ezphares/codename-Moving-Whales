@@ -83,6 +83,34 @@
 				</div>
 			</div>
 		</script>
+		
+		<script type="text/html" id="template_form_friendrequests">
+			<div class="form_friendrequests">
+				<div id="form_friendrequests_list_wrapper">
+					<div id="form_friendrequests_list">
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="form_friendrequests_buttons">
+					<div class="whales_btn" id="form_friendrequests_close">Close</div>
+				</div>
+			</div>
+		</script>
+		
+		<script type="text/html" id="template_request">
+			<div class="request request%id%">
+				<div class="request_user">
+				</div>
+				<div class="request_buttons">
+					<div class="whales_btn_set">
+						<div class="whales_btn btn_request_accept" data-user_id="%id%">Accept!</div>
+						<div class="whales_btn_sep">|</div>
+						<div class="whales_btn btn_request_deny" data-user_id="%id%">Deny</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</script>
 
         <script type="text/html" id="template_track">
 			<div class="track">
@@ -175,9 +203,25 @@
                 <div id="profilepage">
                     <div id="profilepage_header_wrapper">
                         <div id="profilepage_header">
+							<div id="profilepage_addfriend">
+								<div class="whales_btn" id="button_add_friend" data-user_id="%id%">Add friend!</div>
+								<div class="whales_btn" id="button_accept_requests"></div>
+							</div>
                             <h1>%firstname% %lastname%'s Profile</h1>
                         </div>
                     </div>
+					<div id="profilepage_info_wrapper">
+						<div id="profilepage_info">
+							<div class="profile_info_field"><span>Biography: %biography%</span></div>
+							<div class="profile_info_field"><span>Country: %country%</span></div>
+							<div class="profile_info_field"><span>Birthday: %birthday%</span></div>
+							<div class="profile_info_field"><span>Email: %emailaddress%</span></div>
+						</div>
+					</div>
+					<div id="profilepage_friends_wrapper">
+						<div id="profilepage_friends">
+						</div>
+					</div>
                 </div>
             </div>
         </script>
