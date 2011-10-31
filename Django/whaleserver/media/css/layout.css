@@ -324,7 +324,12 @@ html,body,div {
 #community_searchresults_list_wrapper{
 	border-style: solid;
 }
-
+#profilepage .hidden_info{
+	color: #aaa;
+}
+#profilepage .profile_info_field{
+	display: block;
+}
 
 /* Community user */
 
@@ -364,6 +369,11 @@ html,body,div {
     position: absolute;
     right:0px;
     top:10px;
+}
+
+#profilepage_addfriend{
+	float: right;
+	margin: 10px;
 }
 
 #profile {

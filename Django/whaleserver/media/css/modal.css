@@ -36,3 +36,26 @@
 	width:140px;
 }
 
+#modal .request{
+	padding: 2px;
+}
+
+#modal .user_wrapper {
+	float: left;
+	width: 200px;
+}
+
+#modal .user {
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+}
+
+#modal .profile_name > span {
+	color:black;
+}
+
+#modal .request_buttons {
+	float: right;
+	padding-top: 7px;
+}
