@@ -6,15 +6,21 @@ from django.contrib.auth.models import User
 
 from management.models import Track, Profile__Track
 from users.models import Profile
-from mutagen.mp3 import MP3
-from mutagen.easyid3 import EasyID3
-from mutagen.id3 import ID3
 from os import remove, rename
 from hashlib import md5
 from datetime import datetime
 
 from whales_json import JSONResponse
 
+try:
+	from mutagen.mp3 import MP3
+	from mutagen.easyid3 import EasyID3
+	from mutagen.id3 import ID3
+except ImportError:
+	print "\n[WARNING] YOU NEED TO INSTALL MUTAGEN\n"
+	raise
+	
+	
 def upload(request):
 	return render_to_response('management/upload.html', context_instance=RequestContext(request))
 	
