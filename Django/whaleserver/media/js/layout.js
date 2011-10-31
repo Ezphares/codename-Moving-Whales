@@ -57,6 +57,7 @@ $(function(){
         whales.loading(true, "Loading Community..");
         nav.community(function(){
             whales.loading(false);
+			whales.community.viewprofile()
         });
     });
     $("#btn_profile").bind("click",function(){
@@ -122,12 +123,36 @@ $(function(){
 		ev.preventDefault();
 		whales.community.viewprofile($(this).data().user_id);
 	});
-
+	
+	$('#button_add_friend').live("click", function(ev){
+		ev.preventDefault();
+		var data = {
+			'friend_id':$(this).data().user_id
+		};
+		whales.common.json('/users/profile/addfriend/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('#profilepage_addfriend').html('<span>Friend request sent.</span>');
+			}
+		});
+	});
+	
+	$('#button_accept_requests').live("click", function(ev){
+		ev.preventDefault();
+		whales.modal({}, templates.template_form_friendrequests).show();
+		var i = 0;
+		var requests = $(this).data().requests;
+		for (i = 0; i < requests.length; i++)
+		{
+			$('#form_friendrequests_list').append(tEngine.apply(requests[i], templates.template_request));
+			$('.request' + requests[i].id + ' > .request_user').html(tEngine.apply(requests[i], templates.template_user));
+		}
+	});
 
 	/* FORM EVENTS */
 	$('#form_login_submit').live("click",function(ev){
 		ev.preventDefault();
-		data = {
+		var data = {
 			'username' : $('#form_login_username').val(),
 			'password' : $('#form_login_password').val()
 		};
@@ -168,7 +193,7 @@ $(function(){
 			$('#form_register_error').html('Passwords do not match.<br/>');
 			return;
 		}
-		data = {
+		var data = {
 			'username' : $('#form_register_username').val(),
 			'password' : $('#form_register_password').val(),
 			'email' : $('#form_register_email').val(),
@@ -205,7 +230,7 @@ $(function(){
 	
 	$('#form_edit_save').live("click",function(ev){
 		ev.preventDefault();
-		data = {
+		var data = {
 			'firstname': $('#form_edit_firstname').val(),
 			'lastname': $('#form_edit_lastname').val(),
 			'country': $('#form_edit_country').val(),
@@ -228,6 +253,52 @@ $(function(){
 		ev.preventDefault();
 		whales.modal().hide();
 		$('#btn_settings').removeClass("selected");
+	});
+	
+	$('#form_friendrequests_close').live("click",function(ev){
+		ev.preventDefault();
+		whales.modal().hide();
+		$('#button_accept_requests').removeClass("selected");
+	});
+	
+	$('.btn_request_deny').live("click", function(ev){
+		var id = $(this).data().user_id;
+		$('.request' + id + ' > .request_buttons').html('<span>Denying...</span>');
+		var data = {
+			'friend_id':id,
+			'response':'deny'
+		};
+		whales.common.json('/users/profile/answerrequest/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('.request' + id + ' > .request_buttons').html('<span>Denied.</span>');
+			}
+			else
+			{
+				// Todo: Some weird error...
+				$('.request' + id + ' > .request_buttons').html('<span>Error</span>');
+			}
+		});
+	});
+	
+	$('.btn_request_accept').live("click", function(ev){
+		var id = $(this).data().user_id;
+		$('.request' + id + ' > .request_buttons').html('<span>Accepting...</span>');
+		var data = {
+			'friend_id':id,
+			'response':'accept'
+		};
+		whales.common.json('/users/profile/answerrequest/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('.request' + id + ' > .request_buttons').html('<span>Accepted!</span>');
+			}
+			else
+			{
+				// Todo: Some weird error...
+				$('.request' + id + ' > .request_buttons').html('<span>Error</span>');
+			}
+		});
 	});
 
     /* DRAG EVENTS */
