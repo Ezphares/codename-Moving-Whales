@@ -111,7 +111,7 @@ def answer_request(request):
 		link = None
 		try:
 			friend = User.objects.get(pk=request.POST['friend_id'])
-			link = Profile__Profile.objects.get(user = friend, friend = request.user, type = 0)
+			link = Profile__Profile.objects.get(user = friend.profile, friend = request.user.profile, type = 0)
 		except (Profile__Profile.DoesNotExist) as ex:
 			response.add_error('No friend request to handle', 'friend_error')
 		else:
