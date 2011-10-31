@@ -88,9 +88,28 @@ $(function(){
 	
 	//sort buttons in library
     $(".track.sorting_controls .btn_sort").live("click",function(){
-        nav.library_sort = $(this).parent().attr("class");
-		nav.library();
+        if($(this).hasClass("selected")){
+            $(this).toggleClass("reverse_sort");
+        }
+        else{
+            $(this).parent().parent().find(".btn_sort").removeClass("selected").removeClass("reverse_sort");
+            $(this).addClass("selected");
+        }
+
+        if($(this).hasClass("reverse_sort")){
+            nav.library_sort = "-"+$(this).parent().attr("class");
+        }
+        else{
+            nav.library_sort = $(this).parent().attr("class");
+		}
+		nav.load_library();
 		console.log("sorting by: "+nav.library_sort);
+    });
+
+    //search buttons in library
+    $(".whales_square_btn_set .btn_search").live("click",function(){
+        console.log($(this).parent().find(".btn_search"));
+        
     });
 
 

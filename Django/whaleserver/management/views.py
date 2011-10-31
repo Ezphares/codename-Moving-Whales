@@ -152,7 +152,7 @@ def get_library(request):
 		
 		#tracks = Track.objects.filter(id = [link.track_id for link in tracklinks])
 		tracks = Track.objects.filter(id__in = tracklinks)
-		if sort in ["title","artist","album","year","genre","duration"]:
+		if sort in ["title","artist","album","year","genre","duration", "-title","-artist","-album","-year","-genre","-duration"]:
 			tracks = tracks.order_by(sort)
 			print "sorted by "+sort
 		else:

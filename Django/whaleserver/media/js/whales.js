@@ -108,6 +108,12 @@ nav.library_sort = "title";
 nav.library = function(callback){
     $("#content_wrapper").html(templates.template_library.html); // load template into content
     $(window).trigger("resize"); // call resize event. Allways a good idea when changing layouts
+
+    nav.load_library(callback);
+	return true;
+};
+
+nav.load_library = function(callback){
     whales.common.json("management/library/",{"sort":nav.library_sort},function(data){
         if(data.meta.errors.length == 0) {
             // no errors continue
@@ -136,7 +142,6 @@ nav.library = function(callback){
             }
 		}
     });
-	return true;
 };
 
 nav.community = function(callback){
