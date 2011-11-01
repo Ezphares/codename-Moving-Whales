@@ -114,6 +114,7 @@ $(function(){
     });
 
 	/* FORM EVENTS */
+	
 	$('#form_login_submit').live("click",function(ev){
 		ev.preventDefault();
 		var data = {
