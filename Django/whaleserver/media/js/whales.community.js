@@ -46,62 +46,61 @@ whales.community.viewprofile = function(id)
 	});
 }
 
-/* COMMUNITY EVENTS */	
-$('#form_friendrequests_close').live("click",function(ev){
-	ev.preventDefault();
-	whales.modal().hide();
-	whales.community.viewprofile();
-});
+whales.community.init = function()
+{
+	/* COMMUNITY EVENTS */	
+	$('#form_friendrequests_close').live("click",function(ev){
+		ev.preventDefault();
+		whales.modal().hide();
+		whales.community.viewprofile();
+	});
 
-$('#community_search_button').live("click", function(ev){
-	ev.preventDefault();
-	console.log('Searching...');
-	whales.common.json('/users/profile/search/', {'query': $('#community_profile_search').val()}, function (data){
-		if (data.meta.errors.length === 0)
-		{
-			$('#community_content').html(tEngine.apply({}, templates.template_community_searchresults));
-			var resultstring = '';
-			var i = 0;
-			for (i = 0; i < data.data.results.length; i++)
+	$('#community_search_button').live("click", function(ev){
+		ev.preventDefault();
+		console.log('Searching...');
+		whales.common.json('/users/profile/search/', {'query': $('#community_profile_search').val()}, function (data){
+			if (data.meta.errors.length === 0)
 			{
-				resultstring += tEngine.apply(data.data.results[i], templates.template_user);
+				$('#community_content').html(tEngine.apply({}, templates.template_community_searchresults));
+				$('#community_searchresults_list').html(tEngine.apply(data.data.results, templates.template_user));
 			}
-			$('#community_searchresults_list').html(resultstring);
-		}
-		else
-		{
-			// TODO: Handle remaining errors.
-		}
-		// Handle search results
+			else
+			{
+				// TODO: Handle remaining errors.
+			}
+			// Handle search results
+		});
 	});
-});
 
-$('#button_add_friend').live("click", function(ev){
-	ev.preventDefault();
-	var data = {
-		'friend_id':$(this).data().user_id
-	};
-	whales.common.json('/users/profile/addfriend/', data, function(data){
-		if (data.meta.errors.length === 0)
+	$('#button_add_friend').live("click", function(ev){
+		ev.preventDefault();
+		var data = {
+			'friend_id':$(this).data().user_id
+		};
+		whales.common.json('/users/profile/addfriend/', data, function(data){
+			if (data.meta.errors.length === 0)
+			{
+				$('#profilepage_addfriend').html('<span>Friend request sent.</span>');
+			}
+		});
+	});
+
+	$('#button_accept_requests').live("click", function(ev){
+		ev.preventDefault();
+		whales.modal({}, templates.template_form_friendrequests).show();
+		var i = 0;
+		var requests = $(this).data().requests;
+		for (i = 0; i < requests.length; i++)
 		{
-			$('#profilepage_addfriend').html('<span>Friend request sent.</span>');
+			$('#form_friendrequests_list').append(tEngine.apply(requests[i], templates.template_request));
+			$('.request' + requests[i].id + ' > .request_user').html(tEngine.apply(requests[i], templates.template_user));
 		}
 	});
-});
 
-$('#button_accept_requests').live("click", function(ev){
-	ev.preventDefault();
-	whales.modal({}, templates.template_form_friendrequests).show();
-	var i = 0;
-	var requests = $(this).data().requests;
-	for (i = 0; i < requests.length; i++)
-	{
-		$('#form_friendrequests_list').append(tEngine.apply(requests[i], templates.template_request));
-		$('.request' + requests[i].id + ' > .request_user').html(tEngine.apply(requests[i], templates.template_user));
-	}
-});
+	$('#community_content div.user').live("click", function(ev){
+		ev.preventDefault();
+		whales.community.viewprofile($(this).data().user_id);
+	});
+};
 
-$('#community_content div.user').live("click", function(ev){
-	ev.preventDefault();
-	whales.community.viewprofile($(this).data().user_id);
-});
+whales.community.init();
