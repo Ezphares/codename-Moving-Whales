@@ -47,7 +47,6 @@ class WhalesSessionManager():
 
 
 
-
     def __init__(self, connection=None):
         self.managers.append(self)
         self.owner = None
