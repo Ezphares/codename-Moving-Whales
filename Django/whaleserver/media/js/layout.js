@@ -98,9 +98,11 @@ $(function(){
         }
 
         if($(this).hasClass("reverse_sort")){
+			$(this).removeClass("icon_round_down").addClass("icon_round_up");
             nav.library_sort = "-"+$(this).parent().attr("class");
         }
         else{
+			$(this).addClass("btn_sort icon_round_down").removeClass("icon_round_up");
             nav.library_sort = $(this).parent().attr("class");
 		}
 		nav.load_library();
@@ -259,53 +261,6 @@ $(function(){
 			}
 		});
 	});
-
-    /* DRAG EVENTS */
-    $('.track:not(.sorting_controls)')
-    .live("dragstart",function(){
-		console.log("track dragstart");
-        var el = $( this );
-		if(el.parent().attr("id") === "library_list") {
-			el = el.clone();
-		}
-		el = el.css({
-            "z-index":2000,
-            "position":"absolute"
-        }).appendTo( document.body );
-		
-		return el;
-    })
-    .live("drag",function( ev, dd ){
-		console.log("track drag");
-        $( dd.proxy ).css({
-            top: dd.offsetY,
-            left: dd.offsetX
-        });
-    })
-    .live("dragend",function( ev, dd ){
-		console.log("track dragend");
-        $( dd.proxy ).remove();
-    });
-
-    $('#sidebar_playlist > .sidebar_pane')
-    .bind("dropstart",function(ev,dd){
-			console.log("dropstart");
-        })
-		
-    .bind("drop",function(ev,dd){
-			console.log("drop");
-        $( dd.proxy ).clone().css({
-            "z-index":"auto",
-            "position":"static"
-        }).appendTo( $(this) );
-    })
-	
-    .bind("dropend",function(ev,dd){
-			console.log("dropend");
-        });
-
-
-
 
     $(window).resize(); // fire resize event to callibrate UI
 

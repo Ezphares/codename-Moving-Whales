@@ -191,14 +191,14 @@ html,body,div {
 
 #library_select {
     width:100%;
-    height:20px;
+    height:30px;
     background-color:#D0D0D0;
     background: -webkit-linear-gradient(bottom, #C4C4C4 25%, #D9D9D9 75%);
 }
 
 #library {
     position: absolute;
-    top:20px;
+    top:30px;
     border-top:1px solid #888;
     width:100%;
     height:200px;
@@ -278,6 +278,21 @@ html,body,div {
     background-image: -webkit-linear-gradient(bottom, #666666 25%, #777777 75%);
 }
 
+#library_select .whales_square_btn_set{
+	line-height:30px !important;
+
+}
+#library_select .whales_square_btn_set > .whales_btn{
+	padding: 2px 5px !important;
+	height:26px !important;
+	line-height:26px;
+}
+#library_select .whales_square_btn_set > .whales_btn > .whales_btn {
+	margin: 2px inherit;
+}
+
+
+
 
 
 
@@ -288,18 +303,23 @@ html,body,div {
     position: absolute;
     top:0px;
     background: #fafafa;
+	overflow:auto;
+}
+#community {
+	width:100%;
+	position:relative;
 }
 
 #community_header_wrapper {
     float:left;
     width:100%;
-    border-bottom:3px solid #444;
+    border-bottom:1px solid #aaa;
     background:#29B2D8;
     background-image: -webkit-linear-gradient(top, #2A9ECC 21%,#2B91D1 79%);
     color:#fff;
 }
 #community_header {
-    margin: 5px 5px 10px 10px;
+    margin: 3px 10px;
 }
 #community_search_form{
 	float: right;
@@ -329,6 +349,16 @@ html,body,div {
 }
 #profilepage .profile_info_field{
 	display: block;
+}
+
+#community_content_wrapper {
+
+    overflow-y:scroll;
+	position:absolute;
+	top:45px;
+	float:left;
+	width:100%;
+	height:100px;
 }
 
 /* Community user */

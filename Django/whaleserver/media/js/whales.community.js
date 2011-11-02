@@ -42,12 +42,21 @@ whales.community.viewprofile = function(id)
 			{
 				$('#button_add_friend').hide();
 			}
+
+			whales.community.layout();
 		}
 	});
 }
 
+whales.community.layout = function() {
+	var h = $("#community_wrapper").height()-$("#community_header_wrapper").height() - 1; // 1 is border
+	$("#community_content_wrapper").height(h);
+};
+
 whales.community.init = function()
 {
+	$(window).bind("resize", whales.community.layout);
+	
 	/* COMMUNITY EVENTS */	
 	$('#form_friendrequests_close').live("click",function(ev){
 		ev.preventDefault();
@@ -101,6 +110,8 @@ whales.community.init = function()
 		ev.preventDefault();
 		whales.community.viewprofile($(this).data().user_id);
 	});
+
+
 };
 
 whales.community.init();

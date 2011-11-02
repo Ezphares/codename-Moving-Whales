@@ -1,3 +1,10 @@
+.fullheight {
+	height:100% !important;
+}
+.floatright {
+	float:right !important;
+}
+
 /* buttons styles */
 
 .whales_btn,.whales_btn_sep {
@@ -49,6 +56,12 @@
     color:#fff;
 }
 
+.whales_btn_no_hover:hover,.whales_btn_no_hover.selected,.whales_btn_no_hover:active {
+    background-color:#D0D0D0;
+    background-image: -webkit-linear-gradient(bottom, #C4C4C4 25%, #D9D9D9 75%);
+    color:#333;
+}
+
 .whales_btn_set .whales_btn {
     border-radius:0px;
     border-style:solid none;
@@ -85,7 +98,7 @@
 }
 
 
-.whales_square_btn_set .whales_btn {
+.whales_square_btn_set > .whales_btn {
     border-radius:0px;
     border-style:none;
     padding-left:6px;
