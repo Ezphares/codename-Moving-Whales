@@ -2,33 +2,6 @@
  * incomming events should be bound to window
  */
 
-//// SHOULD BE MOVED TO whales.common !!
-
-// getting the csrf middleware token
-whales.common.readcsrf = function(){
-    return $("input[type=hidden][name=csrfmiddlewaretoken]").val();
-};
-whales.common.average = function(array){
-    var sum = 0;
-    for(var i in array) {
-        sum += array[i];
-    }
-    var avg = sum / array.length;
-    return avg;
-}
-
-whales.common.remove = function (value,array){
-    var c = 0;
-    for(var i = 0; i < array.length; i+=1) {
-        if(array[i] === value) {
-            array.splice(i,1);
-            c+=1;
-        }
-    }
-    return c;
-};
-//// END OF: SHOULD BE MOVED TO whales.common !!
-
 
 whales.sync = {
     debug: true,
