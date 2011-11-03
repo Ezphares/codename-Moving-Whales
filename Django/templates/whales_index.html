@@ -172,8 +172,11 @@
                     <div id="community_header_wrapper">
                         <div id="community_header">
 							<div id="community_search_form">
-								<label for="community_profile_search">Find people:<input type="text" id="community_profile_search"/></label>
-								<div class="whales_btn" id="community_search_button">Search!</div>
+								<label for="community_profile_search">Find people:</label>
+								<div class="whales_btn_set">
+									<input type="text" id="community_profile_search"/>
+									<div class="whales_btn" id="community_search_button">Search!</div>
+								</div>
 							</div>
 							<h1>Community</h1>
                         </div>
@@ -211,16 +214,19 @@
 								<div class="whales_btn" id="button_add_friend" data-user_id="%id%">Add friend!</div>
 								<div class="whales_btn" id="button_accept_requests"></div>
 							</div>
-                            <h1>%firstname% %lastname%'s Profile</h1>
+                            <h1>%firstname% %lastname%</h1>
                         </div>
                     </div>
 					<div id="profilepage_info_wrapper">
+						<div class="clear"></div>
 						<div id="profilepage_info">
-							<div class="profile_info_field"><span>Biography: %biography%</span></div>
-							<div class="profile_info_field"><span>Country: %country%</span></div>
-							<div class="profile_info_field"><span>Birthday: %birthday%</span></div>
-							<div class="profile_info_field"><span>Email: %emailaddress%</span></div>
+							<div class="profilepage_picture"></div>
+							<div class="profile_info_field"><span>Email:</span><span>%emailaddress%</span></div>
+							<div class="profile_info_field"><span>Birthday:</span><span>%birthday%</span></div>
+							<div class="profile_info_field"><span>Country:</span><span>%country%</span></div>
+							<div class="profile_info_field"><span>Biography:</span><span>%biography%</span></div>
 						</div>
+						<div class="clear"></div>
 					</div>
 					<div id="profilepage_friends_header">
 						<h4>Friends:</h4>
@@ -371,6 +377,7 @@
         <script type="text/javascript" src="media/js/init.js"></script>
         <script type="text/javascript" src="media/js/template_engine.js"></script>
         <script type="text/javascript" src="media/js/whales.js"></script>
+        <script type="text/javascript" src="media/js/whales.common.js"></script>
         <script type="text/javascript" src="media/js/whales.upload.js"></script>
 		<script type="text/javascript" src="media/js/whales.community.js"></script>
 		<script type="text/javascript" src="media/js/whales.sync.js"></script>

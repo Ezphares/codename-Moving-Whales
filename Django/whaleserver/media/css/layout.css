@@ -4,7 +4,8 @@ html {
     font-size:100%;
     overflow-y:scroll;
     height:100%;
-    font-family: arial;
+	font-size:13px;
+    font-family: sans-serif;
 }
 
 body {
@@ -42,6 +43,7 @@ html,body,div {
     border-radius:6px;
     color:#fff;
     background: #333;
+	font-size:15px;
     font-family: "Myriad Pro";
     height:100px;
     text-align: center;
@@ -323,18 +325,53 @@ html,body,div {
 }
 #community_search_form{
 	float: right;
-	padding: 8px
+	line-height:34px;
+	height:34px;
+	padding:0px;
+	margin:0px 10px;
 }
-#community_search_form > label{
-	float: left;
+#community_search_form  > label {
+	float:left;
+	margin-right:5px;
+	font-size:12px;
+	color:#f4f4f4;
+	font-weight:bold;
 }
-#community_search_form > input{
-	float: left;
+#community_search_form .whales_btn_set {
+	float:right;
+	height:30px;
+	line-height:30px;
+	margin:0px;
+	padding:0px;
 }
+#community_search_form .whales_btn_set > * {
+	float:none;
+	display:inline-block;
+	vertical-align:bottom;
+	height:20px;
+	line-height:20px;
+}
+#community_search_form .whales_btn_set > input {
+	margin-right:0px;
+	border:1px solid #333;
+	border-style:solid none solid solid;
+	background:#f4f4f4;
+	height:22px;
+	border-radius: 3px 0px 0px 3px;
+}
+#community_search_form .whales_btn_set > .whales_btn {
+	margin-left:0px;
+	position:relative;
+	left:-5px;
+}
+
 #community_header > h1 {
     padding:0px;
     margin:0px 0px;
-    font-family: "Myriad Pro";
+	font-size:20px;
+	font-weight:auto;
+    font-family: "Myriad Pro", sans-serif;
+	float:left;
 }
 
 
@@ -344,11 +381,59 @@ html,body,div {
 #community_searchresults_list_wrapper{
 	border-style: solid;
 }
+#profilepage_info_wrapper {
+	background:#f4f4f4;
+}
+#profilepage_info_wrapper > .clear:first-child {
+	height:20px;
+	background-image: -webkit-linear-gradient(top, #fafafa, #f3f3f3)
+}
+#profilepage_info_wrapper > .clear:last-child {
+	height:20px;
+	background-image: -webkit-linear-gradient(top, #f3f3f3, #fafafa)
+}
+#profilepage .profilepage_picture {
+	float:left;
+	display:block;
+	height:100px;
+	width:100px;
+	background:-webkit-linear-gradient(top, #2a9ecc 21%,#2b91d1 79%);
+	margin:5px 20px 5px 10px;
+}
 #profilepage .hidden_info{
 	color: #aaa;
 }
 #profilepage .profile_info_field{
 	display: block;
+	padding:4px 0px;
+	margin:4px 1px;
+	border-bottom:1px solid #e8e8e8;
+	background:#f3f3f3;
+}
+#profilepage .profile_info_field:hover{
+	background:#eaeaea;
+}
+#profilepage .profile_info_field span:first-child{
+	text-transform:uppercase;
+	color:#aaa;
+	display:inline-block;
+	width:100px;
+}
+#profilepage .profile_info_field span:last-child{
+	text-transform:capitalize;
+	color:#333;
+	font-weight:bold;
+	display:inline-block;
+	
+}
+#profilepage h1 {
+	font-family: "Myriad Pro",arial;
+	font-weight:normal;
+	font-size:22px;
+	text-shadow: 1px 3px 3px #ddd;
+}
+#profilepage {
+	margin:4px;
 }
 
 #community_content_wrapper {

@@ -1,7 +1,7 @@
 
 
+if(typeof whales.common === "undefined") whales.common = {};
 
-whales.common = {};
 whales.common.login = function(){
 	whales.modal({}, templates.template_form_login).show()
 };

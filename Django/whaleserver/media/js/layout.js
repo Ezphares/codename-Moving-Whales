@@ -87,7 +87,22 @@ $(function(){
 		});
 	});
 	
+	var s_callback = function(){
+		var v = $.trim($("#btn_library_search").parent().find("input").val());
+		if(v.length)
+			nav.library_query = v;
+		else
+			nav.library_query = null;
+
+		nav.load_library();
+	}
+
+	$("#btn_library_search").live("click",function(){
+		s_callback();
+	});
+
 	//sort buttons in library
+
     $(".track.sorting_controls .btn_sort").live("click",function(){
         if($(this).hasClass("selected")){
             $(this).toggleClass("reverse_sort");
