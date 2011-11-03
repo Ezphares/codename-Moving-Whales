@@ -322,8 +322,30 @@ $(window).bind("user_valid",function(event){
 $(window).bind("user_invalid",function(event){
     whales.sync.stop(); // when user is valid, start websocket
 });
+$(window).bind("sync_userlist",function(event){
+	//console.log(event);
+	if (event.syncObject.payload.type === 'success')
+	{
+		$('#sidebar_session > .sidebar_pane').html(tEngine.apply(event.syncObject.payload.users, templates.template_user));
+	}
+});
 
+$(window).bind("sync_playlist", function(event){
+	if (event.syncObject.payload.type === 'success')
+	{
+	    for(var i = 0; i < event.syncObject.payload.playlist.length; i++) {
+			var timeObj = secondsToTime(event.syncObject.payload.playlist[i]["duration"]);
+			event.syncObject.payload.playlist[i]["duration"] = String(timeObj.hours).lpad("0",2)+
+			":"+String(timeObj.minutes).lpad("0",2)+
+			":"+String(timeObj.seconds).lpad("0",2);
+		}
+		$('#sidebar_playlist > .sidebar_pane').html(tEngine.apply(event.syncObject.payload.playlist, templates.template_track));
+	}
+});
 
+$(window).bind("sync_playlist_action", function(event){
+	console.log(event.syncObject.payload.message);
+});
 /*
  * Should be moved or removed.
  * Just to illustrate sync events
