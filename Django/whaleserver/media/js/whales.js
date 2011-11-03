@@ -107,6 +107,7 @@ whales.common.setUserValid = function (isValid) {
 //navigation shortcuts and functions
 nav = {};
 nav.library_sort = "title";
+nav.library_query = null;
 nav.library = function(callback){
     $("#content_wrapper").html(templates.template_library.html); // load template into content
     $(window).trigger("resize"); // call resize event. Allways a good idea when changing layouts
@@ -116,7 +117,7 @@ nav.library = function(callback){
 };
 
 nav.load_library = function(callback){
-    whales.common.json("management/library/",{"sort":nav.library_sort},function(data){
+    whales.common.json("management/library/",{"sort":nav.library_sort,"query":nav.library_query},function(data){
         if(data.meta.errors.length == 0) {
             // no errors continue
             //process raw data
