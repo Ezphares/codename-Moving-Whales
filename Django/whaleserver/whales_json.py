@@ -13,10 +13,6 @@ class JSONResponseException(Exception):
 
 class JSONResponse():
 
-	errors = None
-	data = None
-	type = None
-
 	def __init__(self, type="generic_response"):
 		self.type = type
 		self.data = {}
