@@ -10,110 +10,110 @@
 		{%csrf_token%}
         <!-- beginning of templates -->
         <script type="text/html" id="template_form_login">
-			<div class="form_login">
-				<div class="form_login_main">
-					<label for="form_login_username"><span>Username:</span><input type="text" id="form_login_username"/></label>
-					<label for="form_login_password"><span>Password:</span><input type="password" id="form_login_password"/></label>
+            <div class="form_login">
+                <div class="form_login_main">
+                    <label for="form_login_username"><span>Username:</span><input type="text" id="form_login_username"/></label>
+                    <label for="form_login_password"><span>Password:</span><input type="password" id="form_login_password"/></label>
 
-					<div class="clear"></div>
-				</div>
-				
-				<div class="clear verticalspace"></div>
-				<div class="form_login_messages">
-					<span id="form_login_error"></span>
-					<div class="clear verticalspace"></div>
-				</div>
-				<div class="whales_btn_set">
-					<div class="whales_btn" id="form_login_submit">Login</div>
-					<div class="whales_btn_sep">|</div>
-					<div class="whales_btn" id="form_login_register">Register</div>
-					<div class="whales_btn" id="form_login_resetpass">Forgot your password?</div>
-				</div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="clear verticalspace"></div>
+                <div class="form_login_messages">
+                    <span id="form_login_error"></span>
+                    <div class="clear verticalspace"></div>
+                </div>
+                <div class="whales_btn_set">
+                    <div class="whales_btn" id="form_login_submit">Login</div>
+                    <div class="whales_btn_sep">|</div>
+                    <div class="whales_btn" id="form_login_register">Register</div>
+                    <div class="whales_btn" id="form_login_resetpass">Forgot your password?</div>
+                </div>
             </div>
         </script>
-		
-		<script type="text/html" id="template_form_register">
-			<div class="form_register">
-				<div class="form_register_required">
-					<label for="form_register_username"><span>Username:</span><input type="text" id="form_register_username"/></label>
-					<label for="form_register_email"><span>Email address:</span><input type="email" id="form_register_email"/></label>
-					<label for="form_register_password"><span>Password:</span><input type="password" id="form_register_password"/></label>
-					<label for="form_register_passwordrepeat"><span>Repeat password:</span><input type="password" id="form_register_passwordrepeat"/></label>
-					<label for="form_register_firstname"><span>First name:</span><input type="text" id="form_register_firstname"/></label>
-					<label for="form_register_lastname"><span>Last name:</span><input type="text" id="form_register_lastname"/></label>
-					<div class="clear"></div>
-				</div>
-				<div class="form_register_optional">
-					<label for="form_register_birthday"><span>Birthday:</span><input type="date" value="1980-01-01" id="form_register_birthday"/></label>
-					<label for="form_register_country"><span>Country:</span><input type="country" id="form_register_country"/></label>
-					<label for="form_register_bio"><span>Biography:</span><input type="text" id="form_register_bio"/></label>
-					<div class="clear"></div>
-				</div>
-				<div class="form_register_messages">
-					<span id="form_register_error"></span>
-					<div class="clear"></div>
-				</div>
-				<div class="whales_btn_set">
-					<div class="whales_btn" id="form_register_back">Back</div>
-					<div class="whales_btn_sep">|</div>
-					<div class="whales_btn" id="form_register_submit">Register</div>
-				</div>
-			</div>
-		</script>
-		
-		<script type="text/html" id="template_form_edit">
-			<div class="form_edit">
-				<div class="form_edit_fields">
-					<label for="form_edit_firstname"><span>First name:</span><input type="text" value="%firstname%" id="form_edit_firstname"/></label>
-					<label for="form_edit_lastname"><span>Last name:</span><input type="text" value="%lastname%" id="form_edit_lastname"/></label>
-					<label for="form_edit_email"><span>Email address:</span><input type="text" value="%emailaddress%" id="form_edit_email"/></label>
-					<label for="form_edit_birthday"><span>Birthday:</span><input type="date" value="%birthday%" id="form_edit_birthday"/></label>
-					<label for="form_edit_country"><span>Country:</span><input type="text" value="%country%" id="form_edit_country"/></label>
-					<label for="form_edit_bio"><span>Biography:</span><input type="text" value="%bio%" id="form_edit_bio"/></label>
-					<div class="clear"></div>
-				</div>
-				<div class="form_edit_messages">
-					<span id="form_edit_error"></span>
-					<div class="clear"></div>
-				</div>
-				<div class="whales_btn_set">
-					<div class="whales_btn" id="form_edit_save">Save</div>
-					<div class="whales_btn_sep">|</div>
-					<div class="whales_btn" id="form_edit_cancel">Cancel</div>
-				</div>
-			</div>
-		</script>
-		
-		<script type="text/html" id="template_form_friendrequests">
-			<div class="form_friendrequests">
-				<div id="form_friendrequests_list_wrapper">
-					<div id="form_friendrequests_list">
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="form_friendrequests_buttons">
-					<div class="whales_btn" id="form_friendrequests_close">Close</div>
-				</div>
-			</div>
-		</script>
-		
-		<script type="text/html" id="template_request">
-			<div class="request request%id%">
-				<div class="request_user">
-				</div>
-				<div class="request_buttons">
-					<div class="whales_btn_set">
-						<div class="whales_btn btn_request_accept" data-user_id="%id%">Accept!</div>
-						<div class="whales_btn_sep">|</div>
-						<div class="whales_btn btn_request_deny" data-user_id="%id%">Deny</div>
-					</div>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</script>
+
+        <script type="text/html" id="template_form_register">
+            <div class="form_register">
+                <div class="form_register_required">
+                    <label for="form_register_username"><span>Username:</span><input type="text" id="form_register_username"/></label>
+                    <label for="form_register_email"><span>Email address:</span><input type="email" id="form_register_email"/></label>
+                    <label for="form_register_password"><span>Password:</span><input type="password" id="form_register_password"/></label>
+                    <label for="form_register_passwordrepeat"><span>Repeat password:</span><input type="password" id="form_register_passwordrepeat"/></label>
+                    <label for="form_register_firstname"><span>First name:</span><input type="text" id="form_register_firstname"/></label>
+                    <label for="form_register_lastname"><span>Last name:</span><input type="text" id="form_register_lastname"/></label>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_register_optional">
+                    <label for="form_register_birthday"><span>Birthday:</span><input type="date" value="1980-01-01" id="form_register_birthday"/></label>
+                    <label for="form_register_country"><span>Country:</span><input type="country" id="form_register_country"/></label>
+                    <label for="form_register_bio"><span>Biography:</span><input type="text" id="form_register_bio"/></label>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_register_messages">
+                    <span id="form_register_error"></span>
+                    <div class="clear"></div>
+                </div>
+                <div class="whales_btn_set">
+                    <div class="whales_btn" id="form_register_back">Back</div>
+                    <div class="whales_btn_sep">|</div>
+                    <div class="whales_btn" id="form_register_submit">Register</div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_form_edit">
+            <div class="form_edit">
+                <div class="form_edit_fields">
+                    <label for="form_edit_firstname"><span>First name:</span><input type="text" value="%firstname%" id="form_edit_firstname"/></label>
+                    <label for="form_edit_lastname"><span>Last name:</span><input type="text" value="%lastname%" id="form_edit_lastname"/></label>
+                    <label for="form_edit_email"><span>Email address:</span><input type="text" value="%emailaddress%" id="form_edit_email"/></label>
+                    <label for="form_edit_birthday"><span>Birthday:</span><input type="date" value="%birthday%" id="form_edit_birthday"/></label>
+                    <label for="form_edit_country"><span>Country:</span><input type="text" value="%country%" id="form_edit_country"/></label>
+                    <label for="form_edit_bio"><span>Biography:</span><input type="text" value="%bio%" id="form_edit_bio"/></label>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_edit_messages">
+                    <span id="form_edit_error"></span>
+                    <div class="clear"></div>
+                </div>
+                <div class="whales_btn_set">
+                    <div class="whales_btn" id="form_edit_save">Save</div>
+                    <div class="whales_btn_sep">|</div>
+                    <div class="whales_btn" id="form_edit_cancel">Cancel</div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_form_friendrequests">
+            <div class="form_friendrequests">
+                <div id="form_friendrequests_list_wrapper">
+                    <div id="form_friendrequests_list">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_friendrequests_buttons">
+                    <div class="whales_btn" id="form_friendrequests_close">Close</div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_request">
+            <div class="request request%id%">
+                <div class="request_user">
+                </div>
+                <div class="request_buttons">
+                    <div class="whales_btn_set">
+                        <div class="whales_btn btn_request_accept" data-user_id="%id%">Accept!</div>
+                        <div class="whales_btn_sep">|</div>
+                        <div class="whales_btn btn_request_deny" data-user_id="%id%">Deny</div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </script>
 
         <script type="text/html" id="template_track">
-			<div class="track" data-link_id="%pk%" data-playlist_id="%playlist_id%">
+            <div class="track" data-link_id="%pk%" data-playlist_id="%playlist_id%">
                 <div class="track_info">
                     <span class="duration">%duration%</span>
                     <span class="title">%title%</span>
@@ -124,15 +124,15 @@
                 <div class="clear"></div>
             </div>
         </script>
-		
+
         <script type="text/html" id="template_notloggedin">
-		
-			<div>
-				<p>Not logged in :(</p>
-			</div>
-		
-		</script>
-		
+
+            <div>
+                <p>Not logged in :(</p>
+            </div>
+
+        </script>
+
         <script type="text/html" id="template_library">
             <div id="library_wrapper">
                 <div id="library_select">
@@ -141,9 +141,9 @@
                         <div class="whales_btn">Playlists</div>
                         <div class="whales_btn">Favorites</div>
                         <div class="whales_btn whales_btn_no_hover floatright">
-							<span class="whales_btn" id="btn_library_search">Search</span>
-							<input type="text" style="width:300px;margin-left:10px;"/>
-						</div>
+                            <span class="whales_btn" id="btn_library_search">Search</span>
+                            <input type="text" style="width:300px;margin-left:10px;"/>
+                        </div>
                     </div>
                 </div>
                 <div id="library">
@@ -171,71 +171,83 @@
                 <div id="community">
                     <div id="community_header_wrapper">
                         <div id="community_header">
-							<div id="community_search_form">
-								<label for="community_profile_search">Find people:</label>
-								<div class="whales_btn_set">
-									<input type="text" id="community_profile_search"/>
-									<div class="whales_btn" id="community_search_button">Search!</div>
-								</div>
-							</div>
-							<h1>Community</h1>
+                            <div id="community_search_form">
+                                <label for="community_profile_search">Find people:</label>
+                                <div class="whales_btn_set">
+                                    <input type="text" id="community_profile_search"/>
+                                    <div class="whales_btn" id="community_search_button">Search!</div>
+                                </div>
+                            </div>
+                            <h1>Community</h1>
                         </div>
                     </div>
-					<div class="clear"></div>
-					<div id="community_content_wrapper">
-						<div id="community_content">
-						</div>
-					</div>		
+                    <div class="clear"></div>
+                    <div id="community_content_wrapper">
+                        <div id="community_content">
+                        </div>
+                    </div>
                 </div>
             </div>
         </script>
-		
-		<script type="text/html" id="template_community_searchresults">
-			<div id="community_searchresults_wrapper">
-				<div id="community_searchresults">
-					<div id="community_searchresults_header">
-						<h4>Search results:</h4>
-					</div>
-					<div class="clear"></div>
-					<div id="community_searchresults_list_wrapper">
-						<div id="community_searchresults_list">
-						</div>
-					</div>
-				</div>
-			</div>
-		</script>
+
+        <script type="text/html" id="template_community_searchresults">
+            <div id="community_searchresults_wrapper">
+                <div id="community_searchresults">
+                    <div id="community_searchresults_header">
+                        <h4>Search results:</h4>
+                    </div>
+                    <div class="clear"></div>
+                    <div id="community_searchresults_list_wrapper">
+                        <div id="community_searchresults_list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
 
         <script type="text/html" id="template_profilepage">
             <div id="profilepage_wrapper">
                 <div id="profilepage">
                     <div id="profilepage_header_wrapper">
                         <div id="profilepage_header">
-							<div id="profilepage_addfriend">
-								<div class="whales_btn" id="button_add_friend" data-user_id="%id%">Add friend!</div>
-								<div class="whales_btn" id="button_accept_requests"></div>
-							</div>
+                            <div id="profilepage_addfriend">
+                                <div class="whales_btn" id="button_add_friend" data-user_id="%id%">Add friend!</div>
+                                <div class="whales_btn" id="button_accept_requests"></div>
+                            </div>
                             <h1>%firstname% %lastname%</h1>
                         </div>
                     </div>
-					<div id="profilepage_info_wrapper">
-						<div class="clear"></div>
-						<div id="profilepage_info">
-							<div class="profilepage_picture"></div>
-							<div class="profile_info_field"><span>Email:</span><span>%emailaddress%</span></div>
-							<div class="profile_info_field"><span>Birthday:</span><span>%birthday%</span></div>
-							<div class="profile_info_field"><span>Country:</span><span>%country%</span></div>
-							<div class="profile_info_field"><span>Biography:</span><span>%biography%</span></div>
-						</div>
-						<div class="clear"></div>
-					</div>
-					<div id="profilepage_friends_header">
-						<h4>Friends:</h4>
-					</div>
-					<div id="profilepage_friends_wrapper">
-						<div id="profilepage_friends">
-						</div>
-					</div>
+                    <div id="profilepage_info_wrapper">
+                        <div class="clear"></div>
+                        <div id="profilepage_info">
+                            <div class="profilepage_picture"></div>
+                            <div class="profile_info_field"><span>Email:</span><span>%emailaddress%</span></div>
+                            <div class="profile_info_field"><span>Birthday:</span><span>%birthday%</span></div>
+                            <div class="profile_info_field"><span>Country:</span><span>%country%</span></div>
+                            <div class="profile_info_field"><span>Biography:</span><span>%biography%</span></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div id="profilepage_friends_header">
+                        <h4>Friends:</h4>
+                    </div>
+                    <div id="profilepage_friends_wrapper">
+                        <div id="profilepage_friends">
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="template_session_btn">
+            <div class="session_accept_btn_set whales_btn_set" data-username="%data%">
+                <div class="whales_btn">%data%</div>
+                <div class="whales_btn_sep"> &raquo; </div>
+                <div class="whales_btn_sep" style="color:#888;">%message%</div>
+                <div class="whales_btn_sep">&nbsp;</div>
+                <div class="whales_btn session_join">Join</div>
+                <div class="whales_btn_sep">|</div>
+                <div class="whales_btn session_reject">Reject</div>
             </div>
         </script>
 
@@ -244,7 +256,10 @@
                 <div id="session">
                     <div id="session_header_wrapper">
                         <div id="session_header">
-                            <h1>Session</h1>
+                            <h1>Session invites</h1>
+                            <div id="session_invites_list">
+                                %session_btns%
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -262,22 +277,22 @@
                 </div>
             </div>
         </script>
-		
-		<script type="text/html" id="template_user">
-			<div class="user_wrapper">
-				<div class="user" data-user_id="%id%">
-					<div class="whales_thumbnail_small"></div>
-					<div class="profile_info">
-						<div class="profile_name">
-							<span>%firstname%</span>
-							<span>%lastname%</span>
-						</div>
-					</div>
-					<div class="clear"></div><!--clear ! -->
-				</div>
-				<div class="clear"></div>
-			</div>
-		</script>
+
+        <script type="text/html" id="template_user">
+            <div class="user_wrapper">
+                <div class="user" data-user_id="%id%" data-username="%username%">
+                    <div class="whales_thumbnail_small"></div>
+                    <div class="profile_info">
+                        <div class="profile_name">
+                            <span>%firstname%</span>
+                            <span>%lastname%</span>
+                        </div>
+                    </div>
+                    <div class="clear"></div><!--clear ! -->
+                </div>
+                <div class="clear"></div>
+            </div>
+        </script>
 
         <!-- end of templates -->
 
@@ -288,14 +303,12 @@
         </div>
 
         <div id="modal_bg"></div>
-		<div id="modal_wrapper" style="display:none;">
+        <div id="modal_wrapper" style="display:none;">
             <div id="modal">
-                <div class="content">
-					This should never show....
-                </div>
+                <div class="content">This should never show....</div>
                 <div class="clear"></div>
             </div>
-		</div>
+        </div>
         <div id="main">
             <div id="top_wrapper">
                 <div id="top">
@@ -343,15 +356,30 @@
                     <div class="sidebar_pane_wrapper" id="sidebar_playlist">
                         <div class="sidebar_header">Playlist</div>
                         <div class="sidebar_pane">
-
-
-
                         </div>
                     </div>
 
                     <div class="sidebar_pane_wrapper" id="sidebar_session">
                         <div class="sidebar_header">Session</div>
                         <div class="sidebar_pane">
+                        </div>
+                        <div class="sidebar_flyout">
+                            <div id="session_settings" style="width:200px; height:auto;">
+                                <div id="invite_to_join_userlist_wrapper">
+                                    <span>Click to invite:</span>
+                                    <div id="invite_to_join_userlist">
+
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div id="leave_session_wrapper">
+                                    <div>
+                                        <div class="whales_btn session_leave">Leave session</div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -370,19 +398,19 @@
             </div>
         </div>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-		<!--
-        <script type="text/javascript" src="media/js/jquery.event.drag-2.0.min.js"></script>
-        <script type="text/javascript" src="media/js/jquery.event.drop-2.0.min.js"></script>
+        <!--
+<script type="text/javascript" src="media/js/jquery.event.drag-2.0.min.js"></script>
+<script type="text/javascript" src="media/js/jquery.event.drop-2.0.min.js"></script>
 		-->
         <script type="text/javascript" src="media/js/init.js"></script>
         <script type="text/javascript" src="media/js/template_engine.js"></script>
         <script type="text/javascript" src="media/js/whales.js"></script>
         <script type="text/javascript" src="media/js/whales.common.js"></script>
         <script type="text/javascript" src="media/js/whales.upload.js"></script>
-		<script type="text/javascript" src="media/js/whales.community.js"></script>
-		<script type="text/javascript" src="media/js/whales.sync.js"></script>
-		<script type="text/javascript" src="media/js/whales.chat.js"></script>
-		<script type="text/javascript" src="media/js/whales.session.js"></script>
+        <script type="text/javascript" src="media/js/whales.community.js"></script>
+        <script type="text/javascript" src="media/js/whales.sync.js"></script>
+        <script type="text/javascript" src="media/js/whales.chat.js"></script>
+        <script type="text/javascript" src="media/js/whales.session.js"></script>
         <script type="text/javascript" src="media/js/layout.js"></script>
     </body>
 </html>

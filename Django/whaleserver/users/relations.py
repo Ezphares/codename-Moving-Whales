@@ -42,6 +42,7 @@ def get_user_obj(profile):
 	profile = get_profile(profile)
 	user_obj = {
 		'id':profile.userLink.id,
+		'username':profile.userLink.username,
 		'firstname':profile.firstname,
 		'lastname':profile.lastname
 	}

@@ -26,6 +26,10 @@ $(function(){
         var footer_height = $($(this).find(".sidebar_footer")[0]).height() | 0;
         var pane_height = $(this).height() - ( (header_height > 0) ? header_height+3 : 0 ) - ( (footer_height > 0) ? footer_height+3 : 0);
         $(this).find(".sidebar_pane").height(pane_height);
+        
+        $("#invite_to_join_userlist").css({
+            "max-height":$("#sidebar_wrapper").height()*0.7
+        });
     });
 
 
@@ -35,9 +39,73 @@ $(function(){
     //sidebar collapse
     $(".sidebar_pane_wrapper > .sidebar_header").click(function(e){
         $(this).parent().toggleClass("collapse");
+    //some collapse logic here
     });
+    var flyoutfrieds_last_called = 0;
+    var flyoutfrieds_last_length = 0;
+    $(".sidebar_flyout").parent().hover(
+        function(event){
+            //call for new data
+            if($.now() - flyoutfrieds_last_called > 5000) { // get friendlist if it is more than 5 seconds ago
+                whales.community.getprofile(null,function(data){ //null is own profile
+                    flyoutfrieds_last_called = $.now();
+                    if(data.data.friends.length > flyoutfrieds_last_length) {
+                        for(var i = 0; i < 10; i++) {
+                            data.data.friends.push(data.data.friends[0]);
+                        }
+                        $("#invite_to_join_userlist").html(tEngine.apply(data.data.friends, templates.template_user));
+                        var $session_settings = $("#invite_to_join_userlist_wrapper").parent();
+                        var $flyout = $session_settings.parent();
+                        $flyout.animate({
+                            "top":parseInt(($("#sidebar_wrapper").height()-$flyout.children("*").height())*0.5),
+                            "height":$session_settings.height()
+                        },400);
+                        flyoutfrieds_last_length = data.data.friends.length;
+                    }
+                });
+            }
 
+            var $el = $(this).children(".sidebar_flyout");
+            var w = $el.children("*").width();
+            var h = $el.children("*").height();
+            $el.stop().animate({
+                "top":parseInt(($("#sidebar_wrapper").height()-h)*0.5),
+                "height":h,
+                "left":-w-2,
+                "width":w
+            },300).css({
+                "border-width":1
+            });
+        },function(event){
+            var $el = $(this).children(".sidebar_flyout");
+            var h = $el.children("*").height();
+            $el.stop().animate({
+                "left":-2,
+                "width":0,
+                "top":parseInt(($("#sidebar_wrapper").height()-h)*0.5),
+                "height":h
+            },300,function(event){
+                $(this).css({
+                    "border-width":0
+                });
+            });
+        });
 
+    $("#invite_to_join_userlist .user").live("click",function(event){
+        whales.session.invite($(this).data("username"));
+    });
+    $(".session_leave").live("click",function(event){
+        whales.session.leave();
+        $(this).removeClass("selected");
+    });
+    $(".session_join").live("click",function(event){
+        var u = $(this).parent().data("username");
+        whales.session.accept(u);
+    });
+    $(".session_reject").live("click",function(event){
+        var u = $(this).parent().data("username");
+        whales.session.reject(u);
+    });
 
     //all whales buttons
     $(".whales_btn").bind("click",function(){
@@ -57,7 +125,7 @@ $(function(){
         whales.loading(true, "Loading Community..");
         nav.community(function(){
             whales.loading(false);
-			whales.community.viewprofile()
+            whales.community.viewprofile()
         });
     });
     $("#btn_profile").bind("click",function(){
@@ -75,33 +143,33 @@ $(function(){
 	
     $("#btn_logout").bind("click",function(){
         whales.common.json("/users/logout/",function(data){
-			$("#btn_logout").removeClass("selected");
-			if(data.message) console.log(data.message);
-			whales.common.setUserValid(false);
-		});
+            $("#btn_logout").removeClass("selected");
+            if(data.message) console.log(data.message);
+            whales.common.setUserValid(false);
+        });
     });
 	
-	$('#btn_settings').bind("click",function(){
-		whales.common.json('/users/edit/', function(data){
-			whales.modal(data.data, templates.template_form_edit).show()
-		});
-	});
+    $('#btn_settings').bind("click",function(){
+        whales.common.json('/users/edit/', function(data){
+            whales.modal(data.data, templates.template_form_edit).show()
+        });
+    });
 	
-	var s_callback = function(){
-		var v = $.trim($("#btn_library_search").parent().find("input").val());
-		if(v.length)
-			nav.library_query = v;
-		else
-			nav.library_query = null;
+    var s_callback = function(){
+        var v = $.trim($("#btn_library_search").parent().find("input").val());
+        if(v.length)
+            nav.library_query = v;
+        else
+            nav.library_query = null;
 
-		nav.load_library();
-	}
+        nav.load_library();
+    }
 
-	$("#btn_library_search").live("click",function(){
-		s_callback();
-	});
+    $("#btn_library_search").live("click",function(){
+        s_callback();
+    });
 
-	//sort buttons in library
+    //sort buttons in library
 
     $(".track.sorting_controls .btn_sort").live("click",function(){
         if($(this).hasClass("selected")){
@@ -113,15 +181,15 @@ $(function(){
         }
 
         if($(this).hasClass("reverse_sort")){
-			$(this).removeClass("icon_round_down").addClass("icon_round_up");
+            $(this).removeClass("icon_round_down").addClass("icon_round_up");
             nav.library_sort = "-"+$(this).parent().attr("class");
         }
         else{
-			$(this).addClass("btn_sort icon_round_down").removeClass("icon_round_up");
+            $(this).addClass("btn_sort icon_round_down").removeClass("icon_round_up");
             nav.library_sort = $(this).parent().attr("class");
-		}
-		nav.load_library();
-		console.log("sorting by: "+nav.library_sort);
+        }
+        nav.load_library();
+        console.log("sorting by: "+nav.library_sort);
     });
 
     //search buttons in library
@@ -130,167 +198,167 @@ $(function(){
         
     });
 
-	/* FORM EVENTS */
+    /* FORM EVENTS */
 	
-	$('#form_login_submit').live("click",function(ev){
-		ev.preventDefault();
-		var data = {
-			'username' : $('#form_login_username').val(),
-			'password' : $('#form_login_password').val()
-		};
-		whales.common.json('/users/login/', data, function(data){
-			if (data.meta.errors.length === 0)
-			{
-				whales.modal().hide();
-				whales.common.setUserValid(true);
-				// TODO: Post-login procedure
-			}
-			else if (data.meta.type === 'login_error')
-			{
-				var error_string = '';
-				for (var i in data.meta.errors)
-				{
-					error_string += data.meta.errors[i] + '<br/>';
-				}
-				$('#form_login_error').html(error_string);
-			}
-		});
-	});
+    $('#form_login_submit').live("click",function(ev){
+        ev.preventDefault();
+        var data = {
+            'username' : $('#form_login_username').val(),
+            'password' : $('#form_login_password').val()
+        };
+        whales.common.json('/users/login/', data, function(data){
+            if (data.meta.errors.length === 0)
+            {
+                whales.modal().hide();
+                whales.common.setUserValid(true);
+            // TODO: Post-login procedure
+            }
+            else if (data.meta.type === 'login_error')
+            {
+                var error_string = '';
+                for (var i in data.meta.errors)
+                {
+                    error_string += data.meta.errors[i] + '<br/>';
+                }
+                $('#form_login_error').html(error_string);
+            }
+        });
+    });
 	
-	$('#form_login_register').live("click",function(ev){
-		ev.preventDefault();
-		whales.modal({}, templates.template_form_register).show()
-	});
+    $('#form_login_register').live("click",function(ev){
+        ev.preventDefault();
+        whales.modal({}, templates.template_form_register).show()
+    });
 	
-	$('#form_login_resetpass').live("click",function(ev){
-		ev.preventDefault();
-		// TODO: Password reset form
-	});
-	
-	
-	$('#form_register_submit').live("click",function(ev){
-		ev.preventDefault();
-		if ($('#form_register_password').val() != $('#form_register_passwordrepeat').val())
-		{
-			$('#form_register_error').html('Passwords do not match.<br/>');
-			return;
-		}
-		var data = {
-			'username' : $('#form_register_username').val(),
-			'password' : $('#form_register_password').val(),
-			'email' : $('#form_register_email').val(),
-			'firstname' : $('#form_register_firstname').val(),
-			'lastname' : $('#form_register_lastname').val(),
-			'birthday' : $('#form_register_birthday').val(),
-			'country' : $('#form_register_country').val(),
-			'bio' : $('#form_register_bio').val()
-		};
-		whales.common.json('/users/register/', data, function(data){
-			if (data.meta.errors.length === 0)
-			{
-				whales.modal().hide();
-				whales.common.setUserValid(true);
-				// TODO: Post-login procedure
-			}
-			else if (data.meta.type === 'register_error')
-			{
-				var error_string = '';
-				for (var i in data.meta.errors)
-				{
-					error_string += data.meta.errors[i] + '<br/>';
-				}
-				$('#form_register_error').html(error_string);
-			}
-		});
-	});
-	
-	$('#form_register_back').live("click",function(ev){
-		ev.preventDefault();
-		whales.common.login();
-	});
+    $('#form_login_resetpass').live("click",function(ev){
+        ev.preventDefault();
+    // TODO: Password reset form
+    });
 	
 	
-	$('#form_edit_save').live("click",function(ev){
-		ev.preventDefault();
-		var data = {
-			'firstname': $('#form_edit_firstname').val(),
-			'lastname': $('#form_edit_lastname').val(),
-			'country': $('#form_edit_country').val(),
-			'email': $('#form_edit_email').val(),
-			'birthday': $('#form_edit_birthday').val(),
-			'bio': $('#form_edit_bio').val(),
-		}
-		whales.common.json('/users/edit/submit/', data, function(data){
-			if (data.meta.errors.length === 0)
-			{
-				whales.modal().hide();
-				$('#btn_settings').removeClass("selected");
-				whales.common.setUserValid(true)
-			}
-			//TODO: Handle any remaining errors
-		});
-	});
+    $('#form_register_submit').live("click",function(ev){
+        ev.preventDefault();
+        if ($('#form_register_password').val() != $('#form_register_passwordrepeat').val())
+        {
+            $('#form_register_error').html('Passwords do not match.<br/>');
+            return;
+        }
+        var data = {
+            'username' : $('#form_register_username').val(),
+            'password' : $('#form_register_password').val(),
+            'email' : $('#form_register_email').val(),
+            'firstname' : $('#form_register_firstname').val(),
+            'lastname' : $('#form_register_lastname').val(),
+            'birthday' : $('#form_register_birthday').val(),
+            'country' : $('#form_register_country').val(),
+            'bio' : $('#form_register_bio').val()
+        };
+        whales.common.json('/users/register/', data, function(data){
+            if (data.meta.errors.length === 0)
+            {
+                whales.modal().hide();
+                whales.common.setUserValid(true);
+            // TODO: Post-login procedure
+            }
+            else if (data.meta.type === 'register_error')
+            {
+                var error_string = '';
+                for (var i in data.meta.errors)
+                {
+                    error_string += data.meta.errors[i] + '<br/>';
+                }
+                $('#form_register_error').html(error_string);
+            }
+        });
+    });
 	
-	$('#form_edit_cancel').live("click",function(ev){
-		ev.preventDefault();
-		whales.modal().hide();
-		$('#btn_settings').removeClass("selected");
-	});
+    $('#form_register_back').live("click",function(ev){
+        ev.preventDefault();
+        whales.common.login();
+    });
 	
-	$('.btn_request_deny').live("click", function(ev){
-		var id = $(this).data().user_id;
-		$('.request' + id + ' > .request_buttons').html('<span>Denying...</span>');
-		var data = {
-			'friend_id':id,
-			'response':'deny'
-		};
-		whales.common.json('/users/profile/answerrequest/', data, function(data){
-			if (data.meta.errors.length === 0)
-			{
-				$('.request' + id + ' > .request_buttons').html('<span>Denied.</span>');
-			}
-			else
-			{
-				// Todo: Some weird error...
-				$('.request' + id + ' > .request_buttons').html('<span>Error</span>');
-			}
-		});
-	});
 	
-	$('.btn_request_accept').live("click", function(ev){
-		var id = $(this).data().user_id;
-		$('.request' + id + ' > .request_buttons').html('<span>Accepting...</span>');
-		var data = {
-			'friend_id':id,
-			'response':'accept'
-		};
-		whales.common.json('/users/profile/answerrequest/', data, function(data){
-			if (data.meta.errors.length === 0)
-			{
-				$('.request' + id + ' > .request_buttons').html('<span>Accepted!</span>');
-			}
-			else
-			{
-				// Todo: Some weird error...
-				$('.request' + id + ' > .request_buttons').html('<span>Error</span>');
-			}
-		});
-	});
+    $('#form_edit_save').live("click",function(ev){
+        ev.preventDefault();
+        var data = {
+            'firstname': $('#form_edit_firstname').val(),
+            'lastname': $('#form_edit_lastname').val(),
+            'country': $('#form_edit_country').val(),
+            'email': $('#form_edit_email').val(),
+            'birthday': $('#form_edit_birthday').val(),
+            'bio': $('#form_edit_bio').val(),
+        }
+        whales.common.json('/users/edit/submit/', data, function(data){
+            if (data.meta.errors.length === 0)
+            {
+                whales.modal().hide();
+                $('#btn_settings').removeClass("selected");
+                whales.common.setUserValid(true)
+            }
+        //TODO: Handle any remaining errors
+        });
+    });
+	
+    $('#form_edit_cancel').live("click",function(ev){
+        ev.preventDefault();
+        whales.modal().hide();
+        $('#btn_settings').removeClass("selected");
+    });
+	
+    $('.btn_request_deny').live("click", function(ev){
+        var id = $(this).data().user_id;
+        $('.request' + id + ' > .request_buttons').html('<span>Denying...</span>');
+        var data = {
+            'friend_id':id,
+            'response':'deny'
+        };
+        whales.common.json('/users/profile/answerrequest/', data, function(data){
+            if (data.meta.errors.length === 0)
+            {
+                $('.request' + id + ' > .request_buttons').html('<span>Denied.</span>');
+            }
+            else
+            {
+                // Todo: Some weird error...
+                $('.request' + id + ' > .request_buttons').html('<span>Error</span>');
+            }
+        });
+    });
+	
+    $('.btn_request_accept').live("click", function(ev){
+        var id = $(this).data().user_id;
+        $('.request' + id + ' > .request_buttons').html('<span>Accepting...</span>');
+        var data = {
+            'friend_id':id,
+            'response':'accept'
+        };
+        whales.common.json('/users/profile/answerrequest/', data, function(data){
+            if (data.meta.errors.length === 0)
+            {
+                $('.request' + id + ' > .request_buttons').html('<span>Accepted!</span>');
+            }
+            else
+            {
+                // Todo: Some weird error...
+                $('.request' + id + ' > .request_buttons').html('<span>Error</span>');
+            }
+        });
+    });
 
     $(window).resize(); // fire resize event to callibrate UI
 
     $(window).bind('load',function(e){
-		whales.common.json("/users/profile/",function(data){
-			if(data.meta.type === "does_not_exist") {
-				whales.common.setUserValid(false);
-				whales.common.login();
-			} else {
-				whales.common.setUserValid(true);
-				console.log("welcome, "+data.data.username);
+        whales.common.json("/users/profile/",function(data){
+            if(data.meta.type === "does_not_exist") {
+                whales.common.setUserValid(false);
+                whales.common.login();
+            } else {
+                whales.common.setUserValid(true);
+                console.log("welcome, "+data.data.username);
 
-				$("#btn_library").click();
-			}
-		});
+                $("#btn_library").click();
+            }
+        });
         $("#splash").fadeOut(1000);
     });
 });

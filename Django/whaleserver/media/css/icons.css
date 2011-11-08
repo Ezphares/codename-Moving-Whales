@@ -50,6 +50,13 @@
     background-image:url("icons/wrench_plus_2_icon%2616.png");
 }
 
+.icon_round_minus {
+    display:inline-block;
+    height:14px;
+    width:14px;
+    background-image:url("icons/round_minus_icon%2624.png");
+}
+
 .icon_on_off {
     display:inline-block;
     height:16px;

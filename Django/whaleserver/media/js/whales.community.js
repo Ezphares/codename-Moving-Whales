@@ -4,6 +4,14 @@ if(typeof whales === "undefined"){
 
 whales.community = {};
 
+whales.community.getprofile = function(profileid,callback) {
+	var url = 'users/profile/';
+	if (typeof profileid === 'number') {
+		url += profileid + '/';
+	}
+	whales.common.json(url, {}, callback);
+};
+
 whales.community.viewprofile = function(id)
 {
 	console.log("Rendering profile");
@@ -49,8 +57,10 @@ whales.community.viewprofile = function(id)
 }
 
 whales.community.layout = function() {
-	var h = $("#community_wrapper").height()-$("#community_header_wrapper").height() - 1; // 1 is border
+	var chwh = $("#community_header_wrapper").height();
+	var h = $("#community_wrapper").height()- chwh - 1; // 1 is border
 	$("#community_content_wrapper").height(h);
+	$("#community_content_wrapper").css("top",chwh);
 };
 
 whales.community.init = function()
