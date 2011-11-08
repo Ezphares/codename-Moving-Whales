@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
 import logging
 import time
-from management.tracks import get_track_obj
+from management.tracks import get_track_obj,  find_other_owner
 from management.models import Track, Profile__Track
 from users.models import *
 from users.relations import get_user_obj
@@ -135,8 +135,15 @@ class WhalesSessionManager():
 			if length < 1: #no more connections for this usersession
 				self.sessions.remove(session) #remove it
 				for track in self.playlist:
-					if track.profile.userLink == session.user:
-						self.playlist.remove(track)
+					if track[1].profile.userLink == session.user:
+						replace = None #find_other_owner(track[1], [s.user for s in self.sessions])
+						if (replace == None):
+							self.playlist.remove(track)
+						""" TODO: Test
+						else:
+							loc = self.playlist.index(track)
+							self.playlist[loc] = replace
+						""" 
 				self.write_message(encode(self.get_userlist()))
 				self.write_message(encode(self.get_playlist()))
 		connection.sessionManager = None
