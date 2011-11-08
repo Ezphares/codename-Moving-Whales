@@ -4,7 +4,7 @@ html {
     font-size:100%;
     overflow-y:scroll;
     height:100%;
-	font-size:13px;
+    font-size:13px;
     font-family: sans-serif;
 }
 
@@ -22,8 +22,8 @@ html,body,div {
 }
 
 .verticalspace {
-	height:10px;
-	display:block;
+    height:10px;
+    display:block;
 }
 
 
@@ -43,7 +43,7 @@ html,body,div {
     border-radius:6px;
     color:#fff;
     background: #333;
-	font-size:15px;
+    font-size:15px;
     font-family: "Myriad Pro";
     height:100px;
     text-align: center;
@@ -281,19 +281,26 @@ html,body,div {
 }
 
 #library_select .whales_square_btn_set{
-	line-height:30px !important;
+    line-height:30px !important;
 
 }
 #library_select .whales_square_btn_set > .whales_btn{
-	padding: 2px 5px !important;
-	height:26px !important;
-	line-height:26px;
+    padding: 2px 5px !important;
+    height:26px !important;
+    line-height:26px;
 }
 #library_select .whales_square_btn_set > .whales_btn > .whales_btn {
-	margin: 2px inherit;
+    margin: 2px inherit;
 }
 
 
+/* Session page */
+
+#session_invites_list {
+    float:left;
+    clear:both;
+    margin:5px;
+}
 
 
 
@@ -305,11 +312,11 @@ html,body,div {
     position: absolute;
     top:0px;
     background: #fafafa;
-	overflow:auto;
+    overflow:auto;
 }
 #community {
-	width:100%;
-	position:relative;
+    width:100%;
+    position:relative;
 }
 
 #community_header_wrapper {
@@ -324,132 +331,132 @@ html,body,div {
     margin: 3px 10px;
 }
 #community_search_form{
-	float: right;
-	line-height:34px;
-	height:34px;
-	padding:0px;
-	margin:0px 10px;
+    float: right;
+    line-height:34px;
+    height:34px;
+    padding:0px;
+    margin:0px 10px;
 }
 #community_search_form  > label {
-	float:left;
-	margin-right:5px;
-	font-size:12px;
-	color:#f4f4f4;
-	font-weight:bold;
+    float:left;
+    margin-right:5px;
+    font-size:12px;
+    color:#f4f4f4;
+    font-weight:bold;
 }
 #community_search_form .whales_btn_set {
-	float:right;
-	height:30px;
-	line-height:30px;
-	margin:0px;
-	padding:0px;
+    float:right;
+    height:30px;
+    line-height:30px;
+    margin:0px;
+    padding:0px;
 }
 #community_search_form .whales_btn_set > * {
-	float:none;
-	display:inline-block;
-	vertical-align:bottom;
-	height:20px;
-	line-height:20px;
+    float:none;
+    display:inline-block;
+    vertical-align:bottom;
+    height:20px;
+    line-height:20px;
 }
 #community_search_form .whales_btn_set > input {
-	margin-right:0px;
-	border:1px solid #333;
-	border-style:solid none solid solid;
-	background:#f4f4f4;
-	height:22px;
-	border-radius: 3px 0px 0px 3px;
+    margin-right:0px;
+    border:1px solid #333;
+    border-style:solid none solid solid;
+    background:#f4f4f4;
+    height:22px;
+    border-radius: 3px 0px 0px 3px;
 }
 #community_search_form .whales_btn_set > .whales_btn {
-	margin-left:0px;
-	position:relative;
-	left:-5px;
+    margin-left:0px;
+    position:relative;
+    left:-5px;
 }
 
 #community_header > h1 {
     padding:0px;
     margin:0px 0px;
-	font-size:20px;
-	font-weight:auto;
+    font-size:20px;
+    font-weight:auto;
     font-family: "Myriad Pro", sans-serif;
-	float:left;
+    float:left;
 }
 
 
 #community_searchresults_wrapper{
-	padding: 5px;
+    padding: 5px;
 }
 #community_searchresults_list_wrapper{
-	border-style: solid;
+    border-style: solid;
 }
 #profilepage_info_wrapper {
-	background:#f4f4f4;
+    background:#f4f4f4;
 }
 #profilepage_info_wrapper > .clear:first-child {
-	height:20px;
-	background-image: -webkit-linear-gradient(top, #fafafa, #f3f3f3)
+    height:20px;
+    background-image: -webkit-linear-gradient(top, #fafafa, #f3f3f3)
 }
 #profilepage_info_wrapper > .clear:last-child {
-	height:20px;
-	background-image: -webkit-linear-gradient(top, #f3f3f3, #fafafa)
+    height:20px;
+    background-image: -webkit-linear-gradient(top, #f3f3f3, #fafafa)
 }
 #profilepage .profilepage_picture {
-	float:left;
-	display:block;
-	height:100px;
-	width:100px;
-	background:-webkit-linear-gradient(top, #2a9ecc 21%,#2b91d1 79%);
-	margin:5px 20px 5px 10px;
+    float:left;
+    display:block;
+    height:100px;
+    width:100px;
+    background:-webkit-linear-gradient(top, #2a9ecc 21%,#2b91d1 79%);
+    margin:5px 20px 5px 10px;
 }
 #profilepage .hidden_info{
-	color: #aaa;
+    color: #aaa;
 }
 #profilepage .profile_info_field{
-	display: block;
-	padding:4px 0px;
-	margin:4px 1px;
-	border-bottom:1px solid #e8e8e8;
-	background:#f3f3f3;
+    display: block;
+    padding:4px 0px;
+    margin:4px 1px;
+    border-bottom:1px solid #e8e8e8;
+    background:#f3f3f3;
 }
 #profilepage .profile_info_field:hover{
-	background:#eaeaea;
+    background:#eaeaea;
 }
 #profilepage .profile_info_field span:first-child{
-	text-transform:uppercase;
-	color:#aaa;
-	display:inline-block;
-	width:100px;
+    text-transform:uppercase;
+    color:#aaa;
+    display:inline-block;
+    width:100px;
 }
 #profilepage .profile_info_field span:last-child{
-	text-transform:capitalize;
-	color:#333;
-	font-weight:bold;
-	display:inline-block;
-	
+    text-transform:capitalize;
+    color:#333;
+    font-weight:bold;
+    display:inline-block;
+
 }
 #profilepage h1 {
-	font-family: "Myriad Pro",arial;
-	font-weight:normal;
-	font-size:22px;
-	text-shadow: 1px 3px 3px #ddd;
+    font-family: "Myriad Pro",arial;
+    font-weight:normal;
+    font-size:22px;
+    text-shadow: 1px 3px 3px #ddd;
 }
 #profilepage {
-	margin:4px;
+    margin:4px;
 }
 
 #community_content_wrapper {
 
     overflow-y:scroll;
-	position:absolute;
-	top:45px;
-	float:left;
-	width:100%;
-	height:100px;
+    position:absolute;
+    top:0px;
+    float:left;
+    width:100%;
+    height:100px;
 }
 
 /* Community user */
 
 #community_content .user_wrapper{
-	padding:10px;
+    padding:10px;
 }
 #community_content .user {
     background:#efefef;
@@ -487,8 +494,8 @@ html,body,div {
 }
 
 #profilepage_addfriend{
-	float: right;
-	margin: 10px;
+    float: right;
+    margin: 10px;
 }
 
 #profile {
@@ -554,6 +561,49 @@ html,body,div {
     color:#444;
 }
 
+.sidebar_pane_wrapper > .sidebar_flyout {
+    position:absolute;
+    width:0px;
+    height:0px;
+    top:0%;
+    overflow:hidden;
+    background: #f4f4f4;
+    left:-2px;
+    z-index: 10;
+    border:1px solid #CCC;
+    border-radius:10px 0px 0px 10px;
+    margin:0px;padding:0px;
+    float:left;
+}
+#invite_to_join_userlist_wrapper {
+    float:left;
+    width:100%;
+}
+#invite_to_join_userlist_wrapper > span:first-child {
+    margin:8px;
+    line-height:20px;
+    height:20px;
+    font-weight: bold;
+}
+#invite_to_join_userlist {
+    margin:8px;
+    max-height:200px;
+    border:1px solid #ccc;
+    border-style: solid none;
+    overflow-y:scroll;
+}
+#invite_to_join_userlist .user:last-child {
+    border-bottom-style:none;
+}
+
+#leave_session_wrapper {
+    float:left;
+    width:100%;
+}
+#leave_session_wrapper > div {
+    margin:8px;
+}
+
 #sidebar_wrapper .sidebar_pane{
     overflow-y:scroll;
     width:100%;
@@ -581,6 +631,9 @@ html,body,div {
 #sidebar_session .user:hover {
     background-color:#D4D4D4;
     background-image: -webkit-linear-gradient(bottom, #D6D6D6 25%, #DEDEDE 75%);
+}
+#sidebar_session .sidebar_footer > div {
+    border-top:1px solid #ccc;
 }
 
 /* sidebar playlist */

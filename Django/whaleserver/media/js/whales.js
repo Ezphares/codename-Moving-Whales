@@ -177,7 +177,10 @@ nav.profile = function(callback){
 };
 
 nav.session = function(callback){
-    $("#content_wrapper").html(templates.template_session.html); // load template into content
+
+    $("#content_wrapper").html(tEngine.apply({
+        "session_btns":tEngine.apply(whales.session.pending_accepts,templates.template_session_btn)
+    },templates.template_session)); // load template into content
     $(window).trigger("resize"); // call resize event. Allways a good idea when changing layouts
 
 
