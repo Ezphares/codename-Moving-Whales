@@ -17,3 +17,13 @@ def get_track_obj(tracklink):
 		"playlist_id":-1
 	}
 	return track_obj
+
+def find_other_owner(tracklink, userlist):
+	track = tracklink.track
+	links = Profile__Track.objects.filter(track = track)
+	profilelist = [user.profile for user in userlist]
+	for link in links:
+		if link.profile in profilelist:
+			return link
+	return None
+		
