@@ -1,62 +1,129 @@
-$(document).ready(function(){
-	//soundManager.debugFlash = true			
-	soundManager.url = '/media/swf/';
-	soundManager.flashVersion = 9; // optional: shiny features (default = 8)
-	soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+var audio;
+var canvas;
+$(function(){
+	audio = new buzz.sound("/media/a-quiet-party.ogg");
 	
-	soundManager.onready(function() {
-		playlist = new Array();
-					
-					function createTrack(cId,cUrl){
-						playlist.push(
-							soundManager.createSound({
-								id: cId,
-								url: cUrl,
-								autoLoad: true,
-								autoPlay: false,
-								stream: true,
-								onload: function(){
-										//alert('The sound '+this.sID+' loaded!');
-									},
-								whileloading: function (){
-											var nSec = Math.floor(this.duration/1000),
-			      								    min = Math.floor(nSec/60),
-			      								    sec = nSec-(min*60);
-										},
-								whileplaying: function (){
-											var nSec = Math.floor(this.position/1000),
-			      								    min = Math.floor(nSec/60),
-			      								    sec = nSec-(min*60),
-										 	    width = Math.floor((this.position/this.duration)*100);
-											//$("#filler").css("width",width);
-											$("#filler").attr("value",width);
-											//soundManager._writeDebug("TEEEST: "+$("#filler").attr("value"));
-										},
-								volume: 50
-							})
-						);
-					}
-					
-					function procentageToMilliSec(procentage,SMObject){
-						return (SMObject.duration/100)*procentage;
-					}
-					
-					createTrack('test','media/a-quiet-party.ogg');
-					
-					$("#btn_player_play").click(function (){
-						playlist[0].togglePause();
-						/*
-						if(!playlist[0].paused){
-							$(this).addClass("selected");
-						} else {	
-							$(this).removeClass("selected");
-						}*/
-					});
-					
-					$("#btn_player_stop").click(function (){
-						playlist[0].setPosition(1);
-						//playlist[0].stop();
-						console.log(playlist[0]);
-					});
+	console.log(audio);
+
+	$("#btn_player_play").click(function(e){
+		audio.play();
+		console.log("doing this!");
 	});
+	/*$("#btn_player_pause").click(function(e){
+		audio.pause();
+	});*/
+	$("#btn_player_stop").click(function(e){
+		audio.pause();
+		audio.setTime(0);
+		console.log(audio.getTime());
+	});
+	
+
+	canvas = $("#player_canvas");
+	var grad_left = canvas.gradient({
+		x1: 0, y1: 0,
+		x2: 0, y2: 100,
+		c1: "#555", s1: 0,
+		c2: "#444", s2: 1
+	});
+	var grad_right = canvas.gradient({
+		x1: 0, y1: 0,
+		x2: 0, y2: 100,
+		c1: "#eee", s1: 0,
+		c2: "#ddd", s2: 1
+	});
+	
+	canvas.drawRect({
+		strokeWidth: 0,
+		x:400, y:50,
+		height:100,
+		width:800,
+		fillStyle: grad_right
+	});
+	
+	canvas.bind("mousedown.canvas",function(event){
+		event.preventDefault();
+		event.stopPropagation();
+		var wasPaused = audio.isPaused();
+		var initialCoords = {x:event.clientX,y:event.clientY};
+		var initialOffset = {x:event.offsetX,y:event.offsetY};
+		if(!wasPaused) audio.pause();
+		audio.setTime(Math.max(0,Math.min(audio.getDuration()*( (initialOffset.x - (initialCoords.x - event.clientX)) / 800),800)));
+		$(window).bind("mousemove.canvas",function(event){
+			event.preventDefault();
+			event.stopPropagation();
+			audio.setTime(Math.max(0,Math.min(audio.getDuration()*( (initialOffset.x - (initialCoords.x - event.clientX)) / 800),800)));
+		});
+		$(window).bind("mouseup.canvas",function(event){
+			event.preventDefault();
+			event.stopPropagation();
+			if(!wasPaused) audio.play();
+			canvas.unbind("mouseup.canvas");
+			$(window).unbind("mouseup.canvas mousemove.canvas");
+		});
+	});
+	
+
+	
+	
+	
+	
+	audio.bind( "timeupdate", function(e) {
+		
+		var percent = this.getTime()/this.getDuration();
+		$("#debug_currentTime").html(this.getTime());
+		$("#debug_currentTimePercent").html(percent);
+       
+       
+		canvas.clearCanvas();
+       
+		canvas.drawRect({
+	   		strokeWidth: 0,
+			x:percent * 800 / 2, y:50,
+	   		height:100,
+	   		width:percent * 800,
+	   		fillStyle: grad_left
+	   	});
+       
+		canvas.drawRect({
+	   		strokeWidth: 0,
+			x:800 - ((1-percent) * 800) / 2, y:50,
+	   		height:100,
+	   		width:(1-percent) * 800,
+	   		fillStyle: grad_right
+	   	});
+		
+		$("canvas").drawText({
+			  fillStyle: "#9df",
+			  strokeStyle: "#111",
+			  strokeWidth: 2,
+			  text: "Playing some kind of song",
+			  align: "center",
+			  baseline: "middle",
+			  font: "normal 20pt Arial",
+			  x: 400,
+			  y: 50,
+		});
+       
+    });
+
+	audio.bind("durationchange",function(e){
+	       $("#debug_duration").html(this.getDuration());
+	       
+
+	   	var seekable = audio.getSeekable();
+		console.info("Seekable:");
+		for(var i in seekable) {
+		    console.log(seekable[i]);
+		}
+	});
+	
+	
+	
+	
+	
+
+	
+	
+	
 });
