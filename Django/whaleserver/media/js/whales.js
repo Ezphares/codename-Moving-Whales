@@ -66,6 +66,7 @@ nav.load_library = function(callback){
             }
 
             $("#library_list").html(tEngine.apply(data.data.library,templates.template_track));
+			$(window).trigger("library_loaded");
 
             if(typeof callback === "function") {
                 callback(true);
