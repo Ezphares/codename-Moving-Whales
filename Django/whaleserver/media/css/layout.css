@@ -232,8 +232,13 @@ html,body,div {
 }
 
 #playlists_wrapper {
-	float: right;
+	float: left;
 	margin: 5px;
+}
+
+#playlists {
+	overflow-y:scroll;
+	max-height: 300px;
 }
 
 #playlists_wrapper > span {
@@ -245,7 +250,7 @@ html,body,div {
 #library_flyout .playlist_wrapper {
 	margin-top: 5px;
 	float: right;
-	width: 190px;
+	width: 160px;
 	height: 24px;
     background:#efefef;
     border-bottom:1px solid #ccc;
