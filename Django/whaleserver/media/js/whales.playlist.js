@@ -9,9 +9,46 @@ whales.playlist.init = function() {
 		whales.playlist.get();
 	});
 	
+	$('.playlist_wrapper').live('click', function(event){
+		console.log("test");
+		var playlist_id = $(this).data('playlist_id');
+		if (playlist_id !== -1){
+			nav.library_playlist = playlist_id;
+			nav.load_library();
+			nav.librart_playlist = -1;
+		} else {
+			whales.modal({}, templates.template_newplaylist).show();
+			$('.btn_playlist_create').bind('click', function(event) {
+				whales.playlist.create($('#playlist_name').val());
+				whales.modal().hide();
+			});			
+		}
+	});
+	
 	$('#btn_playlist').live('click', function(event) {
 		whales.playlist.pinned = !whales.playlist.pinned;
 		whales.playlist.flyout(whales.playlist.pinned);
+	});
+	
+	$('.playlist_wrapper').live('drop', function(event) {
+		var playlist_id = $(this).data('playlist_id');
+		var dt = event.originalEvent.dataTransfer;
+		if (playlist_id != -1) {
+			whales.playlist.addsong(playlist_id, dt.getData('Text'));
+		} else {
+			whales.modal({}, templates.template_newplaylist).show();
+			$('.btn_playlist_create').bind('click', function(event) {
+				whales.playlist.addsong(playlist_id, dt.getData('Text'), $('#playlist_name').val());
+				whales.modal().hide();
+			});
+		}
+		return false;
+	}).live('dragenter dragover dragleave', function(event) {
+		return false;
+	});
+	
+	$('.btn_playlist_cancel').live('click', function(event) {
+		whales.modal().hide();
 	});
 };
 
@@ -37,7 +74,6 @@ whales.playlist.flyout = function(enable) {
 };
 
 whales.playlist.get = function() {
-	//var list = new Array({id: -1, name: '&lt CREATE NEW PLAYLIST &gt'});
 	whales.common.json('/management/getplaylists/', {}, function(data) {
 		if (data.meta.errors.length === 0) {
 			var list = data.data.playlists;
@@ -49,11 +85,11 @@ whales.playlist.get = function() {
 };
 
 /* ANDERS KODE */
-/*
+
 whales.playlist.create = function(title){
 
 	if(title != ""){
-		var args = { type:'POST', url: '/management/createplaylist', datatype: 'json', data = {title:title} };
+		var args = { type:'POST', url: '/management/createplaylist', datatype: 'json', data: {title:title} };
 		$.ajax(args);
 	}
 	
@@ -68,7 +104,7 @@ whales.playlist.remove = function(id){
 			type: 'POST', 
 			url: '/management/deleteplaylist', 
 			datatype: 'json', 
-			data = {id: id} 
+			data: {id: id} 
 		};
 		$.ajax(args);
 	}
@@ -76,15 +112,14 @@ whales.playlist.remove = function(id){
 	return false; // To ensure that the user does not try to delete the playlist twice with one click
 };
 
-		
-whales.playlist.addsong = function(playlist_id, track_id){
+whales.playlist.addsong = function(playlist_id, track_id){ //TODO: Take a playlist title as well, for adding to new playlists
 
-	if(track_id && playlist_id != ""){	
+	if(track_id && playlist_id != ""){	// TODO: track_id må gerne være 0, wtf?
 		var args = {
 			type: 'POST',
 			url: '/management/addsongtoplaylist',
 			datatype: 'json',
-			data = {playlist_id: playlist_id, track_id: track_id}
+			data: {playlist_id: playlist_id, track_id: track_id}
 			};
 		$.ajax(args);
 	}
@@ -96,7 +131,6 @@ whales.playlist.addsong = function(playlist_id, track_id){
 	return false;
 };
 
-
 whales.playlist.removesong = function(playlist_id, track_id){
 	
 	if(track_id && playlist_id != ""){		
@@ -104,14 +138,15 @@ whales.playlist.removesong = function(playlist_id, track_id){
 			type: 'POST', 
 			url: '/management/deletesongfromplaylist', 
 			datatype: 'json', 
-			data = {playlist_id: playlist_id, 
-			track_id: track_id} 
+			data: {
+				playlist_id: playlist_id, 
+				track_id: track_id
+			} 
 		};
 		$.ajax(args);
 	}
 
 return false;
 };
-*/
 
 whales.playlist.init();
