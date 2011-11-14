@@ -1,5 +1,3 @@
-
-
 whales.playlist = {}
 
 whales.playlist.init = function() {
@@ -39,20 +37,22 @@ whales.playlist.flyout = function(enable) {
 };
 
 whales.playlist.get = function() {
-	var list = [{id: -1, name: '&lt CREATE NEW PLAYLIST &gt'}];
+	//var list = new Array({id: -1, name: '&lt CREATE NEW PLAYLIST &gt'});
 	whales.common.json('/management/getplaylists/', {}, function(data) {
-		list.concat(data.data.playlists);
+		if (data.meta.errors.length === 0) {
+			var list = data.data.playlists;
+			console.log(list);
+			list.push({id: -1, name: '&lt CREATE NEW PLAYLIST &gt'});
+			$('#playlists').html(tEngine.apply(list, templates.template_playlist));
+		}
 	});
-	//TODO: The following should be in the callback:
-	$('#playlists').html(tEngine.apply(list, templates.template_playlist));
 };
 
 /* ANDERS KODE */
-
+/*
 whales.playlist.create = function(title){
 
 	if(title != ""){
-		
 		var args = { type:'POST', url: '/management/createplaylist', datatype: 'json', data = {title:title} };
 		$.ajax(args);
 	}
@@ -112,6 +112,6 @@ whales.playlist.removesong = function(playlist_id, track_id){
 
 return false;
 };
-
+*/
 
 whales.playlist.init();

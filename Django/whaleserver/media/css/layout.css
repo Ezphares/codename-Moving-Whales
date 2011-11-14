@@ -246,11 +246,8 @@ html,body,div {
 }
 
 #library .playlist{
+	margin-top: 4px;
 	text-align: center;
-}
-
-#library .playlist span{
-	margin-top: 2px;
 }
 
 #library .track {
