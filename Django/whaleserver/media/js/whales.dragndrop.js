@@ -10,8 +10,10 @@ whales.dragndrop.init = function(){
 		$('#library_list > .track').attr("draggable", "true").bind("dragstart", function(event){
 			var dt = event.originalEvent.dataTransfer;
 			dt.setData("Text", $(this).data('link_id').toString());
+			whales.playlist.flyout(true);
 			return true;
 		}).bind("dragend", function(event){
+			whales.playlist.flyout(false);
 			return false;
 		});
 	});

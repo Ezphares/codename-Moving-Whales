@@ -138,7 +138,7 @@
                 <div id="library_select">
                     <div class="whales_square_btn_set fullheight">
                         <div class="whales_btn">My Library</div>
-                        <div class="whales_btn">Playlists</div>
+                        <div id="btn_playlist" class="whales_btn">Playlists</div>
                         <div class="whales_btn">Favorites</div>
                         <div class="whales_btn whales_btn_no_hover floatright">
                             <span class="whales_btn" id="btn_library_search">Search</span>
@@ -160,11 +160,44 @@
                             <div class="clear"></div>
                         </div>
                     </div>
-                    <!-- This is the actual library list -->
-                    <div id="library_list"></div>
+					<div>
+						<div id="library_flyout">
+							<div id="playlists_wrapper">
+								<span>Playlists:</span>
+								<div class="clear"></div>
+								<div id="playlists"></div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<!-- This is the actual library list -->
+						<div id="library_list"></div>
+					</div>
                 </div>
             </div>
         </script>
+		
+		<script type="text/html" id="template_playlist">
+			<div class="playlist_wrapper" data-playlist_id="%id%">
+				<div class="playlist">
+					<span>%name%</span>
+				</div>				
+				<div class="clear"></div>
+			</div>
+		</script>
+		
+		<script type="text/html" id="template_newplaylist">
+			<div class="newplaylist_wrapper">
+				<div>
+					<label for="playlist_name">Name your playlist:<input type="Text" id="playlist_name" /></label>
+					<div class="clear">
+				</div>
+				<div class="whales_btn_set">
+					<div class="whales_btn btn_playlist_create">Create</div>
+					<div class="whales_btn_sep">|</div>
+					<div class="whales_btn btn_playlist_cancel">Cancel</div>
+				</div>
+			</div>
+		</script>
 
         <script type="text/html" id="template_community">
             <div id="community_wrapper">
@@ -407,6 +440,7 @@
         <script type="text/javascript" src="media/js/template_engine.js"></script>
         <script type="text/javascript" src="media/js/whales.js"></script>
         <script type="text/javascript" src="media/js/whales.common.js"></script>
+		<script type="text/javascript" src="media/js/whales.playlist.js"></script>
         <script type="text/javascript" src="media/js/whales.upload.js"></script>
         <script type="text/javascript" src="media/js/whales.community.js"></script>
         <script type="text/javascript" src="media/js/whales.sync.js"></script>
