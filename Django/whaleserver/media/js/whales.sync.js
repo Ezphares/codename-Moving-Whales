@@ -187,7 +187,7 @@ whales.sync = {
         },
         synctime: function(obj) {
             whales.sync.time._latencyoffset = (obj.payload.settime - $.now());
-            console.log("STOP, SYNCTIME - can't touch this! (new offset is "+whales.sync.time.latencyoffset()+" ms)");
+            //console.log("STOP, SYNCTIME - can't touch this! (new offset is "+whales.sync.time.latencyoffset()+" ms)");
         }
     },
 

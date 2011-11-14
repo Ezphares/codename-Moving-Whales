@@ -520,6 +520,9 @@ html,body,div {
 #community_content .user_wrapper{
     padding:10px;
 }
+.user_wrapper{
+    position: relative;
+}
 #community_content .user {
     background:#efefef;
     border-bottom:1px solid #ccc;

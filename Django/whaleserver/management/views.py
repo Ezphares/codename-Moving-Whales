@@ -161,35 +161,30 @@ def get_library(request):
 		#tracks = Track.objects.filter(id = [link.track_id for link in tracklinks])
 		tracks = Track.objects.filter(id__in = tracklinks)
 		
-		query = unicode(request.POST['query']) # Note: an error CAN occur if a user writes a weird symbol (unicode handles most of them though)
-		if (query != 'null'): #If there is a query, run the below.
-				
-			# Direct matches
-			directQuery = (Q(album=request.POST['query']) | Q(title=request.POST['query']))
-			
-			# Building a Q object to match the query
-			q = Q()
-			for part in request.POST['query'].strip().split():
-			# Initially, q will just be Q()
-			# 1st iteration here:	Q() | (Q(album__icontains = "foo") | Q(title__icontains = "foo"))
-			# 2nd iteration here:	Q() | (Q(album__icontains = "foo") | Q(title__icontains = "foo")) | (Q(album__icontains = "bar") | 
-			# Q(title__icontains = "bar"))
-				q = q |(Q(album__icontains = part) | Q(title__icontains = part))		
-				
-			q = q | directQuery
-			
-			tracks = Track.objects.filter(q)
-		
-		
 		if sort in ["title","artist","album","year","genre","duration", "-title","-artist","-album","-year","-genre","-duration"]:
 			tracks = tracks.order_by(sort)
 			print "sorted by "+sort
 		else:
-			print "did not sort track"
-		
+			if request.POST['query'] != 'null':
+				# Weighted search, mofos
+				query = unicode(request.POST['query']).strip().split()
+				weighted = []
+				for part in query:
+					for track in Track.objects.filter(Q(artist__icontains = part) | Q(album__icontains = part) | Q(title__icontains = part)):
+						added = False
+						for w in weighted:
+							if w['track'] == track:
+								w['weight'] = w['weight'] + 1
+								added = True
+						if added == False:
+							weighted.append({'track':track, 'weight':1})
+				weighted.sort(cmp=lambda x,y: cmp(y['weight'], x['weight']))
+				tracks = [t['track'] for t in weighted]
+				print "weighted sort"
+			
 		library = []
 		for track in tracks:
-			link = Profile__Track.objects.filter(track=track)[0]
+			link = Profile__Track.objects.get(track=track, profile=request.user.profile)
 			
 			trackObj = get_track_obj(link)
 			library.append(trackObj)
