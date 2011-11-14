@@ -5,7 +5,7 @@ from django.core.files import File
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-from management.models import Track, Profile__Track
+from management.models import Track, Profile__Track, Playlist, ProfileTrack__Playlist
 from management.tracks import get_track_obj
 from users.models import Profile
 from os import remove, rename
@@ -202,6 +202,20 @@ def get_library(request):
 		print ex.args
 		print ex
 
+		
+def getplaylists(request):
+	response = JSONResponse('playlists')
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	elif not request.user.is_authenticated():
+		response.add_error('Not logged in','access_denied')
+	else:
+		lists = Playlist.objects.filter(user = request.user.profile)
+		playlists = []
+		for list in lists:
+			playlists.append({'id': list.id, 'name': list.title})
+		response.add_data(playlists = playlists)
+	return response.respond()
 
 def createplaylist(request):
 	response = JSONResponse("Playlist created")

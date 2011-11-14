@@ -206,11 +206,48 @@ html,body,div {
     height:200px;
 }
 
-
 #library_list {
     height:100%;
     overflow-y:scroll;
     background:#F3F3F3;
+}
+
+#library_flyout {
+    font-family: "Myriad Pro", sans-serif;
+	font-size: 12;
+	font-weight: bold;
+	position:absolute;
+    width:2px;
+    height:auto;
+    top:24px;
+	width:0px;
+    overflow:hidden;
+    background: #f4f4f4;
+    left:-1px;
+    z-index: 10;
+    border:1px solid #CCC;
+    border-radius:0px 10px 10px 0px;
+    margin:0px;padding:0px;
+    float:right;
+}
+
+#library_flyout > #playlists_wrapper {
+	margin: 5px;
+	float:right;
+	width: 190px;
+}
+
+#library .playlist_wrapper{
+	height: 24;
+    background:#efefef;
+    border-bottom:1px solid #ccc;
+    background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
+	margin: 5px;
+}
+
+#library .playlist{
+	margin-top: 4px;
+	text-align: center;
 }
 
 #library .track {
