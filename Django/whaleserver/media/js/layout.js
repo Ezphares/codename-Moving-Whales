@@ -139,8 +139,10 @@ $(function(){
 	
     var s_callback = function(){
         var v = $.trim($("#btn_library_search").parent().find("input").val());
-        if(v.length)
+        if(v.length) {
             nav.library_query = v;
+			nav.library_sort = 'weight';
+		}
         else
             nav.library_query = null;
 
