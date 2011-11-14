@@ -15,7 +15,6 @@ whales.playlist.init = function() {
 		if (playlist_id !== -1){
 			nav.library_playlist = playlist_id;
 			nav.load_library();
-			nav.librart_playlist = -1;
 		} else {
 			whales.modal({}, templates.template_newplaylist).show();
 			$('.btn_playlist_create').bind('click', function(event) {
@@ -60,11 +59,11 @@ whales.playlist.flyout = function(enable) {
 	if (whales.playlist.pinned && !enable) {
 		enable = true;
 	}
-	
-	console.log(enable);
 	var width = 0;
 	if (enable === true) {
 		width = 200;
+	} else {
+		nav.library_playlist = -1;
 	}
 
 	whales.playlist.is_flyout = enable;
