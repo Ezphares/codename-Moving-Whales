@@ -29,6 +29,20 @@ whales.session = {
         request_pending: function(syncObject) {
             whales.session.pending_invites.push(syncObject.payload.data);
             whales.loading(true,"Invite sent to "+syncObject.payload.data,800);
+        },
+        friends_online: function(syncObject) {
+            console.log(syncObject);
+            if(syncObject.payload.data.length < 1) {
+                $("#invite_to_join_userlist").html("<div><div style='font-weight:bold;height:20px;line-height:20px;'>No friends online</div><img style='width:100px;' src='http://s3.amazonaws.com/kym-assets/entries/icons/original/000/003/619/Untitled-1.jpg?1288903617' /></div>");
+            } else {
+                $("#invite_to_join_userlist").html(tEngine.apply(syncObject.payload.data, templates.template_user));
+            }
+            var $session_settings = $("#invite_to_join_userlist_wrapper").parent();
+            var $flyout = $session_settings.parent();
+            $flyout.animate({
+                "top":parseInt(($("#sidebar_wrapper").height()-$flyout.children("*").height())*0.5),
+                "height":$session_settings.height()
+            },400);
         }
     },
 
@@ -95,6 +109,15 @@ whales.session = {
             type:"leave"
         };
         whales.sync.send(acceptPackage);
+    },
+
+    friendsOnline: function() {
+        var friendsOnline = SyncObjects.get("friends_online");
+        friendsOnline.payload = {
+            type:"friends_online"
+        };
+        //call for new data
+        whales.sync.send(friendsOnline);
     },
 
     remove_payload_by_username: function(username) {

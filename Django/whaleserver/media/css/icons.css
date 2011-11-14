@@ -122,3 +122,24 @@
     width:16px;
     background-image:url("ajax-loader.gif");
 }
+
+
+.dot_offline,.dot_online {
+    display:none;
+    position: absolute;
+    right:2px;
+    top:2px;
+    background:#a33;
+    width:6px;
+    height:6px;
+    overflow:hidden;
+    border-radius:6px;
+}
+#invite_to_join_userlist .dot_offline {
+    display:block;
+    background:#a33;
+}
+#invite_to_join_userlist .dot_online {
+    display:block;
+    background:#3a3;
+}

@@ -9,7 +9,7 @@ import time
 from management.tracks import get_track_obj,  find_other_owner
 from management.models import Track, Profile__Track
 from users.models import *
-from users.relations import get_user_obj
+from users.relations import get_user_obj, get_relations, get_other_user
 from collections import deque
 
 from helpers import *
@@ -289,6 +289,35 @@ class WhalesPackageHandler():
 			self.handle_session_accept(package, connection)
 		elif package["payload"]["type"] == "leave":
 			self.handle_session_leave(package, connection)
+
+	def handle_friends_online(self, package,connection):
+                #first lets find the current user
+                manager = WhalesSessionManager.find_manager_by_connection(connection)
+                if manager == None:
+                    raise Exception("User not in any manager. This should not happen!")
+                
+                user = manager.find_user_by_connection(connection)
+                
+                if user == None:
+                    raise Exception("User not found in manager belonging to users connections.\nThis would be impossible")
+                
+                #now lets get this users friends
+                friends = []
+                for friend_link in get_relations(user.profile, 1, 'both'):
+                        friend = get_other_user(friend_link, user.profile).userLink
+
+                        #if we find a manager for the friend, he is connected to the websocket (online)
+                        if(WhalesSessionManager.find_manager_by_user(friend) != None):
+                            friends.append(get_user_obj(friend.profile))
+
+		friendsOnline = SyncObject("session")
+		friendsOnline.package['payload'] = {
+			"type":"success",
+			"handler":"friends_online", #the client side success handler
+			"data":friends
+		}
+                #write message back to client
+                connection.write_message(encode(friendsOnline.package))
 
 
 	def handle_session_leave(self,package,connection):

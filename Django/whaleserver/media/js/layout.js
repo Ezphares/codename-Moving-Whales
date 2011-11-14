@@ -45,25 +45,7 @@ $(function(){
     var flyoutfrieds_last_length = 0;
     $(".sidebar_flyout").parent().hover(
         function(event){
-            //call for new data
-            if($.now() - flyoutfrieds_last_called > 5000) { // get friendlist if it is more than 5 seconds ago
-                whales.community.getprofile(null,function(data){ //null is own profile
-                    flyoutfrieds_last_called = $.now();
-                    if(data.data.friends.length > flyoutfrieds_last_length) {
-                        for(var i = 0; i < 10; i++) {
-                            data.data.friends.push(data.data.friends[0]);
-                        }
-                        $("#invite_to_join_userlist").html(tEngine.apply(data.data.friends, templates.template_user));
-                        var $session_settings = $("#invite_to_join_userlist_wrapper").parent();
-                        var $flyout = $session_settings.parent();
-                        $flyout.animate({
-                            "top":parseInt(($("#sidebar_wrapper").height()-$flyout.children("*").height())*0.5),
-                            "height":$session_settings.height()
-                        },400);
-                        flyoutfrieds_last_length = data.data.friends.length;
-                    }
-                });
-            }
+            whales.session.friendsOnline();
 
             var $el = $(this).children(".sidebar_flyout");
             var w = $el.children("*").width();
