@@ -3,8 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.core.files import File
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from management.models import Track, Profile__Track
+from management.tracks import get_track_obj
 from users.models import Profile
 from os import remove, rename
 from hashlib import md5
@@ -158,6 +160,27 @@ def get_library(request):
 		
 		#tracks = Track.objects.filter(id = [link.track_id for link in tracklinks])
 		tracks = Track.objects.filter(id__in = tracklinks)
+		
+		query = unicode(request.POST['query']) # Note: an error CAN occur if a user writes a weird symbol (unicode handles most of them though)
+		if (query != 'null'): #If there is a query, run the below.
+				
+			# Direct matches
+			directQuery = (Q(album=request.POST['query']) | Q(title=request.POST['query']))
+			
+			# Building a Q object to match the query
+			q = Q()
+			for part in request.POST['query'].strip().split():
+			# Initially, q will just be Q()
+			# 1st iteration here:	Q() | (Q(album__icontains = "foo") | Q(title__icontains = "foo"))
+			# 2nd iteration here:	Q() | (Q(album__icontains = "foo") | Q(title__icontains = "foo")) | (Q(album__icontains = "bar") | 
+			# Q(title__icontains = "bar"))
+				q = q |(Q(album__icontains = part) | Q(title__icontains = part))		
+				
+			q = q | directQuery
+			
+			tracks = Track.objects.filter(q)
+		
+		
 		if sort in ["title","artist","album","year","genre","duration", "-title","-artist","-album","-year","-genre","-duration"]:
 			tracks = tracks.order_by(sort)
 			print "sorted by "+sort
@@ -168,18 +191,7 @@ def get_library(request):
 		for track in tracks:
 			link = Profile__Track.objects.filter(track=track)[0]
 			
-			trackObj = {
-				"pk":link.id,
-				"title":track.title,
-				"artist":track.artist,
-				"album":track.album,
-				"year":track.year,
-				"comment":track.comment,
-				"genre":track.genre,
-				"rating":link.userRating,
-				"trackNumber":track.trackNo,
-				"duration":track.duration
-			}
+			trackObj = get_track_obj(link)
 			library.append(trackObj)
 			
 		response.add_data(library=library)
@@ -189,3 +201,93 @@ def get_library(request):
 		print type(ex)
 		print ex.args
 		print ex
+
+
+def createplaylist(request):
+	response = JSONResponse("Playlist created")
+	
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+
+	else:
+
+		if not request.user.is_authenticated():
+			response.add_error('You are not logged in', 'access_denied')
+			
+		elif len(Playlist.objects.filter(user = request.user, title = request.POST['title'])):
+			response.add_error('Playlist already created', 'playlist_error')
+			
+		else:
+			playlist = Playlist()
+			playlist.user = request.user
+			playlist.title = request.POST['title']
+			playlist.save()
+
+	return response.respond()
+	
+def deleteplaylist(request):
+	response = JSONResponse("Playlist deleted")
+	
+	if request.method != 'POST':
+		response.add_error('Bad request.')
+	
+	else:
+		
+		if not request.user.is_authenticated():
+			response.add_error('You are not logged in', 'access_denied')
+		else:
+			matches = Playlist.objects.filter(user = request.user, id = request.POST['id'])
+			if not len(matches):
+				response.add_error('Playlist does not exist', 'playlist_error')
+			else:
+				for m in matches:
+					m.delete()
+
+		return response.respond()
+					
+def addsongtoplaylist(request):
+	response = JSONResponse("Song added")
+	
+	if request.method != 'POST':
+		response.add_error('Bad request')
+	else:
+		
+		if not request.user.is_authenticated():
+			response.add_error('You are not logged in', 'access_denied')
+		
+		else:
+		
+			try:
+				pl = Playlist.objects.get(profile = request.user, id = request.POST['playlist_id'])
+				track = Profile__Track.objects.filter(profile = request.user, id = request.POST['track_id'])
+				
+			except (Playlist.DoesNotExist, Profile__Track.DoesNotExist):
+				response.add_error('Song or playlist does not exist', 'playlist_error')
+			
+			else:
+				ptrack = Playlist__Track(playlist_id = request.POST['playlist_id'], track_id = matches[0].id)
+				ptrack.save()
+
+	return response.respond()
+
+
+def deletesongfromplaylist(request):
+	response = JSONResponse("Song deleted")
+	
+	if request.method != 'POST':
+		response.add_error('Bad request')
+		
+	elif not request.user.is_authenticated():
+			response.add_error('You are not logged in', 'access_denied')
+		
+	else:
+		try:
+			pt = Playlist__Track.objects.get(playlist__profile = request.user, id = request.POST['playlist_track_id'])
+			
+		except Playlist__TrackDoesNotExist:
+			response.add_error('Song does not exist', 'playlist_error')
+			
+		else:
+			pt.delete()
+	
+	return response.respond()
