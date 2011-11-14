@@ -231,21 +231,41 @@ html,body,div {
     float:right;
 }
 
-#library_flyout > #playlists_wrapper {
+#playlists_wrapper {
+	float: right;
 	margin: 5px;
-	float:right;
-	width: 190px;
 }
 
-#library .playlist_wrapper{
-	height: 24;
+#playlists_wrapper > span {
+	display: block;
+	width: 100%;
+	float: right;
+}
+
+#library_flyout .playlist_wrapper {
+	margin-top: 5px;
+	float: right;
+	width: 190px;
+	height: 24px;
     background:#efefef;
     border-bottom:1px solid #ccc;
     background-image: -webkit-linear-gradient(bottom, rgb(227,227,227) 25%, rgb(232,232,232) 75%);
-	margin: 5px;
+}
+
+#library_flyout .playlist_wrapper:hover {
+    background-color:#29B2D8;
+    background: -webkit-linear-gradient(top, #29b2d8 0%,#2b91d1 100%);
+    color:#fff;
+}
+#library_flyout .playlist_wrapper:active {
+    background-color:#888;
+    background-image: -webkit-linear-gradient(bottom, rgb(102,102,102) 23%, rgb(140,140,140) 72%);
+    color:#fff;
 }
 
 #library .playlist{
+	float: right;
+	width: 100%;
 	margin-top: 4px;
 	text-align: center;
 }
