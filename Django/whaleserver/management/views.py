@@ -160,10 +160,18 @@ def get_library(request):
 		
 		#tracks = Track.objects.filter(id = [link.track_id for link in tracklinks])
 		tracks = Track.objects.filter(id__in = tracklinks)
+		print request.POST['query']
 		
 		if sort in ["title","artist","album","year","genre","duration", "-title","-artist","-album","-year","-genre","-duration"]:
 			tracks = tracks.order_by(sort)
 			print "sorted by "+sort
+			if request.POST['query'] != 'null':
+				print "Non-weighted search"
+				q = Q()
+				query = unicode(request.POST['query']).strip().split()
+				for part in query:
+					q = q | Q(artist__icontains = part) | Q(album__icontains = part) | Q(title__icontains = part)
+				tracks = tracks.filter(q)
 		else:
 			if request.POST['query'] != 'null':
 				# Weighted search, mofos
@@ -184,7 +192,7 @@ def get_library(request):
 			
 		library = []
 		for track in tracks:
-			link = Profile__Track.objects.get(track=track, profile=request.user.profile)
+			link = Profile__Track.objects.get(track=track, profile=request.user)
 			
 			trackObj = get_track_obj(link)
 			library.append(trackObj)
@@ -223,12 +231,12 @@ def createplaylist(request):
 		if not request.user.is_authenticated():
 			response.add_error('You are not logged in', 'access_denied')
 			
-		elif len(Playlist.objects.filter(user = request.user, title = request.POST['title'])):
+		elif len(Playlist.objects.filter(user = request.user.profile, title = request.POST['title'])):
 			response.add_error('Playlist already created', 'playlist_error')
 			
 		else:
 			playlist = Playlist()
-			playlist.user = request.user
+			playlist.user = request.user.profile
 			playlist.title = request.POST['title']
 			playlist.save()
 
@@ -245,7 +253,7 @@ def deleteplaylist(request):
 		if not request.user.is_authenticated():
 			response.add_error('You are not logged in', 'access_denied')
 		else:
-			matches = Playlist.objects.filter(user = request.user, id = request.POST['id'])
+			matches = Playlist.objects.filter(user = request.user.profile, id = request.POST['id'])
 			if not len(matches):
 				response.add_error('Playlist does not exist', 'playlist_error')
 			else:
@@ -267,8 +275,8 @@ def addsongtoplaylist(request):
 		else:
 		
 			try:
-				pl = Playlist.objects.get(profile = request.user, id = request.POST['playlist_id'])
-				track = Profile__Track.objects.filter(profile = request.user, id = request.POST['track_id'])
+				pl = Playlist.objects.get(profile = request.user.profile, id = request.POST['playlist_id'])
+				track = Profile__Track.objects.filter(profile = request.user.profile, id = request.POST['track_id'])
 				
 			except (Playlist.DoesNotExist, Profile__Track.DoesNotExist):
 				response.add_error('Song or playlist does not exist', 'playlist_error')
@@ -291,7 +299,7 @@ def deletesongfromplaylist(request):
 		
 	else:
 		try:
-			pt = Playlist__Track.objects.get(playlist__profile = request.user, id = request.POST['playlist_track_id'])
+			pt = Playlist__Track.objects.get(playlist__profile = request.user.profile, id = request.POST['playlist_track_id'])
 			
 		except Playlist__TrackDoesNotExist:
 			response.add_error('Song does not exist', 'playlist_error')
