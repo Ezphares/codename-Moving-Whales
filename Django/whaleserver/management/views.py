@@ -150,7 +150,7 @@ def get_library(request):
 			response.add_error("Not logged in","access_denied")
 			return HttpResponse(response.generate(),mimetype='application/json') # error		
 			
-		profile = Profile.objects.filter(userLink = request.user)[0]
+		profile = request.user.profile
 		tracklinks = Profile__Track.objects.filter(profile = profile)
 		if sort in ["rating"]:
 			tracklinks = tracklinks.order_by(sort)
@@ -192,7 +192,7 @@ def get_library(request):
 			
 		library = []
 		for track in tracks:
-			link = Profile__Track.objects.get(track=track, profile=request.user)
+			link = Profile__Track.objects.get(track=track, profile=request.user.profile)
 			
 			trackObj = get_track_obj(link)
 			library.append(trackObj)
