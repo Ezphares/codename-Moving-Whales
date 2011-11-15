@@ -1,3 +1,11 @@
+(function( $ ){
+  $.fn.liveHover = function(mouseOverFunction,mouseLeaveFunction) {
+    $(this).live("mouseenter",mouseOverFunction);
+    $(this).live("mouseleave",mouseLeaveFunction);
+    return this;
+  };
+})( jQuery );
+
 var whales = {};
 whales.loadingTimeout = false;
 whales.loading = function(isLoading,message,keepAlive) {
@@ -147,3 +155,17 @@ nav.settings = function(callback){
     });
 
 };
+
+
+$(function(){
+    $("#library_list a").liveHover(function(){
+        $(this).toggleClass("hover_active");
+        console.log("Du kørte musen over");
+        $(this).live("click", function(){
+            $(this).addClass("your_rating").css("color","red");
+        });
+    },function(){
+        $(this).removeClass("hover_active");
+        console.log("Du kørte musen ud");
+    });        
+});
