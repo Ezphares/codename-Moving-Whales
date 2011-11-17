@@ -10,10 +10,21 @@ whales.common.noop = function(event) {
 	return event;
 };
 
+whales.upload.init = function(event){
+	$(window).bind("library_loaded", function(event) {
+		$('#library_list').bind("drop", function(event) {
+			whales.upload.drop(event);
+		}).bind("dragenter dragover dragleave", function(event) {
+			return false;
+		});
+	});
+}
+
 whales.upload.files = new Array();
 
 
 whales.upload.drop = function(event) {
+	console.log("meh.");
 	whales.common.noop(event);
 	try {
 		var files = event.originalEvent.dataTransfer.files;
@@ -97,13 +108,15 @@ whales.upload.progress = function (event) {
 	var percent = event.loaded / event.total * 100;
 	console.log("uploading... ("+percent.toFixed(2)+"%)");
 }
-
+/*
 $(function(){
-	$("#library_list").live("dragenter", whales.common.noop, false);
+//	$("#library_list").live("dragenter", whales.common.noop, false);
 	$("#library_list").live("dragexit", whales.common.noop, false);
 	$("#library_list").live("dragover", whales.common.noop, false);
 	$("#library_list").live("drop", whales.upload.drop, false);
 });
+*/
+whales.upload.init();
 
 
 
