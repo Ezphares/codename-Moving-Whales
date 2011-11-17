@@ -1,129 +1,229 @@
-var audio;
+whales.player = {};
 var canvas;
-$(function(){
-	audio = new buzz.sound("/media/a-quiet-party.ogg");
-	
-	console.log(audio);
+whales.player.sound;
 
-	$("#btn_player_play").click(function(e){
-		audio.play();
-		console.log("doing this!");
-	});
-	/*$("#btn_player_pause").click(function(e){
-		audio.pause();
-	});*/
-	$("#btn_player_stop").click(function(e){
-		audio.pause();
-		audio.setTime(0);
-		console.log(audio.getTime());
-	});
-	
+soundManager.url = '/media/swf/';
+soundManager.flashVersion = 9; // optional: shiny features (default = 8)
+soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+soundManager.waitForWindowLoad = true;
+soundManager.debugMode = false;
+soundManager.defaultOptions.multiShot= false;
+soundManager.onready(function() {
 
-	canvas = $("#player_canvas");
-	var grad_left = canvas.gradient({
-		x1: 0, y1: 0,
-		x2: 0, y2: 100,
-		c1: "#555", s1: 0,
-		c2: "#444", s2: 1
-	});
-	var grad_right = canvas.gradient({
-		x1: 0, y1: 0,
-		x2: 0, y2: 100,
-		c1: "#eee", s1: 0,
-		c2: "#ddd", s2: 1
-	});
-	
-	canvas.drawRect({
-		strokeWidth: 0,
-		x:400, y:50,
-		height:100,
-		width:800,
-		fillStyle: grad_right
-	});
-	
-	canvas.bind("mousedown.canvas",function(event){
-		event.preventDefault();
-		event.stopPropagation();
-		var wasPaused = audio.isPaused();
-		var initialCoords = {x:event.clientX,y:event.clientY};
-		var initialOffset = {x:event.offsetX,y:event.offsetY};
-		if(!wasPaused) audio.pause();
-		audio.setTime(Math.max(0,Math.min(audio.getDuration()*( (initialOffset.x - (initialCoords.x - event.clientX)) / 800),800)));
-		$(window).bind("mousemove.canvas",function(event){
-			event.preventDefault();
-			event.stopPropagation();
-			audio.setTime(Math.max(0,Math.min(audio.getDuration()*( (initialOffset.x - (initialCoords.x - event.clientX)) / 800),800)));
-		});
-		$(window).bind("mouseup.canvas",function(event){
-			event.preventDefault();
-			event.stopPropagation();
-			if(!wasPaused) audio.play();
-			canvas.unbind("mouseup.canvas");
-			$(window).unbind("mouseup.canvas mousemove.canvas");
-		});
-	});
-	
+    soundManager.createSound({
+        id: 'current',
+        url: 'http://dl.dropbox.com/u/1313566/sound/2.mp3',
+        autoLoad: true,
+        autoPlay: false,
+        onload: function() {
 
-	
-	
-	
-	
-	audio.bind( "timeupdate", function(e) {
-		
-		var percent = this.getTime()/this.getDuration();
-		$("#debug_currentTime").html(this.getTime());
-		$("#debug_currentTimePercent").html(percent);
-       
-       
-		canvas.clearCanvas();
-       
-		canvas.drawRect({
-	   		strokeWidth: 0,
-			x:percent * 800 / 2, y:50,
-	   		height:100,
-	   		width:percent * 800,
-	   		fillStyle: grad_left
-	   	});
-       
-		canvas.drawRect({
-	   		strokeWidth: 0,
-			x:800 - ((1-percent) * 800) / 2, y:50,
-	   		height:100,
-	   		width:(1-percent) * 800,
-	   		fillStyle: grad_right
-	   	});
-		
-		$("canvas").drawText({
-			  fillStyle: "#9df",
-			  strokeStyle: "#111",
-			  strokeWidth: 2,
-			  text: "Playing some kind of song",
-			  align: "center",
-			  baseline: "middle",
-			  font: "normal 20pt Arial",
-			  x: 400,
-			  y: 50,
-		});
-       
+        },
+        whileplaying: function() {
+            whales.player.tick(this);
+        },
+        onid3: function(){
+            console.log(this.id3);
+        },
+        volume: 100
     });
 
-	audio.bind("durationchange",function(e){
-	       $("#debug_duration").html(this.getDuration());
-	       
+    whales.player.sound = soundManager.getSoundById("current");
+});
 
-	   	var seekable = audio.getSeekable();
-		console.info("Seekable:");
-		for(var i in seekable) {
-		    console.log(seekable[i]);
-		}
-	});
-	
-	
-	
-	
-	
+soundManager.ontimeout(function() {
+    console.log("SM2 could not start. Flash blocked, missing or security error? Complain, etc.?");
+});
 
-	
-	
-	
+
+whales.player.play = function(event){
+    event.preventDefault();
+    if(whales.player.sound.paused) {
+        whales.player.sound.resume();
+        $("#btn_player_play > span").removeClass("icon_play").addClass("icon_pause");
+    } else if(whales.player.sound.playState === 1) {
+        whales.player.sound.pause();
+        $("#btn_player_play > span").removeClass("icon_pause").addClass("icon_play");
+    } else {
+        whales.player.sound.play();
+        $("#btn_player_play > span").removeClass("icon_play").addClass("icon_pause");
+    }
+    $("#btn_player_play").removeClass("selected");
+    return false;
+};
+
+whales.player.stop = function(event){
+    event.preventDefault();
+    whales.player.sound.stop();
+    whales.player.sound.setPosition(0);
+    whales.player.tick(whales.player.sound);
+    whales.player.sound.unload();
+    $("#btn_player_play > span").removeClass("icon_pause").addClass("icon_play");
+    $("#btn_player_stop").removeClass("selected");
+    return false;
+};
+whales.player.next = function(event){
+    console.log("Not yet implemented");
+};
+whales.player.prev = function(event){
+    console.log("Not yet implemented");
+};
+
+whales.player.tick = function(song){
+    //triggered on player tick (poition changed)
+    var percent = song.position/song.duration;
+
+
+    //canvas.clearCanvas();
+    canvas.drawRect({
+        strokeWidth: 0,
+        x:(percent * 700) / 2,
+        y:35,
+        height:70,
+        width:percent * 700,
+        fillStyle: whales.player.canvasStyles.gradientLeft
+    });
+
+    canvas.drawRect({
+        strokeWidth: 0,
+        x:700 - ((1-percent) * 700) / 2,
+        y:35,
+        height:70,
+        width:(1-percent) * 700,
+        fillStyle: whales.player.canvasStyles.gradientRight
+    });
+    function npad(number, length) {
+        var str = '' + number;
+        while (str.length < length) {
+            str = '0' + str;
+        }
+        return str;
+    }
+    var raw = song.position/1000;
+    var seconds = parseInt(raw % 60);
+    var minutes = parseInt(raw / 60) % 60;
+    var hours = parseInt(minutes / 60);
+
+    canvas.drawText({
+        fillStyle: "#222",
+        strokeStyle: "#fff",
+        strokeWidth: 3,
+        text: npad(hours,2)+":"+npad(minutes,2)+":"+npad(seconds,2) ,
+        align: "center",
+        baseline: "middle",
+        font: "normal 14pt Arial",
+        x: 350,
+        y: 35
+    });
+
+    canvas.drawArc({
+        fillStyle: "#a33",
+        x:(percent * 700) / 2,
+        y:35,
+        radius: 5,
+        start: 0,
+        end: 2*Math.PI,
+        ccw: true,
+        inDegrees: false
+    });
+    canvas.drawArc({
+        fillStyle: "#33a",
+        x:700 - ((1-percent) * 700) / 2,
+        y:35,
+        radius: 5,
+        start: 0,
+        end: 2*Math.PI,
+        ccw: true,
+        inDegrees: false
+    });
+};
+
+
+whales.player.mousedown = function(event){
+    //triggered on mousedown on canvas
+    event.preventDefault();
+    event.stopPropagation();
+    var wasPaused = whales.player.sound.paused;
+    var initialCoords = {
+        x:event.clientX,
+        y:event.clientY
+    };
+    var initialOffset = {
+        x:event.offsetX,
+        y:event.offsetY
+    };
+    if(!wasPaused) whales.player.sound.pause();
+    var percentageOnCanvas = Math.min(Math.max(((initialOffset.x - (initialCoords.x - event.clientX)) / 700),0),1);
+    whales.player.sound.setPosition(whales.player.sound.duration*percentageOnCanvas);
+    $(window).bind("mousemove.canvas",function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        var percentageOnCanvas = Math.min(Math.max(((initialOffset.x - (initialCoords.x - event.clientX)) / 700),0),1);
+        whales.player.sound.setPosition(whales.player.sound.duration*percentageOnCanvas);
+    });
+    $(window).bind("mouseup.canvas",function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if(!wasPaused) whales.player.sound.play();
+        canvas.unbind("mouseup.canvas");
+        $(window).unbind("mouseup.canvas mousemove.canvas");
+    });
+};
+
+whales.player.canvasStyles = {};
+whales.player.canvasStyles.gradientLeft;
+whales.player.canvasStyles.gradientRight;
+
+
+
+
+
+$(function(){
+    canvas = $("#player_canvas");
+
+    whales.player.canvasStyles.gradientLeft = canvas.gradient({
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 100,
+        c1: "#668",
+        s1: 0,
+        c2: "#556",
+        s2: 1
+    });
+    whales.player.canvasStyles.gradientRight = canvas.gradient({
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 100,
+        c1: "#eef",
+        s1: 0,
+        c2: "#dde",
+        s2: 1
+    });
+
+    canvas.drawRect({
+        strokeWidth: 0,
+        x:350,
+        y:35,
+        height:70,
+        width:700,
+        fillStyle: whales.player.canvasStyles.gradientRight
+    });
+
+    canvas.bind("mousedown.canvas",function(event){
+        return whales.player.mousedown(event);
+    });
+
+    $("#btn_player_play").bind("click",function(event){
+        return whales.player.play(event);
+    });
+    $("#btn_player_stop").bind("click",function(event){
+        return whales.player.stop(event);
+    });
+    $("#btn_player_next").bind("click",function(event){
+        return whales.player.next(event);
+    });
+    $("#btn_player_prev").bind("click",function(event){
+        return whales.player.prev(event);
+    });
 });
