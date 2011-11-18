@@ -6,3 +6,7 @@
 @import "layout.css";
 @import "icons.css";
 @import "modal.css";
+
+#soundmanager-debug {
+    display:none;
+}
