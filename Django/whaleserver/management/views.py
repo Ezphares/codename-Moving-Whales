@@ -86,8 +86,9 @@ def sendfile(request):
 		return HttpResponse(response.generate(),mimetype='application/json')
 		
 	if len(trackMatch) == 0:
-		fixedPath = './tracks/' + tempTrack.hashNo + '.mp3'
-		tempTrack.path = fixedPath
+                databasePathName = tempTrack.hashNo + '.mp3'
+		fixedPath = './tracks/' + databasePathName
+		tempTrack.path = databasePathName
 		tempTrack.save()
 		rename(tempPath, fixedPath)
 		print "before track assignment"

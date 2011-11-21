@@ -26,7 +26,6 @@ soundManager.onready(function() {
         },
         volume: 100
     });
-
     whales.player.sound = soundManager.getSoundById("current");
 });
 
@@ -34,29 +33,41 @@ soundManager.ontimeout(function() {
     console.log("SM2 could not start. Flash blocked, missing or security error? Complain, etc.?");
 });
 
+whales.player.load = function(file) {
+    var path = "http://"+location.hostname+":8888/file/";
+    whales.player.sound.unload()
+    whales.player.sound.load({
+        url:path+file
+    });
+};
 
 whales.player.play = function(event){
-    event.preventDefault();
-    if(whales.player.sound.paused) {
+    if(!!event) event.preventDefault();
+
+    if(!!whales.player.sound && whales.player.sound.paused) {
         whales.player.sound.resume();
         $("#btn_player_play > span").removeClass("icon_play").addClass("icon_pause");
-    } else if(whales.player.sound.playState === 1) {
+    } else if(!!whales.player.sound && whales.player.sound.playState === 1) {
         whales.player.sound.pause();
         $("#btn_player_play > span").removeClass("icon_pause").addClass("icon_play");
-    } else {
+    } else if(!!whales.player.sound){
         whales.player.sound.play();
         $("#btn_player_play > span").removeClass("icon_play").addClass("icon_pause");
+    } else {
+        console.log("whales.player.sound was not defined!");
     }
     $("#btn_player_play").removeClass("selected");
     return false;
 };
 
 whales.player.stop = function(event){
-    event.preventDefault();
-    whales.player.sound.stop();
-    whales.player.sound.setPosition(0);
-    whales.player.tick(whales.player.sound);
-    whales.player.sound.unload();
+    if(!!event) event.preventDefault();
+
+    if(!!whales.player.sound) {
+        whales.player.sound.stop();
+        whales.player.sound.setPosition(0);
+        whales.player.tick(whales.player.sound);
+    }
     $("#btn_player_play > span").removeClass("icon_pause").addClass("icon_play");
     $("#btn_player_stop").removeClass("selected");
     return false;
@@ -225,5 +236,13 @@ $(function(){
     });
     $("#btn_player_prev").bind("click",function(event){
         return whales.player.prev(event);
+    });
+
+
+    //debug
+    $(".track").bind("click", function(event){
+        var trackpath = $(this).data("path");
+        console.log("trackpath");
+        whales.player.sound.stop();
     });
 });
