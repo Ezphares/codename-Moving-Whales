@@ -14,6 +14,7 @@ def get_track_obj(tracklink):
 		"rating":tracklink.userRating,
 		"trackNumber":track.trackNo,
 		"duration":track.duration,
+		"path":track.path,
 		"playlist_id":-1
 	}
 	return track_obj

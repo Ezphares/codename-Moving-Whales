@@ -13,11 +13,13 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 import tornado.websocket
+import os
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/sync/", ChatSocketHandler),
+            (r"/file/([^/]+)", StreamHandler),
         ]
         settings = dict(
             cookie_secret="43oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
@@ -30,6 +32,26 @@ class Application(tornado.web.Application):
         self.lock = thread.allocate_lock()
         #thread.start_new_thread(ChatSocketHandler.syncronization, (self.lock, ))
         thread.start_new_thread(WhalesSessionManager.syncronize, (self.lock,))
+
+
+class StreamHandler(tornado.web.RequestHandler):
+    def get(self,path):
+        fullpath = os.getcwd()+"/tracks/"+path
+        try:
+            with open(fullpath,"rb") as f:
+                bytes = f.read(1024)
+                self.set_header("Content-Type",'audio/mpeg3');
+                while bytes != "":
+                    self.write(bytes)
+                    self.flush()
+                    bytes = f.read(1024)
+            self.finish()
+        except:
+            self.set_status(404)
+            self.set_header("Content-Type",'text/plain');
+            self.write("could not find track")
+            self.finish()
+
 
 class ChatSocketHandler(tornado.websocket.WebSocketHandler):
     _latency_size = 3 #set this to something like 3-5 when not testing
