@@ -276,14 +276,14 @@ def addsongtoplaylist(request):
 		else:
 		
 			try:
-				pl = Playlist.objects.get(profile = request.user.profile, id = request.POST['playlist_id'])
+				pl = Playlist.objects.get(user = request.user.profile, id = request.POST['playlist_id'])
 				track = Profile__Track.objects.filter(profile = request.user.profile, id = request.POST['track_id'])
 				
 			except (Playlist.DoesNotExist, Profile__Track.DoesNotExist):
 				response.add_error('Song or playlist does not exist', 'playlist_error')
 			
 			else:
-				ptrack = Playlist__Track(playlist_id = request.POST['playlist_id'], track_id = matches[0].id)
+				ptrack = ProfileTrack__Playlist(playlist_id = request.POST['playlist_id'], track_id = matches[0].id)
 				ptrack.save()
 
 	return response.respond()

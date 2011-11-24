@@ -2,16 +2,13 @@
 \input{options}
 
 \begin{document}
-\input{titlepage} %%You need a file 'titlepage.tex' for this.
+
+\input{titlepage}
 
 \tableofcontents
 \cleardoublepage
 
 \pagestyle{plain}
-
-%DEBUG: REMOVE WHEN FIRST CITATION IS ADDED
-a\cite{tag}
-%/DEBUG
 
 %CHAPTERS HERE:
 %\input{introduction/main}
@@ -21,7 +18,6 @@ a\cite{tag}
 %\input{conclusion/main}
 
 \addtocontents{toc}{\protect\vspace*{\baselineskip}}
-\bibliographystyle{plain}
 \bibliography{literature}
 \appendix
 \end{document}
