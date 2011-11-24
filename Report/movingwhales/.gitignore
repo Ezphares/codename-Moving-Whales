@@ -7,3 +7,5 @@
 *.lot
 *.tcp
 *.toc
+*.tps
+*.out
