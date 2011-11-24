@@ -12,7 +12,6 @@ $(function(){
     $(window).bind('resize',function(e){
         // make sure that the middle wrapper is sized correctly
         
-        // TODO HERE!!!!!!!!!!!!!
         $middle_wrapper.height($(window).height() - parseInt($middle_wrapper.css('top')) - 1 );
         $("#library").height($middle_wrapper.height() - parseInt($("#library").css('top')) - 1 );
         $("#library_list").height($("#library").height() - $("#library_controls").height());
@@ -24,7 +23,7 @@ $(function(){
     $(".sidebar_pane_wrapper").bind('layout',function(e){
         var header_height = $($(this).find(".sidebar_header")[0]).height() | 0;
         var footer_height = $($(this).find(".sidebar_footer")[0]).height() | 0;
-        var pane_height = $(this).height() - ( (header_height > 0) ? header_height+3 : 0 ) - ( (footer_height > 0) ? footer_height+3 : 0);
+        var pane_height = $(this).height() - ( (header_height > 0) ? header_height+2 : 0 ) - ( (footer_height > 0) ? footer_height+2 : 0);
         $(this).find(".sidebar_pane").height(pane_height);
         
         $("#invite_to_join_userlist").css({
@@ -98,6 +97,8 @@ $(function(){
     //navigation
     $("#btn_library").bind("click",function(){
         whales.loading(true, "Loading Library...");
+		nav.library_sort = "title";
+		nav.library_query = null;
         nav.library(function(){
             whales.loading(false);
         });

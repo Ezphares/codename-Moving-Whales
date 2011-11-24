@@ -313,11 +313,11 @@ html,body,div {
 }
 #library .track .track_info .title {
     color:#111;
-    width:170px;
+    width:220px;
 }
 #library .track .track_info .artist {
     color:#555;
-    width:100px;
+    width:170px;
 }
 #library .track .track_info .album {
     color:#999;
@@ -325,7 +325,7 @@ html,body,div {
 }
 #library .track .track_info .rating {
     color:#aaa;
-    width:100px;
+    width:140px;
 }
 #library .track:hover {
     background-color:#D0D0D0;
@@ -342,7 +342,7 @@ html,body,div {
     background-image: -webkit-linear-gradient(bottom, #666666 25%, #777777 75%);
 }
 
-#library_select .whales_square_btn_set{
+#library_select .whales_square_btn_sets{
     line-height:30px !important;
 
 }
@@ -600,7 +600,7 @@ html,body,div {
 
 #sidebar_wrapper .sidebar_pane_wrapper {
     width:100%;
-    height:33.33%;
+    height:50%;
     border-top:1px solid #bbb;
     font-size: 12px;
 }
@@ -676,7 +676,7 @@ html,body,div {
 
 /* sidebar session */
 #sidebar_session {
-
+	border-top:0px none !important;
 }
 #sidebar_session .user {
     background:#efefef;
@@ -702,7 +702,9 @@ html,body,div {
 }
 
 /* sidebar playlist */
-
+#sidebar_playlist {
+	display:none;
+}
 #sidebar_playlist .track {
     background:#efefef;
     border-bottom:1px solid #ccc;
