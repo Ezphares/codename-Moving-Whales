@@ -1,0 +1,2 @@
+\section{Tornado}
+Tornado\cite{tornadoweb11} is a python-based web server. The choice fell on tornado primarily because it supported websocket and was the same language as Django. The reason the language of the web server matter, is that this allows our websocket server to get data from our database (for example to authenticate clients) using Django's ORM, which in essence means we do not have to do double work on our database. It also has the advantage that any modules we write for Django is usable in Tornado and vice versa.
