@@ -62,6 +62,7 @@ nav.library = function(callback){
 	return true;
 };
 
+
 nav.load_library = function(callback){
     whales.common.json("management/library/",{"sort":nav.library_sort,"query":nav.library_query,"playlist":nav.library_playlist},function(data){
         if(data.meta.errors.length == 0) {
@@ -73,8 +74,11 @@ nav.load_library = function(callback){
                 ":"+String(timeObj.minutes).lpad("0",2)+
                 ":"+String(timeObj.seconds).lpad("0",2);
             }
-
-            $("#library_list").html(tEngine.apply(data.data.library,templates.template_track));
+			if(data.data.library.length > 0) {
+				$("#library_list").html(tEngine.apply(data.data.library,templates.template_track));
+			} else {
+				$("#library_list").html(tEngine.apply({},templates.template_emptyLibrary));
+			}
 			$(window).trigger("library_loaded");
 
             if(typeof callback === "function") {
@@ -160,12 +164,10 @@ nav.settings = function(callback){
 $(function(){
     $("#library_list a").liveHover(function(){
         $(this).toggleClass("hover_active");
-        console.log("Du kørte musen over");
         $(this).live("click", function(){
             $(this).addClass("your_rating").css("color","red");
         });
     },function(){
         $(this).removeClass("hover_active");
-        console.log("Du kørte musen ud");
     });        
 });
