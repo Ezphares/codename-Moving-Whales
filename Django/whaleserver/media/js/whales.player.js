@@ -9,10 +9,19 @@ soundManager.waitForWindowLoad = true;
 soundManager.debugMode = false;
 soundManager.defaultOptions.multiShot= false;
 soundManager.onready(function() {
+	console.log("SoundManager ready");
+});
 
+
+
+soundManager.ontimeout(function() {
+    console.log("SM2 could not start. Flash blocked, missing or security error? Complain, etc.?");
+});
+
+whales.player.createNewSoundManagerObject = function(track) {
     soundManager.createSound({
         id: 'current',
-        url: 'http://dl.dropbox.com/u/1313566/sound/2.mp3',
+        url: track,
         autoLoad: true,
         autoPlay: false,
         onload: function() {
@@ -27,18 +36,21 @@ soundManager.onready(function() {
         volume: 100
     });
     whales.player.sound = soundManager.getSoundById("current");
-});
+}
 
-soundManager.ontimeout(function() {
-    console.log("SM2 could not start. Flash blocked, missing or security error? Complain, etc.?");
-});
-
-whales.player.load = function(file) {
+whales.player.load = function(file,direct) {
+	if(direct !== true) direct = false;
     var path = "http://"+location.hostname+":8888/file/";
-    whales.player.sound.unload()
-    whales.player.sound.load({
-        url:path+file
-    });
+	var fullpath = (direct) ? file : path+file;
+
+	if(whales.player.sound !== undefined) {
+    	whales.player.sound.unload();
+		whales.player.sound.load({
+		    url:fullpath
+		});
+	} else {
+		whales.player.createNewSoundManagerObject(fullpath);
+	}
 };
 
 whales.player.play = function(event){
@@ -57,6 +69,7 @@ whales.player.play = function(event){
         console.log("whales.player.sound was not defined!");
     }
     $("#btn_player_play").removeClass("selected");
+	whales.player.send_sync();
     return false;
 };
 
@@ -70,6 +83,7 @@ whales.player.stop = function(event){
     }
     $("#btn_player_play > span").removeClass("icon_pause").addClass("icon_play");
     $("#btn_player_stop").removeClass("selected");
+	whales.player.send_sync();
     return false;
 };
 whales.player.next = function(event){
@@ -125,27 +139,6 @@ whales.player.tick = function(song){
         x: 350,
         y: 35
     });
-
-    canvas.drawArc({
-        fillStyle: "#a33",
-        x:(percent * 700) / 2,
-        y:35,
-        radius: 5,
-        start: 0,
-        end: 2*Math.PI,
-        ccw: true,
-        inDegrees: false
-    });
-    canvas.drawArc({
-        fillStyle: "#33a",
-        x:700 - ((1-percent) * 700) / 2,
-        y:35,
-        radius: 5,
-        start: 0,
-        end: 2*Math.PI,
-        ccw: true,
-        inDegrees: false
-    });
 };
 
 
@@ -177,6 +170,7 @@ whales.player.mousedown = function(event){
         if(!wasPaused) whales.player.sound.play();
         canvas.unbind("mouseup.canvas");
         $(window).unbind("mouseup.canvas mousemove.canvas");
+		whales.player.send_sync();
     });
 };
 
@@ -184,7 +178,17 @@ whales.player.canvasStyles = {};
 whales.player.canvasStyles.gradientLeft;
 whales.player.canvasStyles.gradientRight;
 
+whales.player.send_sync = function(){
+	if(whales.player.sound !== undefined) {
+        var syncPackage = SyncObjects.get("player");
+        syncPackage.payload.url = whales.player.sound.url;
+        syncPackage.payload.position = whales.player.sound.position;
+		syncPackage.payload.paused = whales.player.sound.paused;
+		syncPackage.payload.playState = whales.player.sound.playState;
 
+        whales.sync.send(syncPackage);
+	}
+};
 
 
 
@@ -221,6 +225,18 @@ $(function(){
         fillStyle: whales.player.canvasStyles.gradientRight
     });
 
+    canvas.drawText({
+        fillStyle: "#222",
+        strokeStyle: "#fff",
+        strokeWidth: 3,
+        text: "Drag tracks from your library here to play." ,
+        align: "center",
+        baseline: "middle",
+        font: "normal 12pt Arial",
+        x: 350,
+        y: 35
+    });
+
     canvas.bind("mousedown.canvas",function(event){
         return whales.player.mousedown(event);
     });
@@ -245,4 +261,30 @@ $(function(){
         console.log("trackpath");
         whales.player.sound.stop();
     });
+
+
+    $(window).bind("sync_player",function(event){
+		var p = event.syncObject.payload;
+		console.log(p);
+        if(event.syncObject.payload.url !== undefined) {
+			if(whales.player.sound === undefined || p.url != whales.player.sound.url) {
+				whales.player.load(p.url,true); // the true means that we want to set the url directly
+			}
+
+			if(p.playState === 1) {
+				whales.player.sound.play();
+			} else if (p.playState === 0) {
+				whales.player.sound.stop();
+			}
+			if(p.paused) {
+				whales.player.sound.pause();
+			}
+			whales.player.sound.setPosition(p.position);
+
+        } else {
+			console.log("No payload");
+        }
+    });
 });
+
+

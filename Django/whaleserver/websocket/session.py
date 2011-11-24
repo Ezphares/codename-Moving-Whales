@@ -248,11 +248,12 @@ class WhalesUserSession():
 		self.connections.remove(connection)
 		return len(self.connections)
 
-	def write_message(self, message):
+	def write_message(self, message, excludeCon = None):
 		logging.info("Logging message to %s" % self.user);
 		for con in self.connections:
 			try:
-				con.write_message(message)
+				if con != excludeCon:
+					con.write_message(message)
 			except IOError as ioe:
 				print "Yo, dawg, i saw an IO error"
 				print ioe
@@ -280,6 +281,11 @@ class WhalesPackageHandler():
 	def handle_chat(self,package,connection):
 		for session in self.manager.sessions:
 			session.write_message(encode(package))
+
+	#also pretty easy, but this is due to that fact that we dont really validate
+	def handle_player(self,package,connection):
+		for session in self.manager.sessions:
+			session.write_message( encode(package)) #the connection is to be excluded from the message
 
 	#harder
 	def handle_session(self, package,connection):
