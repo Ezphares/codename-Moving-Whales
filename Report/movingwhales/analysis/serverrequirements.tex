@@ -1,0 +1,4 @@
+\subsubsection{Server requirements}
+
+
+The server in the system should make sure that the data the client inputs is correct. It should also be the direct-communicator to the database, which is something the client should not do. The functionalities of the server should therefore be to handle whatever requests the client has, in a suitable manner and of course to serve the program to the client. If a client wishes to register a profile, the server should be responsible for checking whether the data is in the correct format, it should also be responsible for making sure that no misuse of the program can occur (SQL injection), before it contacts the database to get the information stored. The server should therefore add a security layer to the program and do the leg-work of the program's functionalities.
