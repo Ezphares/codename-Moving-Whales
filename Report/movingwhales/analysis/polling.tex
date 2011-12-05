@@ -1,0 +1,4 @@
+\subsection{Polling}
+
+
+When polling is being used, it 'bombards' the server in a sense with a lot of HTTP request packages each checking if the server has new data available, if the server has no new data ready for the browser, then the connection terminates - but restarts again after a set interval\cite{lubbersgreco}. Polling is good when you know when you know about the data that is typically being exchanged\cite{lubbersgreco} - basically, when you know at around which interval new data should be ready. If on the other hand you are not certain when new data is ready polling will inevitably make a lot of unnecessary requests to the server\cite{lubbersgreco}. Every time new data is available during a poll, the data is transferred from the server to the client after which the connection terminates and restarts\cite{lubbersgreco}.
