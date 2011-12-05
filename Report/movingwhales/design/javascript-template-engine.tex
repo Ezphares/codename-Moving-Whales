@@ -17,7 +17,8 @@ A simple template example is our audio track template:
 	</div>
 </script>
 \end{lstlisting}
-\\
+
+
 As you can see, this is HTML with sets of \verb$%$ characters defining variable names. When the template engine parses the above, regular expressions wich matches the variable names will be precompiled and saved in a Template object. Finally, when data gets applied to the Template object, all template variables (the \verb$%some-variable%$ names) will be exchanged with the data that matches the variable names (or discarded if nothing matched the name).
 The output of this would be string, parsed and ready to be presented to the user.
 \\
