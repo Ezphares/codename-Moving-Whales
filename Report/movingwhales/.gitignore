@@ -10,3 +10,5 @@
 *.tps
 *.out
 *.dvi
+*.project
+*.synctex.gz
