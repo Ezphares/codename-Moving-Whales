@@ -1,4 +1,101 @@
-\section{Whales sessions on client}
+\section{application sessions on client}
 
-%TODO: stuff
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor purus nec diam consectetur ac placerat metus rutrum. Quisque ullamcorper massa sed augue accumsan euismod. Aliquam velit nulla, fringilla eu dapibus quis, adipiscing a risus. Ut semper pretium interdum. Maecenas quis sem vitae velit dapibus laoreet. Pellentesque justo metus, congue ut vehicula sed, pretium nec turpis. Donec a mauris eget urna rhoncus sodales et id urna.
+One of the core features of our application is the session feature. A user can
+invite any other user on his/her friendlist to join the users session. When the
+user logs on, a new session is created and the user is placed in this session.
+If the user invites another user to join the session, the invited user will
+leave his/her own session and join the inviting user's session. This means that
+the maximum number of session is equivalent to the number of users online.
+
+\begin{snippet}[language=JavaScript,label=lst:whales.session structure,caption=The whales.session structure]
+whales.session: {
+    pending_accepts: []
+    pending_invites: []
+    errorHandlers: {} //a map of functions to handle errors
+    successHandlers: {} // a map of functions to handle success
+    init: function() //bind event and set up handler calls
+    invite: function(username) //invite <username>
+    accept: function(username) //accept invite from <username>
+    reject: function(username) //reject invite from <username>
+    leave: function() //leave current session
+    friendsOnline: function() //sends a "who is online" request to the server
+}
+\end{snippet}
+
+The client side session handling logic is placed in the
+\lstinline$whales.session$ object. The structure is shown in listing \ref{lst:whales.session structure}.
+The first two \verb$pending_*$ arrays in the structure holds incomming and
+outgoing session invites. the \verb$*Handlers$ maps holds the handlers that is
+run when a response is recived from the server concerning the session system.
+
+
+All this is controlled in the \verb$init$ function seen in listing \ref{lst:whales.session.init}
+
+\begin{snippet}[language=JavaScript,label=lst:whales.session.init,caption=The whales.session.init function] 
+init: function() {
+    $(window).bind("sync_session",function(e){
+        var p = e.syncObject;
+        if (p.payload.type === "success") {
+            if(p.payload.handler in whales.session.successHandlers) {
+                whales.session.successHandlers[p.payload.handler](p);
+            } else {
+                console.log("Could not find success handler");
+            }
+        } else if(p.payload.type === "error") {
+            if(p.payload.handler in whales.session.errorHandlers) {
+                whales.session.errorHandlers[p.payload.handler](p);
+            } else {
+                console.group("Could not find error handler");
+                console.log(p);
+                console.groupEnd();
+            }
+        } 
+    });
+}
+\end{snippet}
+
+Here we bind an event handler to the ``sync\_session'' event. A custom event
+created in the ``whales.sync.js'' script. This event is triggered when a
+package of the type ``session'' is recived from the server.
+
+
+The event handler then checks the payload type for either ``success'' or
+``error'' and fire the corresponding handler with the incomming data package as
+the first argument.
+
+\begin{snippet}[language=JavaScript,label=lst:incomming_event,caption=Handler for incomming events] 
+incomming_invite: function(syncObject) {
+    whales.session.pending_accepts.push(syncObject.payload);
+    whales.loading(true,"Invite from "+syncObject.payload.data,1000);
+    if($("#btn_session").hasClass("selected")) {
+        nav.session(function(){
+            whales.loading(false);
+        });
+    }
+},
+\end{snippet}
+
+An example of an event handler would be the ``incomming\_invite'' handler listed
+in \ref{lst:incomming_event}. The handler takes a syncObject as first argument
+(the syncObject is just a standardised structure we use as communication
+between the client and server).
+The handler then pushes the payload of the syncObject on to the
+``pending\_accepts'' array and calls 
+
+\begin{snippet}[firstnumber=3]
+whales.loading(true,"Invite from "+syncObject.payload.data,1000);
+\end{snippet}
+
+This function controls the loading indicator on the site. The first argument is
+a boolean that controls the visibility of the loading indicator. The second
+argument is a string containing a message to the user. The third argument is a
+duration that controls for how long the message will be shown. If the third
+argument is undefined, the loading indicator won't disappear until the next call
+to ``whales.loading'' overrides the state.
+
+
+Finally the handler checks whether or not the user is currently looking at the
+``sessions'' page. If the ``sessions'' page is the currently shown page, the
+handler reloads the page (with the \lstinline$nav.session$ function). This will
+refresh the current session view to make sure that new invites are also shown on
+the page.

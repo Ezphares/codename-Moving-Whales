@@ -8,6 +8,8 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 
+\usepackage{lipsum}
+
 \usepackage{hyperref} %TODO: Remove before deploying
 \usepackage{fancyhdr}
 \usepackage{longtable}
@@ -53,6 +55,14 @@
    captionpos=b
 }
 
+\lstnewenvironment{snippet}[1][]% 
+{
+   \noindent
+   \minipage{\linewidth} 
+   \vspace{0.5\baselineskip}
+   \lstset{basicstyle=\ttfamily\footnotesize,frame=leftline,#1}
+}
+{\endminipage}
 
 
 \bibliographystyle{is-unsrt}

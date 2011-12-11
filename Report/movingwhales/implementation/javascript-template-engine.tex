@@ -13,7 +13,7 @@ but having a template syntax that resembles our backend syntax would be confusin
 
 A simple template example is our audio track template:
 
-\begin{lstlisting}[language=HTML,caption=The template used to represent audio tracks]
+\begin{snippet}[language=HTML,caption=The template used to represent audio tracks]
 <script type="text/html" id="template_track">
 	<div class="track" data-link_id="%pk%" data-playlist_id="%playlist_id%" data-path="%path%">
 		<div class="track_info">
@@ -25,8 +25,8 @@ A simple template example is our audio track template:
 		<div class="clear"></div>
 	</div>
 </script>
-\end{lstlisting}
-
+\end{snippet}
+ 
 This is HTML with sets of \verb$%$ characters defining variable names. 
 When the template engine parses the above, regular expressions wich matches the variable names will be precompiled and saved in a Template object. 
 Finally, when data gets applied to the Template object, 
@@ -36,7 +36,8 @@ The output of this would be string, parsed and ready to be presented to the user
 
 
 The method that does all the work is the \verb$apply$ method on the \verb$tEngine$ object. This is what it looks like:
-\begin{lstlisting}[language=JavaScript,caption=The javascript engine apply method]
+
+\begin{snippet}[language=JavaScript,caption=The javascript engine apply method]
 tEngine.apply = function(data,template) {
     if(!is_array(data)) {
         data = [data];
@@ -54,7 +55,7 @@ tEngine.apply = function(data,template) {
 	}
     return libArray.join("\n");
 };
-\end{lstlisting}
+\end{snippet}
 
 The method takes a map, or an array of maps, and a template object instantiated from the Template prototype.
 Then it tries to match the pre-compiled regular expressions against the raw template, replacing the variable placeholder with the actual value. 
