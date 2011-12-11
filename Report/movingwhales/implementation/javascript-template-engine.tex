@@ -34,7 +34,11 @@ all template variables (the \verb$%some-variable%$ names) will be exchanged with
 the data that matches the variable names (or discarded if nothing matched the name).
 The output of this would be a string, parsed and ready to be presented to the user.
 
-The method doing all the work is the \verb$apply$ method on the \verb$tEngine$ object. This is what it looks like:
+
+The method doing all the work is the \verb$apply$ method on the \verb$tEngine$ object.
+This is what it looks like:
+
+
 \begin{snippet}[language=JavaScript,caption=The javascript engine apply method]
 tEngine.apply = function(data,template) {
     if(!is_array(data)) {
