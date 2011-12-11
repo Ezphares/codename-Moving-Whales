@@ -1,0 +1,39 @@
+\section{WhalesWebsocket}
+
+Since several browsers have implemented the websocket technology, making our
+application as cross-browser as possible makes sense for any future work.
+Unfortunatly, different browsers use different words for the same thing.
+
+
+This is why we have choosen to wrap the WebSocket object in a wrapper object.
+By doing this, we can ensure that current browser implementations with different
+names, still functions as intended. This allso allows easy adding of new
+implementations in other browsers. If Microsoft Internet Explorer were to
+implement a version called IEWebSocket, that was still in compliance with the current
+standards, we could very easily add this to our wrapper, and withing seconds
+enable IE clients in our application. 
+
+
+Further more it would be fairly easy to
+implement a fallback if the browser did not allow for websockets. This would be
+done by returning an object that would mimic the behavior of a websocket, but
+using XHR requests and polling to achieve the same thing.
+
+
+This is our WebSocket wrapper. The fallback object would replace the 
+\lstinline$return null;$ on line 6.
+
+ \begin{lstlisting}[language=JavaScript,caption=Our WebSocket abstraction object] 
+ var WhalesWebSocket = function(adress) { if ("WebSocket" in window) { return new WebSocket(adress);
+    } else if("MozWebSocket" in window) {
+        return new MozWebSocket(adress);
+    } else {
+        return null;
+    }
+};
+\end{lstlisting}
+
+Currently this only supports the mozilla implementation and the standards
+implementation of WebSocket. In time of writing, this works in Chrome, Safari
+and Firefox.
+%TODO: ^skal vi have kilde på det, og evt. versionsnumre på? - H
