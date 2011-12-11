@@ -53,6 +53,14 @@
    captionpos=b
 }
 
+\lstnewenvironment{snippet}[1][]% 
+{
+   \noindent
+   \minipage{\linewidth} 
+   \vspace{0.5\baselineskip}
+   \lstset{basicstyle=\ttfamily\footnotesize,frame=leftline,#1}
+}
+{\endminipage}
 
 
 \bibliographystyle{is-unsrt}

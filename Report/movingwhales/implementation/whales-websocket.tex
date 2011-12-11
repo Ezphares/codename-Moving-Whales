@@ -23,7 +23,7 @@ using XHR requests and polling to achieve the same thing.
 This is our WebSocket wrapper. The fallback object would replace the 
 \lstinline$return null;$ on line 6.
 
- \begin{lstlisting}[language=JavaScript,caption=Our WebSocket abstraction object] 
+ \begin{snippet}[language=JavaScript,caption=Our WebSocket abstraction object] 
  var WhalesWebSocket = function(adress) { if ("WebSocket" in window) { return new WebSocket(adress);
     } else if("MozWebSocket" in window) {
         return new MozWebSocket(adress);
@@ -31,7 +31,7 @@ This is our WebSocket wrapper. The fallback object would replace the
         return null;
     }
 };
-\end{lstlisting}
+\end{snippet}
 
 Currently this only supports the mozilla implementation and the standards
 implementation of WebSocket. In time of writing, this works in Chrome, Safari
