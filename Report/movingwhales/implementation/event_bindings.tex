@@ -1,0 +1,54 @@
+\section{Websocket Message Pipeline}
+The event bindings of the websocket are all handled in the same function. For each event of the websocket, a JavaScript event is bound to the window, and this enables all scripts of the application to bind to these events on the window. This makes for easy developing and maintenance, seeing as there is no need to hardcode new access to the events, as there would be if they had been bound directly to the websocket.
+
+An especially noteworthy event is the ``onmessage'', shown below, which is what allows us to handle data from the websocket:
+
+\begin{snippet}[language = JavaScript,caption=Event binding template]
+this.socket.onmessage = function(event){
+  var e = $.Event('sync_raw',{
+  	originalEvent:event
+  });
+  e.data = event.data;
+  $(window).trigger(e);
+
+  var syncObj = whales.sync.decode(event.data);
+	whales.sync.handle(syncObj);
+};
+return true;
+\end{snippet}
+
+This event decodes raw data from the websocket and forwards them to the data handler, shown here:
+
+\begin{snippet}[language = JavaScript,caption=Onmessage Handler]
+handle: function(obj) {
+	//console.log("recived: "+obj.type);
+	obj.time.recived = whales.sync.time.now(); // important to set this
+
+	var deltaTransferTime = obj.time.recived - obj.time.sent;
+  if(obj.from !== "server") { 
+  	 // we do not want to calculate average from server
+     whales.sync.time.pushLocalOffset(deltaTransferTime);
+            
+     console.group("DEBUG TIME");
+     console.log("local avg: "+ ( whales.sync.time.localoffset() ));
+     console.log("latency avg: "+ ( whales.sync.time.latencyoffset() ));
+     console.groupEnd();
+  }
+
+  var handledCorrect = null;
+  if(obj.type in this.handlers) {
+  	handledCorrect = this.handlers[obj.type](obj);
+  } 
+  if (handledCorrect === false || handledCorrect === null){
+  	var e = $.Event('sync_'+obj.type,{
+             syncObject:obj
+  	});
+    console.log("Triggering window event: sync_"+obj.type);
+  $(window).trigger(e);
+  }
+},
+\end{snippet}
+
+This handler first calculates the time it took to send the message, and stores this in deltaTransferTime. It then finds the correct function to call based on the type of the decoded message. If the type does not exist in the handler array it creates an event called ``sync\_ + type of the message'' and triggers it on the window.
+
+Creating this data pipeline enables us to easily manage the messages sent from the websocket.
