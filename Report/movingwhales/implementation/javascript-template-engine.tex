@@ -3,9 +3,9 @@
 The JavaScript engine consists of tree parts. The 
 \lstinline$tEngine$ object, the \lstinline$Template$ prototype object 
 and a raw template represented by a string written in our template language. 
-The template language is fairly easy to understand if you allready know a little HTML. 
+The template language is fairly easy to understand if you already know a little HTML. 
 The template is just HTML with the minor addition that you can define value placeholders with the character \verb$%$. 
-Anything written between the \verb$%$ character will be considered as a template variable. 
+Anything written between a pair of \verb$%$ characters will be considered as a template variable. 
 The \verb$%$ character was choosen because it has no meaning in HTML, and would integrate seamlessly. 
 We allso considered the \verb${{$ and \verb$}}$ as start and end character 
 sequences like django and a lot of other template engines, 
@@ -28,14 +28,13 @@ A simple template example is our audio track template:
 \end{lstlisting}
 
 This is HTML with sets of \verb$%$ characters defining variable names. 
-When the template engine parses the above, regular expressions wich matches the variable names will be precompiled and saved in a Template object. 
+When the template engine parses the above, regular expressions which match the variable names will be precompiled and saved in a Template object. 
 Finally, when data gets applied to the Template object, 
 all template variables (the \verb$%some-variable%$ names) will be exchanged with 
 the data that matches the variable names (or discarded if nothing matched the name).
-The output of this would be string, parsed and ready to be presented to the user.
+The output of this would be a string, parsed and ready to be presented to the user.
 
-
-The method that does all the work is the \verb$apply$ method on the \verb$tEngine$ object. This is what it looks like:
+The method doing all the work is the \verb$apply$ method on the \verb$tEngine$ object. This is what it looks like:
 \begin{lstlisting}[language=JavaScript,caption=The javascript engine apply method]
 tEngine.apply = function(data,template) {
     if(!is_array(data)) {
@@ -59,6 +58,5 @@ tEngine.apply = function(data,template) {
 The method takes a map, or an array of maps, and a template object instantiated from the Template prototype.
 Then it tries to match the pre-compiled regular expressions against the raw template, replacing the variable placeholder with the actual value. 
 If the first argument of the method were an array, this procedure will happen for each of the data maps in the array.
-
 
 Finally, the method returns a string consisting of the parsed template/templates. Usually this string would be presented directly to the user.
