@@ -1,12 +1,35 @@
 \section{WebSocket}
 
-Web sockets are a new technology meant to make it easier for developers who create web applications to keep their applications updated in real-time by the server\cite{andersen10}. A web socket is a full-duplex communication channel that operates via a socket\cite{lubbersgreco}. A web socket combines the standard HTTP-connection with more efficient means of transferring data and text\cite{lubbersgreco}.
+WebSockets are a new technology meant to make it easier for developers who 
+create web applications to keep their applications updated in real-time by the 
+server\cite{andersen10}. A WebSocket is a full-duplex communication channel 
+that operates via a socket\cite{lubbersgreco}. A WebSocket combines the 
+standard HTTP-connection with more efficient means of transferring data and 
+text\cite{lubbersgreco}.
 
 
-Web sockets are very efficient as they decrease the latency during a message transfer significantly\cite{lubbersgreco}. When a browser visits a page it sends a HTTP request to the web server currently hosting the webpage\cite{lubbersgreco}. For data that is very sensitive to quick updates (a stock exchange for example) the data which the server sends could wind up being old and no longer relevant. Either because the user simply walks away from the computer for a set duration or the website's data is being constantly updated\cite{lubbersgreco}. The user would have to keep hitting the browser's refresh button to make sure that the data that is received is the newest data - obviously this is not a very clever solution\cite{lubbersgreco}. Web sockets help alleviate this problem.
+WebSockets are very efficient as they decrease the latency during a message 
+transfer significantly\cite{lubbersgreco}. When a browser visits a page it 
+sends a HTTP request to the web server currently hosting the 
+webpage\cite{lubbersgreco}. For data that is very sensitive to quick updates 
+(a stock exchange for example) the data which the server sends could wind up 
+being old and no longer relevant. Either because the user simply walks away 
+from the computer for a set duration or the website's data is being constantly 
+updated\cite{lubbersgreco}. The user would have to keep hitting the browser's 
+refresh button to make sure that the data that is received is the newest data 
+- obviously this is not a very clever solution\cite{lubbersgreco}. WebSockets 
+help alleviate this problem.
 
 
-There are a number of other solutions that try to solve the same issue the Web socket solves - but bear in mind that these solutions are much older and among the first solutions to solve the problem of updating real-time data\cite{lubbersgreco}. These solutions can also be a study in their own and will therefore not be described extensively in this report-segment. Examples of those solutions are polling, long-polling and streaming.
+There are a number of other solutions that try to solve the same issue the 
+WebSocket solves - but bear in mind that these solutions are much older and 
+among the first solutions to solve the problem of updating real-time 
+data\cite{lubbersgreco}. These solutions can also be a study in their own and 
+will therefore not be described extensively in this report-segment. Examples 
+of those solutions are polling, long-polling and streaming.
+
+%gawd sakes, Det hedder en WebSocket, ikke en Websocket, 
+%og SLET ikke Web socket.
 
 
 \input{analysis/polling}

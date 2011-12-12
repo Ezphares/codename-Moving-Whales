@@ -1,8 +1,43 @@
 \subsection{Django}
-Django is made in the Python programming language, an object-oriented language, which runs on on either major platform (Windows, Linux / Unix and Mac OS)\cite{psf11}. While django is not exactly an MVC\cite{dalling09} it still incorporates Models, Views (which fill the role of the controller and half the role of the view in a standard MVC setup) and Templates (which fills the remaining part of the view-role), split in groups called ''applications��, so, depending on opinion, it offers the same benefits as an MVC.
+Django is made in the Python programming language, an object-oriented language, 
+which runs on on either major platform 
+(Windows, Linux / Unix and Mac OS)\cite{psf11}.
+%TODO: Arj, det er underligt sagt. Du siger either major platforms,
+% så jeg forventer at der kommer 2, du lister 3(4?), men faktisk KAN du dække
+% det med 2. Windows og Unix. (både linux og mac OSX er unix)
+ 
+While django is not exactly an MVC\cite{dalling09} it still incorporates 
+Models, Views (which fill the role of the controller and half the role of the 
+view in a standard MVC setup) and Templates (which fills the remaining part of 
+the view-role), split in groups called ``applications'', so, depending on 
+opinion, it offers the same benefits as an MVC.
 
-Furthermore, Django uses an ORM (Object Relational Mapping)\cite{techtarget08} which automatically creates a database with the correct tables and colums from the model files, and allows all operations on the data in the database to be handled through Python class representations of the data. In a project like this, where almost everything in the database will be linked together, Django's ORM makes it very easy to traverse the links, as queries for related objects are made simply by referencing the correct attribute on the Python object.
+Furthermore, Django uses an ORM (Object Relational Mapping)\cite{techtarget08} 
+which automatically creates a database with the correct tables and colums from 
+the model files, and allows all operations on the data in the database to be 
+handled through Python class representations of the data. 
+%TODO: godt sagt!
+In a project like this, where almost everything in the 
+database will be linked together, 
+Django's ORM makes it very easy to traverse the links, as queries for related 
+objects are made simply by referencing the correct attribute on the 
+Python object.
 
-It is crucial to the current project, that navigation on the site happens fluidly, without multiple page loads. This means there is going to be a lot of AJAX requests to the server, which each need to be handled in different ways. Django uses a very simple URL routing system, that makes it easy to pass these requests along to the correct views, and respond to them using a correct protocol.
+It is crucial to the current project, that navigation on the site happens 
+fluidly, without multiple page loads. This means there is going to be a lot of 
+AJAX requests to the server, 
+%TODO: har vi (bør vi) forklare ajax?
+% og evt. kalde det noget andet, da det faktisk er AJAJ
+which each need to be handled in different ways. 
+Django uses a very simple URL routing system, that makes it easy to pass these 
+requests along to the correct views, and respond to them using a 
+correct protocol.
+%TODO: ah, nu strammer du technolingo lige hårdt nok
 
-Django also makes starting development quite easy by shipping with a simple webserver for debugging, with which it is possible to output anything to a console running on your machine, without also sending this data along with the response to the client. This helps debugging both the Django code, and the HTML/JavaScript, since you can get debug info without contaminating data.
+Django also makes starting development quite easy by shipping with a simple 
+webserver for debugging, with which it is possible to output anything to a 
+console running on your machine, without also sending this data along with the 
+response to the client. This helps debugging both the Django code, and the 
+HTML/JavaScript, since you can get debug info without contaminating data.
+%TODO: contaminating er måske lige voldsomt nok.
+% poluting/bloating giver bedre mening.
