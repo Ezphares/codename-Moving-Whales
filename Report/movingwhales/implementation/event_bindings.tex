@@ -1,54 +1,142 @@
-\section{Websocket Message Pipeline}
-The event bindings of the websocket are all handled in the same function. For each event of the websocket, a JavaScript event is bound to the window, and this enables all scripts of the application to bind to these events on the window. This makes for easy developing and maintenance, seeing as there is no need to hardcode new access to the events, as there would be if they had been bound directly to the websocket.
+\section{WebSocket Data Pipeline}
 
-An especially noteworthy event is the ``onmessage'', shown below, which is what allows us to handle data from the websocket:
+When a WebSocket is created, functions to handle different events may also be
+defined. The possible events are:
 
-\begin{snippet}[language = JavaScript,caption=Event binding template]
-this.socket.onmessage = function(event){
-  var e = $.Event('sync_raw',{
-  	originalEvent:event
-  });
-  e.data = event.data;
-  $(window).trigger(e);
+\begin{snippet}[label=lst:websocket events]
+onopen
+onclose
+onerror
+onmessage
+\end{snippet}
 
-  var syncObj = whales.sync.decode(event.data);
-	whales.sync.handle(syncObj);
+These are defined by settings the corresponding attribute on the created 
+WebSocket object. This means that one function defines one action for one
+Websocket object. This is fairly simple, but unpractical when building an
+application where serveral parts needs to be able to communicate through the 
+same WebSocket object.
+
+
+To overcome this problem, we introduce an abstaction layer between the 
+WebSocket and the rest of the application. For each of the events in listing
+\ref{lst:websocket events} we define a function that gathers incomming data from
+the event, and packs it into an event that is then triggered on the global
+window object. An example of this can be found in listing
+\ref{lst:websocket.onerror}.
+
+\begin{snippet}[caption=The onerror websocket event,label=lst:websocket.onerror] 
+this.socket.onerror = function(event){
+    var e = $.Event('sync_error',{
+        originalEvent:event
+    });
+    $(window).trigger(e);
 };
-return true;
 \end{snippet}
 
-This event decodes raw data from the websocket and forwards them to the data handler, shown here:
+By doing this we allow any other part of our application to bind to a specific
+event on the window object and handle the WebSocket data. The naming convention
+for the events is an event name prefixed with ``sync\_''.
 
-\begin{snippet}[language = JavaScript,caption=Onmessage Handler]
-handle: function(obj) {
-	//console.log("recived: "+obj.type);
-	obj.time.recived = whales.sync.time.now(); // important to set this
 
-	var deltaTransferTime = obj.time.recived - obj.time.sent;
-  if(obj.from !== "server") { 
-  	 // we do not want to calculate average from server
-     whales.sync.time.pushLocalOffset(deltaTransferTime);
-            
-     console.group("DEBUG TIME");
-     console.log("local avg: "+ ( whales.sync.time.localoffset() ));
-     console.log("latency avg: "+ ( whales.sync.time.latencyoffset() ));
-     console.groupEnd();
-  }
+The ``onmessage'' WebSocket event is triggered every time new data is avaiable
+from the server. We handle this by - as with the other WebSocket events -
+triggering an event on the window object, should any other part of the
+application need direct access to incomming data. The ``onmessage'' also calls a
+decoding function that decodes the raw string from the server into a javascript
+object that is then parsed on to another function for further handling.
+This object is our data package containing all the information from the server.
 
-  var handledCorrect = null;
-  if(obj.type in this.handlers) {
-  	handledCorrect = this.handlers[obj.type](obj);
-  } 
-  if (handledCorrect === false || handledCorrect === null){
-  	var e = $.Event('sync_'+obj.type,{
-             syncObject:obj
-  	});
-    console.log("Triggering window event: sync_"+obj.type);
-  $(window).trigger(e);
-  }
-},
+\begin{snippet}[caption=The onmessage WebSocket event,label=lst:websocket.onmessage]
+this.socket.onmessage = function(event){
+    var e = $.Event('sync_raw',{
+        originalEvent:event
+    });
+    e.data = event.data;
+    $(window).trigger(e);
+    var syncObj = whales.sync.decode(event.data);
+    whales.sync.handle(syncObj);
+};
 \end{snippet}
 
-This handler first calculates the time it took to send the message, and stores this in deltaTransferTime. It then finds the correct function to call based on the type of the decoded message. If the type does not exist in the handler array it creates an event called ``sync\_ + type of the message'' and triggers it on the window.
+The definition of the ``onmessage'' event is seen in listing \ref{lst:websocket.onmessage}.
+Line 2-6 forms an event called ``sync\_raw'' and triggers it on the window
+object.
+Line 7-8 calls the decode function on the event data, and then passes it along
+to be handled by our sync handler as seen in listing \ref{lst:sync.handle}.
 
-Creating this data pipeline enables us to easily manage the messages sent from the websocket.
+\begin{snippet}[caption=Handling of incomming data,label=lst:sync.handle]
+    handle: function(obj) {
+        //console.log("recived: "+obj.type);
+        obj.time.recived = whales.sync.time.now(); // important!
+
+        var deltaTransferTime = obj.time.recived - obj.time.sent;
+        if(obj.from !== "server") { // we do not want to calc. avg. from server
+            whales.sync.time.pushLocalOffset(deltaTransferTime);
+        }
+        
+        var handledCorrect = null;
+        if(obj.type in this.handlers) {
+            handledCorrect = this.handlers[obj.type](obj);
+        }
+        
+        if (handledCorrect === false || handledCorrect === null){
+            var e = $.Event('sync_'+obj.type,{
+                syncObject:obj
+            });
+            $(window).trigger(e);
+        }
+    }
+\end{snippet}
+
+The handler provides a much simpler way to work with incomming data. We allready
+decoded the message in the WebSocket ``onmessage'' function. This handler then
+adds a timestamp to the package, calculate the time between the package was sent
+and recived (the client to client latency) and pushes it into an array that
+automatically calculates the average for later use.
+
+
+Then a check is made on an internal map of functions
+(\lstinline$this.handlers$).
+All packages contains a ``type'' property. If a handler with the
+corresponding name is defined in the internal function map, this function is
+called with the package object as it's argument. An example of one of these
+internal handlers is shown in listing \ref{lst:sync.ping}
+
+
+Finally a check is made to the return value of the internal function. If the
+internal function returns true, it means that this package was handled
+successfully and should be considered done.
+Otherwise a new event is created with the ``type'' as name, prefixed with
+``sync\_'' and triggered on the window object like other websocket events.
+
+\begin{snippet}[caption=An internal package handler,label=lst:sync.ping]
+ping: function (obj) {
+    obj = whales.sync.validatedSyncObject(obj);
+    //pong back
+    obj.type = "pong"; // change object type to pong
+    if(obj.from === "server") {
+        obj.payload.client = whales.common.readcsrf();
+    }
+    obj.time.parsed = whales.sync.time.now();
+    whales.sync.sendObject(obj);
+    return true;
+}
+\end{snippet}
+
+The above listing \ref{lst:sync.ping} shows the internal handler for ``ping''.
+The ``ping'' is one of the simplest package types in our system. It checks that
+the recived package is valid, changes the ``ping'' package to a ``pong''
+package, makes sure that it is the server asking for a pong, and then
+adds a payload to the ``pong'' package containing the clients secret
+identification token to be identified on the server. ``pong'' packages will
+never reach other clients, so transmitting the secret client token in a ``pong''
+package does not pose a security risk. All ``pong'' packages are cough by the
+server, and is used in latency calculations to clients.
+
+
+In effect, this system provides a simple interface for receiving data from the
+websocket. This speeds up development and reduces the amount of bugs that would
+otherwise have arrised when introducing new code directly in to the
+``onmessage'' websocket function.
+
+
