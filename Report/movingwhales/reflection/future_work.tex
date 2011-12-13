@@ -4,8 +4,19 @@ for release.
 
 The issues that should most likely be worked on first, are the known bugs, and lack of visual feedback
 in the interface, especially when getting friend requests, and more instructions to the user, like
-where to find the session flyout.
-
+where to find the session flyout. The known bugs include:
+\begin{itemize}
+\item{Entering an invalid date when creating an account breaks the process halfway, creating a user 
+but not a profile, which more or less makes that login useless.}
+\item{Uploading the same file twice from a single user creates two links between that user and song
+in the database. When retrieving the library, the effects of this is unknown.}
+\item{The websocket is unstable, sometimes crashing with an unknown error, and requiring manual reset.
+When this happens, most of the functionality of the system is unavailable.}
+\item{Multiple session invites to and from the same user gets added to a list, even though they for all
+purposes do the same. Accepting one of these, additionally, will not remove the others from the list.}
+\item{The error messages printed when a user fails to log in, prints some of the code to the user,
+along with the error message.}
+\end{itemize}
 The next thing to work on, would be creating playlists, since most of the code is already there, the
 user interface for it is written, and it just needs to be glued together.
 
