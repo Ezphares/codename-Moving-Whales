@@ -1,36 +1,79 @@
-\subsection{The Heuristic method}
-When we speak of the Heuristic method then we talk about using a number of different methods fore evaluation of a HCI(Human Computer Interaction) design. When one wants to make an evaluation of design, one can have a list of heuristics(also called design principles)to begin with. Here are some examples on some design principles:
+\subsection{Heuristic Evaluation of Interface Design}
+Heuristic evaluation refers to an analysis of the quality of the interface with regards to heuristics (also called design principles). The heuristics used for evaluation are grouped into four ``categories'' :
+
+\textit{Helping people access, learn and remember the system}
+
 \begin{enumerate}
-\item Visibility
-\item Consistency
-\item Navigation
-\item Control
-\item Constraints
-\item Style
-\item Conviviality
+	\item{\textbf{Visibility}} Making sure that people can see what functions are available, and what the system is doing.
+	\item{\textbf{Consistency}} Be consistent in design features and be consistent with similar systems and standard ways of working.
+	\item{\textbf{Familiarity}} Use language and symbols that the intended audience are familiar with or provide a suitable metaphor to help ease of learning.
+	\item{\textbf{Affordance}} Design things so it is clear what they are for.
+	
+\textit{Giving them a sense of being in control, knowing what to do and how to do it}
+
+	\item{\textbf{Navigation}} Provide support for navigating the system, such as directional and information signs.
+	\item{\textbf{Control}} Make it clear who or what is in control and allow people to take control.
+	\item{\textbf{Feedback}} Give rapid feedback from the system so people know how their actions are effecting the system.
+	
+	\textit{Safely and securely}
+
+	\item{\textbf{Recovery}} Enable quick and effective recovery from unintended actions like mistakes.
+	\item{\textbf{Constraints}} Make sure people are not able to do things they should not do.
+	
+	\textit{In a way that suits them}
+
+	\item{\textbf{Flexibility}} Allow things to be done in multiple ways, so that people with different levels of experience can use it.
+	\item{\textbf{Style}} Make it look good.
+	\item{\textbf{Conviviality}} Make the system polite and pleasant to use.
 \end{enumerate}
-and a lot more.
+The designed interface is analyzed with regard to each point below:
 
-\textbf{Visibility:}Is about making things visible so that people can see what options they have and what the system is currently doing. An important part of the visibility is the psychological principle that states, it is easier to recognize things than to have to recall them. Visibility is not always about making things visible for the eye it is also about making things visible through the use of sound and touch.
+\textbf{Visibility}
 
-\textbf{Consistency:}Makes the usability more friendly and easier to learn a new system. It is important to stay consistent so that users do not get more confused then necessary. There are two types of consistency. There is conceptual consistency and than there is physical consistency. Conceptual consistency is about ensuring the mappings are consistent. Physical consistency is about ensuring consistent behaviours and consistent use of colours, names, layouts and so on.
+The interface gives a message whenever it is working on something, e.g. it tells the user when it is loading the webpage,
+uploading songs to the library and loading the library, community or session tab. It could be practical to incorporate sounds
+to indicate new friend requests, new friends on line and so on, but for the purpose of this project, it the information given
+is sufficient. Options available to the user are shown with buttons and help-text where necessary.
 
-\textbf{Navigation:}Is about providing functions to the user such the he/she can move around in the system: maps, directional signs and information signs.
+\textbf{Consistency}
 
-\textbf{Control:}It should be obvious who is in control, the user or the system. To enhance the controls there should be clear, logical mapping controls and the effect that they have.
+Consistency is incorporated in that functions that require the user to move things, like adding songs to a library, are drag
+and drop. This is consistent with other systems, like the drag and drop move and copying of files in e.g. Windows operating
+systems.
 
-\textbf{Constraints:}Should always be provided in any system such that the user does not do any inappropriate operations. People should be prevented from making serious errors.
+\textbf{Familiarity}
 
-\textbf{Style:}Designs should be stylish and attractive. It should keep up with the time and be in vague.
+The principle of familiarity is incorporated in the design very well, buttons display a meaningful name and a symbol showing
+what they do, like the note symbolizing the music library, the screwdriver and wrench symbolizing settings, which is used on
+various other webpages. The symbols for play, stop and skip are also the standard symbols for playing music. The language is
+simple, neutral and straightforward, which appeals to all age groups.
 
-\textbf{Conviviality:}Polite, friendly and generally pleasant software is more catchy than unpleasant software. When making interactive systems it is mandatory to take this in mind fore else if not considered one may end up with some product that loses audience.
+\textbf{Affordance}
 
-This is not just a method to evaluate the finished system, it is also a method that can be used under development of a system. To help one keep in mind how to make a system more usable.
+The design of the interface incorporates affordance quite well, buttons indicate that pushing them takes you to what they
+refer to, i.e. pressing the library button takes you to your library and pressing the logout button logs the user out.
+Dragging things to move them is also very intuitive as it emulates the action of moving things in real life.
 
-When those principles and more have been evaluated, one can get a pretty good picture of the whole system before launching it or starting to test it on users.
+\textbf{Navigation}
 
-To move the evaluation of the design of a system further we get to a point where people/future users have to be brought into the evaluation. They have to help one understand their needs, desires and how they are using the system such that developers can redesign some features if needed.
+The navigation of the site is quite straightforward considering the high level of familiarity that comes with a design reminiscent of other social media.
 
-When all this is said it does not mean that this is the only approach for evaluating design. There are lots of other methods and principles for evaluation of system designs. This method has not been chosen to test users, we will hear more about that later in Chapter 5, but it has been kept in mind under the development of the system.\cite{Benyon10} 
+\textbf{Control}
 
-\input{design/heuristic_analysis}
+The control of the system is largely given to the user. There is a logical downwards mapping between buttons and what they control, so that a button controls what appears beneath it, for example the navigation buttons change the content of the main area from library to community or session.
+
+\textbf{Feedback}
+
+In general, the feedback of the interface is somewhat lacking. There is rapid feedback when uploading music, but there is no feedback telling when a friend request is pending and if a session invitation has been sent, the feedback only appears shortly. This should be improved, but given the limited time for development it suffices.
+
+\textbf{Recovery}
+
+There is no support for recovery of mistakes. It is not possible to withdraw a friend request and deleting music is not possible. This is quite a flaw in the design, but it is easily fixed with the introduction of a few extra buttons.
+
+\textbf{Style}
+
+The colour scheme of the webpage is quite neutral, bordering on boring, but it looks effective and overall the design is okay.
+
+\textbf{Conviviality}
+
+Conviviality has not been a key aspect of the interface design, but all in all the system is quite neutral when communicating with the user.
