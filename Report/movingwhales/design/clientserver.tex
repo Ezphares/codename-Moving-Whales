@@ -1,0 +1,40 @@
+\section{Client-Server Architecture}
+
+The following section contains basic information about client-server architecture. At the 
+end of the section, the group's own perspective will be shared along with the thoughts the 
+group had in terms of this topic.
+
+The client-server architecture is used as a way to distribute a system to other processors
+which can be geographically spread\cite{ooad01}. An example of a client-server system is the 
+credit card verification system implemented into each of a bank's terminals. This system 
+verifies the credit card's authenticity with a centrally located server - in this case, each 
+of a bank's terminals would be a client, and the central verification, would be the 
+server\cite{ooad01}.
+
+Illustrated, the client-server architecture looks as follows:
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.50]{design/figures/client-server.png}
+	\label{fig:client-server architecture}
+\end{figure}
+
+The diagram is quite simplified and is by no means meant to illustrate an actual network. It
+illustrates six clients: various forms of computers and some handheld devices all connected
+to one, central server.
+
+
+The purpose of the server is to offer to the clients whatever is general / common for each
+client. This could be a common database, mail access, or some kind of printer  
+functionality\cite{ooad01}. Basically, there are no restrictions. 
+
+
+Client-server architecture can be more advanced than simply a client establishing a
+connection to a server\cite{tierserverclient08}. These levels of advancement are called 
+'tiers'\cite{tierserverclient08}. Tiers are the division of labour for various computer 
+functions in a system.
+
+\input{design/twotierarchitecture}
+\input{design/threetierarchitecture}
+\input{design/tierscompared}
+\input{design/architectureownperspective}
