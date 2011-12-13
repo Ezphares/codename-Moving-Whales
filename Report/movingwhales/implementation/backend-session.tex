@@ -17,7 +17,9 @@ account is listening to.
 
 
 Inside the ``WhalesSessionManager'' instance, each user is stored in a
-``WhalesUserSession'' instance. 
+``WhalesUserSession'' instance.
+
+
 When adding a new connection (the ``WebSocketHandler'' acts as the connection
 between client and server) to a manager, the manager then runs thrugh all 
 connected users, checking if any other ``WhalesUserSession''s matches the new
@@ -46,7 +48,7 @@ def handle(self,package,connection):
 \end{snippet}
 
 %TODO: skal figuren ligge her, eller måske i starten af afsnittet?
-\begin{figure}[h!]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width = 1.0\textwidth]{implementation/figures/session.png}
 	\caption{backend session management}
