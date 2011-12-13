@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
+\usepackage{tabularx}
 
 \usepackage{lipsum}
 \usepackage[section]{placeins} %prevent floatet items floating in to next
@@ -61,11 +62,11 @@
 \lstnewenvironment{snippet}[1][]% 
 {
    \noindent
-   \minipage{\linewidth} 
+   \minipage{\linewidth}
    \vspace{0.5\baselineskip}
    \lstset{basicstyle=\ttfamily\footnotesize,frame=leftline,#1}
 }
 {\endminipage}
 
-
-\bibliographystyle{is-unsrt}
+\usepackage{url}
+\bibliographystyle{unsrt}
