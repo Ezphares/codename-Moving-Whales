@@ -54,6 +54,6 @@ results.sort(cmp=lambda x,y: cmp(y['weight'], x['weight']))
 \end{snippet}
 
 First, the search checks for exact matches of username and e-mail, gives them a high weigth and adds them to a result array created to contain both exact and partial matches. If there are no exact matches, usernames and e-mails are excluded to ensure that the search can not be abused to find usernames and e-mails of people.
-The search is then split up so that each term can be checked with the database seperately. For each term the profiles in the database are then filtered by matches with either firstname or lastname so that partial matches with the search terms can be found. For each profile found the id is checked up to see if this profile occurs in the array already. In case it does, the weight is increased by one. If the match is not in the result array the weight of the match is set to 1, and it is appended to the result array.
+The search is then split up so that each term can be checked with the database separately. For each term the profiles in the database are then filtered by matches with either firstname or lastname so that partial matches with the search terms can be found. For each profile found the id is checked up to see if this profile occurs in the array already. In case it does, the weight is increased by one. If the match is not in the result array the weight of the match is set to 1, and it is appended to the result array.
 
-Once all matches are weighted the list is sorted by weight using a lambda expression and the resulting list is returned. 
+Once all matches are weighted, the list is sorted by weight using a lambda expression and the resulting list is returned. 

@@ -3,15 +3,15 @@
 The JavaScript engine consists of tree parts. The 
 \lstinline$tEngine$ object, the \lstinline$Template$ prototype object 
 and a raw template represented by a string written in our template language. 
-The template language is fairly easy to understand if you already know a little HTML. 
-The template is just HTML with the minor addition that you can define value placeholders with the character \verb$%$. 
+The template language is fairly easy to understand if one already knows a little HTML. 
+The template is just HTML with the minor addition that it is possible to define value placeholders with the character \verb$%$. 
 Anything written between a pair of \verb$%$ characters will be considered as a template variable. 
-The \verb$%$ character was choosen because it has no meaning in HTML, and would integrate seamlessly. 
-We allso considered the \verb${{$ and \verb$}}$ as start and end character 
-sequences like django and a lot of other template engines, 
+The \verb$%$ character was chosen because it has no meaning in HTML, and would integrate seamlessly. 
+The \verb${{$ and \verb$}}$ were also considered as start and end character 
+sequences like Django and a lot of other template engines, 
 but having a template syntax that resembles our backend syntax would be confusing.
 
-A simple template example is our audio track template:
+A simple template example is the audio track template:
 
 \begin{snippet}[language=HTML,caption=The template used to represent audio tracks]
 <script type="text/html" id="template_track">
@@ -63,4 +63,4 @@ The method takes a map, or an array of maps, and a template object instantiated 
 Then it tries to match the pre-compiled regular expressions against the raw template, replacing the variable placeholder with the actual value. 
 If the first argument of the method were an array, this procedure will happen for each of the data maps in the array.
 
-Finally, the method returns a string consisting of the parsed template/templates. Usually this string would be presented directly to the user.
+Finally, the method returns a string consisting of the parsed template or templates. Usually this string would be presented directly to the user.

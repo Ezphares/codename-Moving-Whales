@@ -1,13 +1,13 @@
 \subsection{3-Tier Architecture}
 
-3-tier architecture is slightly more advanced. The division of labour here is not 'simply' 
+3-tier architecture is slightly more advanced. The division of labour here is not just 
 client / server. There is an extra layer - and for the sake of example this layer is a 
-database server. This gives us the three layers of client, application server and database 
+database server. This yields the three layers of client, application server and database 
 server. 
 
 
-When the client requests data from the server, the server calls the database server, which 
+When the client requests data from the database server, the application server calls the database server, and 
 sends an SQL query to the database to find this data. The database server then sends the 
-fetched data to the application server, before sending it to the client in a response. This 
-means that the client is linked to one server, and the server is linked to another server, 
-which in turn is linked to a database\cite{tierserverclient08}.
+fetched data to the application server, which in turn sends it to the client in a response. This 
+means that the client is linked to one server, and that server is linked to another server, 
+which handles a database\cite{tierserverclient08}.

@@ -1,14 +1,8 @@
 \section{Choice of web server}
-Tornado\cite{tornadoweb11} is a Python-based web server. 
-%TODO: NOPE! chuck testa - det er et web server FRAMEWORK. difference :)
+Tornado\cite{tornadoweb11} is a Python-based web server framework. 
 It is practical to have the webserver in the same language as the web framework 
 for several reasons. One of the most important reasons is that it allows the 
 websocket implementation to directly use Django's ORM to access the database, 
 for example to authenticate users. Had the websocket server been based on 
-another language, it would in essence be necessary to do everything twice for 
-the database. 
-%TODO: for the database - omformuleres
-It also has the advantage that any modules written for Django is 
-usable in Tornado and vice versa.
-%TODO: JA! :D  bortset fra at det ikke er vice versa, men væk med det, så er 
-%alt godt! :D
+another language, it would in essence be necessary to do everything twice in regards to database access. It also has the advantage that any modules written for Django is 
+usable in Tornado.

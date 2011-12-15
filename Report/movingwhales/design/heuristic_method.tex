@@ -1,79 +1,86 @@
 \subsection{Heuristic Evaluation of Interface Design}
 Heuristic evaluation refers to an analysis of the quality of the interface with regards to heuristics (also called design principles). The heuristics used for evaluation are grouped into four ``categories'' :
 
-\textit{Helping people access, learn and remember the system}
+\textit{1: Helping people access, learn and remember the system}
 
-\begin{enumerate}
-	\item{\textbf{Visibility}} Making sure that people can see what functions are available, and what the system is doing.
-	\item{\textbf{Consistency}} Be consistent in design features and be consistent with similar systems and standard ways of working.
-	\item{\textbf{Familiarity}} Use language and symbols that the intended audience are familiar with or provide a suitable metaphor to help ease of learning.
-	\item{\textbf{Affordance}} Design things so it is clear what they are for.
+\begin{itemize}
+	\item{\textbf{Visibility}}: Making sure that people can see what functions are available, and what the system is doing.
+	\item{\textbf{Consistency}}: Be consistent in design features and be consistent with similar systems and standard ways of working.
+	\item{\textbf{Familiarity}}: Use language and symbols that the intended audience are familiar with or provide a suitable metaphor to help ease of learning.
+	\item{\textbf{Affordance}}: Design things so it is clear what they are for.
+\end{itemize}
+
+\textit{2: Giving them a sense of being in control, knowing what to do and how to do it}
+
+\begin{itemize}
+	\item{\textbf{Navigation}}: Provide support for navigating the system, such as directional and informational signs.
+	\item{\textbf{Control}}: Make it clear who or what is in control and allow people to take control.
+	\item{\textbf{Feedback}}: Give rapid feedback from the system so people know how their actions are effecting the system.
+\end{itemize}
+
+	\textit{3: Safely and securely}
 	
-\textit{Giving them a sense of being in control, knowing what to do and how to do it}
-
-	\item{\textbf{Navigation}} Provide support for navigating the system, such as directional and information signs.
-	\item{\textbf{Control}} Make it clear who or what is in control and allow people to take control.
-	\item{\textbf{Feedback}} Give rapid feedback from the system so people know how their actions are effecting the system.
+\begin{itemize}
+	\item{\textbf{Recovery}}: Enable quick and effective recovery from unintended actions like mistakes.
+	\item{\textbf{Constraints}}: Make sure people are not able to do things they should not do.
+\end{itemize}
 	
-	\textit{Safely and securely}
-
-	\item{\textbf{Recovery}} Enable quick and effective recovery from unintended actions like mistakes.
-	\item{\textbf{Constraints}} Make sure people are not able to do things they should not do.
+	\textit{4: In a way that suits them}
 	
-	\textit{In a way that suits them}
+\begin{itemize}
+	\item{\textbf{Flexibility}}: Allow things to be done in multiple ways, so that people with different levels of experience can use it.
+	\item{\textbf{Style}}: Make it look good.
+	\item{\textbf{Conviviality}}: Make the system polite and pleasant to use.
+\end{itemize}\cite{Benyon10}
 
-	\item{\textbf{Flexibility}} Allow things to be done in multiple ways, so that people with different levels of experience can use it.
-	\item{\textbf{Style}} Make it look good.
-	\item{\textbf{Conviviality}} Make the system polite and pleasant to use.
-\end{enumerate}
-The designed interface is analyzed with regard to each point below:
-
+The designed interface is analyzed with regard to each point:
+\vspace{10pt}
 \textbf{Visibility}
 
-The interface gives a message whenever it is working on something, e.g. it tells the user when it is loading the webpage,
-uploading songs to the library and loading the library, community or session tab. It could be practical to incorporate sounds
-to indicate new friend requests, new friends on line and so on, but for the purpose of this project, it the information given
+\vspace{10pt}The interface gives a message whenever it is working on something, e.g. it tells the user when it is loading the webpage,
+uploading songs to the library and loading the library, community or session tab. It incorporates notifications
+to indicate new friend requests, new friends online and so on, and for the purpose of this project, the information given
 is sufficient. Options available to the user are shown with buttons and help-text where necessary.
-
+\vspace{10pt}
 \textbf{Consistency}
 
-Consistency is incorporated in that functions that require the user to move things, like adding songs to a library, are drag
+\vspace{10pt}Consistency is incorporated in that functions that require the user to move things, like adding songs to a library, are drag
 and drop. This is consistent with other systems, like the drag and drop move and copying of files in e.g. Windows operating
 systems.
-
+\vspace{10pt}
 \textbf{Familiarity}
 
-The principle of familiarity is incorporated in the design very well, buttons display a meaningful name and a symbol showing
-what they do, like the note symbolizing the music library, the screwdriver and wrench symbolizing settings, which is used on
-various other webpages. The symbols for play, stop and skip are also the standard symbols for playing music. The language is
+\vspace{10pt}The principle of familiarity is incorporated in the design very well, buttons display a meaningful name and a symbol showing
+what they do, like the note symbolizing the music library, the screwdriver and wrench symbolizing settings, which is used in
+various other applications. The symbols for play, stop and skip are also the standard symbols for playing music. The language is
 simple, neutral and straightforward, which appeals to all age groups.
-
+\vspace{10pt}
 \textbf{Affordance}
 
-The design of the interface incorporates affordance quite well, buttons indicate that pushing them takes you to what they
+\vspace{10pt}The design of the interface incorporates affordance quite well, buttons indicate that pushing them takes you to what they
 refer to, i.e. pressing the library button takes you to your library and pressing the logout button logs the user out.
 Dragging things to move them is also very intuitive as it emulates the action of moving things in real life.
-
+\vspace{10pt}
 \textbf{Navigation}
 
-The navigation of the site is quite straightforward considering the high level of familiarity that comes with a design reminiscent of other social media.
-
+\vspace{10pt}The navigation of the site is quite straightforward considering the high level of familiarity that comes with a design reminiscent of other social media.
+\vspace{10pt}
 \textbf{Control}
 
-The control of the system is largely given to the user. There is a logical downwards mapping between buttons and what they control, so that a button controls what appears beneath it, for example the navigation buttons change the content of the main area from library to community or session.
-
+\vspace{10pt}The control of the system is largely given to the user. There is a logical mapping between buttons and what they control, so that a button controls what appears immediatly beneath or above it, for example the navigation buttons change the content of the main area from library to community or session.
+\vspace{10pt}
 \textbf{Feedback}
 
-In general, the feedback of the interface is somewhat lacking. There is rapid feedback when uploading music, but there is no feedback telling when a friend request is pending and if a session invitation has been sent, the feedback only appears shortly. This should be improved, but given the limited time for development it suffices.
-
+\vspace{10pt}In general, the feedback of the interface is sufficient. There is feedback when uploading music, and a notification telling when a friend request is pending.
+\vspace{10pt}
 \textbf{Recovery}
 
-There is no support for recovery of mistakes. It is not possible to withdraw a friend request and deleting music is not possible. This is quite a flaw in the design, but it is easily fixed with the introduction of a few extra buttons.
-
+\vspace{10pt}There is support for recovery of mistakes. It is possible to withdraw a friend request and delete music that has been uploaded by mistake. 
+\vspace{10pt}
 \textbf{Style}
 
-The colour scheme of the webpage is quite neutral, bordering on boring, but it looks effective and overall the design is okay.
-
+\vspace{10pt}The colour scheme of the webpage is neutral, but it looks effective and overall the design is okay.
+\vspace{10pt}
 \textbf{Conviviality}
 
-Conviviality has not been a key aspect of the interface design, but all in all the system is quite neutral when communicating with the user.
+\vspace{10pt}Conviviality has not been a key aspect of the interface design, but all in all the system is quite neutral when communicating with the user.

@@ -1,26 +1,25 @@
 \section{WhalesWebsocket}
 
-Since several browsers have implemented the websocket technology, making our
-application as cross-browser as possible makes sense for any future work.
-Unfortunatly, different browsers use different words for the same thing.
+Since several browsers have implemented the WebSocket technology, working towards making the
+application as cross-browser compatible as possible would be logical for future work.
 
+Unfortunatly, different browsers use different keyword implementations for the same thing.
 
-This is why we have choosen to wrap the WebSocket object in a wrapper object.
-By doing this, we can ensure that current browser implementations with different
-names, still functions as intended. This allso allows easy adding of new
-implementations in other browsers. If Microsoft Internet Explorer were to
-implement a version called IEWebSocket, that was still in compliance with the current
-standards, we could very easily add this to our wrapper, and withing seconds
-enable IE clients in our application. 
-
+This is why the WebSocket object is wrapped in a wrapper object.
+By doing this, It is ensured that current browser implementations with different
+keywords, still function as intended. This also allows for easy adding of new
+implementations in other browsers. If Microsoft Internet Explorer was to
+implement a version called IEWebSocket, that would still be in compliance with the current
+standards, and the group could very easily add this to the wrapper.
 
 Further more it would be fairly easy to
-implement a fallback if the browser did not allow for websockets. This would be
-done by returning an object that would mimic the behavior of a websocket, but
-using XHR requests and polling to achieve the same thing.
+implement a fallback if the browser did not allow for WebSockets. This would be
+done by returning an object that would mimic the behavior of a WebSocket, but
+using XHR (XML HTTP Request) and polling to achieve the same thing.
 
 
-This is our WebSocket wrapper. The fallback object would replace the 
+This is the WebSocket wrapper. 
+The fallback object would replace the 
 \lstinline$return null;$ on line 6.
 
  \begin{snippet}[language=JavaScript,caption=Our WebSocket abstraction object] 
@@ -33,7 +32,6 @@ This is our WebSocket wrapper. The fallback object would replace the
 };
 \end{snippet}
 
-Currently this only supports the mozilla implementation and the standards
-implementation of WebSocket. In time of writing, this works in Chrome, Safari
+Currently this only supports the Mozilla implementation and the standard
+implementation of WebSocket. At time of writing, this works in Chrome, Safari
 and Firefox.
-%TODO: ^skal vi have kilde på det, og evt. versionsnumre på? - H

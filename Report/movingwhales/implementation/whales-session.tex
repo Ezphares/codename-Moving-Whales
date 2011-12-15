@@ -1,9 +1,6 @@
 \section{Application Sessions on Client}
-%TODO: Overskrift med småt? :D
-% Jeg er vandt til at mit framework/sprog selv caser mine overskrifter rigtigt!
-
-One of the core features of our application is the session feature. A user can
-invite any other user on his/her friendlist to join the users session. When the
+One of the core features of the application is the session feature. A user can
+invite any other user on his/her friendlist to join the user's session. When the
 user logs on, a new session is created and the user is placed in this session.
 If the user invites another user to join the session, the invited user will
 leave his/her own session and join the inviting user's session. This means that
@@ -28,7 +25,7 @@ The client side session handling logic is placed in the
 \lstinline$whales.session$ object. The structure is shown in listing \ref{lst:whales.session structure}.
 The first two \verb$pending_*$ arrays in the structure holds incomming and
 outgoing session invites. the \verb$*Handlers$ maps holds the handlers that is
-run when a response is recived from the server concerning the session system.
+run when a response is recieved from the server concerning the session system.
 
 
 All this is controlled in the \verb$init$ function seen in listing \ref{lst:whales.session.init}
@@ -56,16 +53,16 @@ init: function() {
 }
 \end{snippet}
 
-Here we bind an event handler to the ``sync\_session'' event. A custom event
+Here an event handler is bound to the ``sync\_session'' event, a custom event
 created in the ``whales.sync.js'' script. This event is triggered when a
 package of the type ``session'' is recived from the server.
 
 
 The event handler then checks the payload type for either ``success'' or
-``error'' and fire the corresponding handler with the incomming data package as
+``error'' and fires the corresponding handler with the incoming data package as
 the first argument.
 
-\begin{snippet}[language=JavaScript,label=lst:incomming_event,caption=Handler for incomming events] 
+\begin{snippet}[language=JavaScript,label=lst:incomming_event,caption=Handler for incoming events] 
 incomming_invite: function(syncObject) {
     whales.session.pending_accepts.push(syncObject.payload);
     whales.loading(true,"Invite from "+syncObject.payload.data,1000);
@@ -79,7 +76,7 @@ incomming_invite: function(syncObject) {
 
 An example of an event handler would be the ``incomming\_invite'' handler listed
 in \ref{lst:incomming_event}. The handler takes a syncObject as first argument
-(the syncObject is just a standardised structure we use as communication
+(the syncObject is just a standardized structure used as communication
 between the client and server).
 The handler then pushes the payload of the syncObject on to the
 ``pending\_accepts'' array and calls 
@@ -92,12 +89,12 @@ This function controls the loading indicator on the site. The first argument is
 a boolean that controls the visibility of the loading indicator. The second
 argument is a string containing a message to the user. The third argument is a
 duration that controls for how long the message will be shown. If the third
-argument is undefined, the loading indicator won't disappear until the next call
+argument is undefined, the loading indicator will not disappear until the next call
 to ``whales.loading'' overrides the state.
 
 
 Finally the handler checks whether or not the user is currently looking at the
-``sessions'' page. If the ``sessions'' page is the currently shown page, the
+``sessions'' page. If the ``sessions'' page is currently shown, the
 handler reloads the page (with the \lstinline$nav.session$ function). This will
 refresh the current session view to make sure that new invites are also shown on
 the page.
