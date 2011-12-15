@@ -1,4 +1,4 @@
 \subsection{Streaming}
 
 
-The browser sends a complete request, but the server maintains an open response that is kept continually updated\cite{lubbersgreco}. The connection can either be kept open permanently or temporarily - there are no requirements one way or the other\cite{lubbersgreco}. The server updates the response every time there is data ready to be sent to the client\cite{lubbersgreco}. The server however, does not close off the connection after data has been sent\cite{lubbersgreco}. Other parameters have to be met before the connection closes\cite{lubbersgreco}.
+The browser sends a request, but the server maintains an open connection that is kept continually updated, and the connection is kept open for as long as needed. The server sends a response every time data is ready. The server, however, does not close off the connection after data has been sent. Other conditions have to be met before the connection closes.\cite{lubbersgreco}

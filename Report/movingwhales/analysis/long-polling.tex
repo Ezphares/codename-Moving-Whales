@@ -1,13 +1,13 @@
 \subsection{Long-polling}
 
-Long-polling functions much like the same way polling does. The intention is 
-that, via long-polling, the browser creates a connection with the server - 
+Long-polling functions much like the way polling does. The intention is 
+that, via long-polling, the browser creates a connection with the server 
 and the server then keeps this connection running with the client for a 
-longer duration\cite{lubbersgreco}. Unlike polling, requests are not sent 
-repeatedly to keep a connection running\cite{lubbersgreco}. The connection 
-terminates if the server does not respond the poll within the time-interval. 
-After that, it resumes again with a new long-lasting poll\cite{lubbersgreco}. 
+longer duration. Unlike polling, requests are not sent 
+repeatedly. The connection 
+terminates if the server does not respond within the time-interval. 
+After that, it resumes with a new long-lasting poll. 
 If the server has a high message volume, long-polling does not differ much 
 from traditional polling since each notification of new data returned to the 
 client would terminate the connection - only to restart the 
-procedure\cite{lubbersgreco}.
+procedure.\cite{lubbersgreco}

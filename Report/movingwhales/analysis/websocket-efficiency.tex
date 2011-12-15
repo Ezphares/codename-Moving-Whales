@@ -1,20 +1,17 @@
-\subsection{WebSocket efficiency}
+\subsection{WebSocket Efficiency}
 
+In a standard HTTP connection, there is a lot of overhead. 
+What the web socket does very well is separating redundant data from the data 
+that is actually relevant. There is quite a lot of redundancy when a polling solution is 
+used to keep a website updated in real-time. 
 
-In a standard HTTP connection, there is a lot of overhead\cite{lubbersgreco}. 
-What the web socket does very well is stripping redundant data from the data 
-that is actually relevant, which there is a lot of, when a polling solution is 
-used to keep a website updated in real-time\cite{lubbersgreco}. 
-
-Looking at the latency, if a server takes 50ms to send a message to the 
-browser, the polling application would introduce extra latency because the 
-connection would terminate, only to restart (taking another 50ms) - which 
-during this time of re-establishing a connection means that the server cannot 
-contact the browser with new data\cite{lubbersgreco}. The web socket never 
-breaks communication with the server once opened - unless specified otherwise, 
-and allows the server to send new data immediately as it receives 
-it\cite{lubbersgreco}. Obviously it would still take 50ms for the server to 
-send data to the browser via the web socket - but the real gain here is that 
-the web socket will not have to send a request to the server to re-establish 
+Looking at the latency, if a server sends a message to the 
+browser, the polling application would introduce additional delay because the 
+connection would terminate, only to restart and
+during this time of establishing a new connection, the server cannot 
+contact the browser with new data. The WebSocket never 
+breaks communication with the server once opened - unless instructed otherwise, 
+and allows the server to send new data immediately as it becomes available. The real gain is that 
+the WebSocket client will not have to send a request to the server to establish a new 
 connection after it receives a message, like when polling is 
-used\cite{lubbersgreco}.
+used.\cite{lubbersgreco}
