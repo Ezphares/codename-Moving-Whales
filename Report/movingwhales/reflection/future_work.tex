@@ -1,4 +1,4 @@
-\section{Future work}
+\section{Future Work}
 While the application has a lot of functionality as it is, it is not ``done'' and probably not ready
 for release.
 
@@ -10,7 +10,7 @@ where to find the session flyout. The known bugs include:
 but not a profile, which more or less makes that login useless.}
 \item{Uploading the same file twice from a single user creates two links between that user and song
 in the database. When retrieving the library, the effects of this is unknown.}
-\item{The websocket is unstable, sometimes crashing with an unknown error, and requiring manual reset.
+\item{The WebSocket is unstable, sometimes crashing with an unknown error, and requiring manual reset.
 When this happens, most of the functionality of the system is unavailable.}
 \item{Multiple session invites to and from the same user gets added to a list, even though they for all
 purposes do the same. Accepting one of these, additionally, will not remove the others from the list.}
@@ -18,7 +18,7 @@ purposes do the same. Accepting one of these, additionally, will not remove the 
 along with the error message.}
 \end{itemize}
 The next thing to work on, would be creating playlists, since most of the code is already there, the
-user interface for it is written, and it just needs to be glued together.
+user interface for it is written, and it just needs minor adjustments.
 
 The last thing strictly necessary before a release is user interface elements to delete ``stuff''.
 In its current form, there is no option for the user to delete songs from his library, delete playlists
@@ -29,9 +29,8 @@ With the essential features done, it would be time to start on some of the featu
 the user experience. A good place to start would be messaging system for users, a song rating
 system, and a Facebook-like event system, to help arrange music sessions.
 
-At last the software could be expanded with some features which, while interesting, is not really
-a part of what the system was made for. These includes OAuth and various music statistics.
+Finally the software could be expanded with some additional features like OAuth and various music statistics, which are not vital, but nice to have.
 
 During all of this, a general streamlining of the user interface, and optimization of the server and
-database should be taking place, so that introducing new features does not mke the interface seem
+database should be taking place, so that introducing new features does not make the interface seem
 cluttered, or slow the existing functionality down.

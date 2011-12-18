@@ -10,18 +10,18 @@ onerror
 onmessage
 \end{snippet}
 
-These are defined by settings the corresponding attribute on the created 
+These are defined by setting the corresponding attribute on the created 
 WebSocket object. This means that one function defines one action for one
 Websocket object. This is fairly simple, but unpractical when building an
-application where serveral parts needs to be able to communicate through the 
+application where serveral parts need to be able to communicate through the 
 same WebSocket object.
 
 
-To overcome this problem, we introduce an abstaction layer between the 
+To overcome this problem, we introduce an abstraction layer between the 
 WebSocket and the rest of the application. For each of the events in listing
-\ref{lst:websocket events} we define a function that gathers incomming data from
-the event, and packs it into an event that is then triggered on the global
-window object. An example of this can be found in listing
+\ref{lst:websocket events} a function that gathers incoming data from
+the event, and packs it into a new event that is then triggered on the global
+window object is defined. An example of this can be found in listing
 \ref{lst:websocket.onerror}.
 
 \begin{snippet}[caption=The onerror websocket event,label=lst:websocket.onerror] 
@@ -33,18 +33,18 @@ this.socket.onerror = function(event){
 };
 \end{snippet}
 
-By doing this we allow any other part of our application to bind to a specific
+By doing this any other part of the application is allowed to bind to a specific
 event on the window object and handle the WebSocket data. The naming convention
 for the events is an event name prefixed with ``sync\_''.
 
 
-The ``onmessage'' WebSocket event is triggered every time new data is avaiable
+The ``onmessage'' WebSocket event is triggered every time new data is available
 from the server. We handle this by - as with the other WebSocket events -
 triggering an event on the window object, should any other part of the
-application need direct access to incomming data. The ``onmessage'' also calls a
-decoding function that decodes the raw string from the server into a javascript
+application need direct access to incoming data. The ``onmessage'' also calls a
+decoding function that decodes the raw string from the server into a JavaScript
 object that is then parsed on to another function for further handling.
-This object is our data package containing all the information from the server.
+This object is a data package containing all the information from the server.
 
 \begin{snippet}[caption=The onmessage WebSocket event,label=lst:websocket.onmessage]
 this.socket.onmessage = function(event){
@@ -62,9 +62,9 @@ The definition of the ``onmessage'' event is seen in listing \ref{lst:websocket.
 Line 2-6 forms an event called ``sync\_raw'' and triggers it on the window
 object.
 Line 7-8 calls the decode function on the event data, and then passes it along
-to be handled by our sync handler as seen in listing \ref{lst:sync.handle}.
+to be handled by the sync handler as seen in listing \ref{lst:sync.handle}.
 
-\begin{snippet}[caption=Handling of incomming data,label=lst:sync.handle]
+\begin{snippet}[caption=Handling of incoming data,label=lst:sync.handle]
     handle: function(obj) {
         //console.log("recived: "+obj.type);
         obj.time.recived = whales.sync.time.now(); // important!
@@ -88,10 +88,10 @@ to be handled by our sync handler as seen in listing \ref{lst:sync.handle}.
     }
 \end{snippet}
 
-The handler provides a much simpler way to work with incomming data. We allready
-decoded the message in the WebSocket ``onmessage'' function. This handler then
-adds a timestamp to the package, calculate the time between the package was sent
-and recived (the client to client latency) and pushes it into an array that
+The handler provides a much simpler way to work with incoming data. The message is already
+decoded in the WebSocket ``onmessage'' function. This handler then
+adds a timestamp to the package, calculates the time between the package was sent
+and received (the client to client latency) and pushes it into an array that
 automatically calculates the average for later use.
 
 
@@ -99,7 +99,7 @@ Then a check is made on an internal map of functions
 (\lstinline$this.handlers$).
 All packages contains a ``type'' property. If a handler with the
 corresponding name is defined in the internal function map, this function is
-called with the package object as it's argument. An example of one of these
+called with the package object as its argument. An example of one of these
 internal handlers is shown in listing \ref{lst:sync.ping}
 
 
@@ -124,19 +124,19 @@ ping: function (obj) {
 \end{snippet}
 
 The above listing \ref{lst:sync.ping} shows the internal handler for ``ping''.
-The ``ping'' is one of the simplest package types in our system. It checks that
-the recived package is valid, changes the ``ping'' package to a ``pong''
+The ``ping'' is one of the simplest package types in the system. It checks that
+the received package is valid, changes the ``ping'' package to a ``pong''
 package, makes sure that it is the server asking for a pong, and then
-adds a payload to the ``pong'' package containing the clients secret
-identification token to be identified on the server. ``pong'' packages will
+adds a payload to the ``pong'' package containing the client's secret
+identification token to be identified on the server. A ``pong'' package will
 never reach other clients, so transmitting the secret client token in a ``pong''
-package does not pose a security risk. All ``pong'' packages are cough by the
+package does not pose a security risk. All ``pong'' packages are caught by the
 server, and is used in latency calculations to clients.
 
 
 In effect, this system provides a simple interface for receiving data from the
-websocket. This speeds up development and reduces the amount of bugs that would
-otherwise have arrised when introducing new code directly in to the
-``onmessage'' websocket function.
+WebSocket. This speeds up development and reduces the amount of bugs that would
+otherwise have arisen when introducing new code directly into the
+``onmessage'' WebSocket function.
 
 

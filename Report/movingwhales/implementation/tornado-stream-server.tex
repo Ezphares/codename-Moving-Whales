@@ -1,9 +1,9 @@
-\section{Streaming server}
+\section{Streaming Server}
 
 The streaming server is, like the WebSocket server, written on top of Tornado
 \cite{tornadoweb11}, allowing for quick and easy development.
-We needed a file server to stream music to connected clients. As this is just
-for development we wrote up a small and simple file server to do the
+A file server to stream music to connected clients was needed and seeing as this is just
+for development a small and simple file server was written to do the
 job\ref{lst:streamhandler}.
 
 \begin{snippet}[language=Python,label=lst:streamhandler,caption=The streaming server] 
@@ -43,19 +43,18 @@ class Application(tornado.web.Application):
         thread.start_new_thread(WhalesSessionManager.syncronize, (self.lock,))
 \end{snippet}
 
-Here we see the tornado Application definition. The ``handlers'' variable
+Here the tornado Application definition is shown. The ``handlers'' variable
 defines two turples that serves as URL mappings. The first mapping - the
 ``/sync/'' url - is mapped to the misleadingly named class
 ``ChatSocketHandler'' (The original purpose of this class was merely chat
 relay). The second mapping maps all URLs matching the regular expression
 \verb$/file/([^/]+)$ to the StreamHandler defined in listing 
 \ref{lst:streamhandler}. The regular expression translate to: ``any string 
-with the character sequence `/file/' followed by 1 or more characters that is 
-not `/'''.
+with the character sequence ``/file/'' followed by 1 or more characters that is 
+not ``/''''.
 
 
 The code shown in listing \ref{lst:streamhandler} provides an easy way of 
 running tests on the system without having to deploy it with a full-scale file
 server like Apache. For production purposes however, this simple file server
 should be replaced with a better one like the Apache or Lighttpd server.
-
